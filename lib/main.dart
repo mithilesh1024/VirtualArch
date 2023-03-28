@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'VirtualBuild',
+        title: 'VirtualArch',
         theme: ThemeData(
           scaffoldBackgroundColor: const Color(0x40404040),
           primarySwatch: Colors.blue,
@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
               )),
         ),
         // initialRoute: HomeScreen.routeName,
-        home: WidgetTree(),
+        home: RegisterScreen(),
         //All routes for navigations.
         routes: {
           HomeScreen.routeName: (ctx) => const HomeScreen(),

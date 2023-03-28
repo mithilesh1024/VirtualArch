@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -7,7 +6,6 @@ class Auth {
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
   Map<String, dynamic> tellMeTheError(String error) {
-    print("Error Message  ${error}");
     switch (error) {
       case "ERROR_EMAIL_ALREADY_IN_USE":
       case "account-exists-with-different-credential":
@@ -57,10 +55,14 @@ class Auth {
     required String password,
   }) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      await _firebaseAuth
+          .createUserWithEmailAndPassword(
         email: email,
         password: password,
-      );
+      )
+          .then((value) {
+        value.user!.updateDisplayName("Architect");
+      });
       return {};
     } on FirebaseAuthException catch (e) {
       return tellMeTheError(e.code);

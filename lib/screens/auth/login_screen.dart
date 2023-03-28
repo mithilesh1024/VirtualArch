@@ -72,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var scaffoldMessengerVar = ScaffoldMessenger.of(context);
     var navigatorVar = Navigator.of(context);
     var userProvider = Provider.of<UserDataProvide>(context, listen: false);
+    final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       body: GestureDetector(
         onTap: () {
@@ -175,7 +176,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             //Stop CircularProgressIndicator
                             navigatorVar.pop();
 
-                            if (errorIfAny.isEmpty) {
+                            if (errorIfAny.isEmpty &&
+                                user!.displayName == "Architect") {
                               scaffoldMessengerVar.showSnackBar(
                                 const SnackBar(
                                   content: CustomSnackBar(
@@ -202,7 +204,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               scaffoldMessengerVar.showSnackBar(
                                 SnackBar(
                                   content: CustomSnackBar(
-                                    messageToBePrinted: errorIfAny['error'],
+                                    messageToBePrinted: errorIfAny.isEmpty
+                                        ? "User not found. Register!!"
+                                        : errorIfAny['error'],
                                     bgColor:
                                         const Color.fromRGBO(199, 44, 65, 1),
                                   ),
