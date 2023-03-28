@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         title: 'VirtualBuild',
         theme: ThemeData(
           scaffoldBackgroundColor: const Color(0x40404040),
-          primarySwatch: Colors.green,
+          primarySwatch: Colors.blue,
           canvasColor: const Color.fromARGB(64, 161, 157, 157),
           secondaryHeaderColor: Colors.white,
           fontFamily: 'Gilroy',
