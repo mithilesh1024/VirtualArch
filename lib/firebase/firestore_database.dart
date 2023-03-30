@@ -27,4 +27,22 @@ class FireDatabase {
       print("Error ${e}");
     }
   }
+
+  static Future<void> addModelUrl(String url) async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    FirebaseFirestore.instance.collection('models').doc(userId).update({
+      "house1": {
+        "2d_images": FieldValue.arrayUnion([url])
+      }
+    });
+  }
+
+  static Future<void> deleteFromDb(String url) async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    FirebaseFirestore.instance.collection('models').doc(userId).update({
+      "house1": {
+        "2d_images": FieldValue.arrayRemove([url])
+      }
+    });
+  }
 }
