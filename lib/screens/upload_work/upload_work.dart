@@ -38,14 +38,85 @@ class UploadWorkScreen extends StatelessWidget {
             //     foregroundColor: Colors.white,
             //   ),
             // ),
-            UploadImage(
-              imgName: "Electric Plan",
-              onPressed: () async {
-                // final result =
-                //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                await FirebaseStorage.uploadModel();
-              },
+            SizedBox(
+              height: size.height * 0.05,
             ),
+            Flexible(
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Wrap(
+                    alignment: WrapAlignment.spaceAround,
+                    children: [
+                      UploadImage(
+                        imgName: "Floor Plans",
+                        onPressed: () async {
+                          // final result =
+                          //     await FilePicker.platform.pickFiles(allowMultiple: true);
+                          await FirebaseStorage.uploadModel();
+                        },
+                      ),
+                      UploadImage(
+                        imgName: "Elevations Plan",
+                        onPressed: () async {
+                          // final result =
+                          //     await FilePicker.platform.pickFiles(allowMultiple: true);
+                          await FirebaseStorage.uploadModel();
+                        },
+                      ),
+                      UploadImage(
+                        imgName: "Site Plan",
+                        onPressed: () async {
+                          // final result =
+                          //     await FilePicker.platform.pickFiles(allowMultiple: true);
+                          await FirebaseStorage.uploadModel();
+                        },
+                      ),
+                      UploadImage(
+                        imgName: "Foundational Plan",
+                        onPressed: () async {
+                          // final result =
+                          //     await FilePicker.platform.pickFiles(allowMultiple: true);
+                          await FirebaseStorage.uploadModel();
+                        },
+                      ),
+                      UploadImage(
+                        imgName: "Electric Plan",
+                        onPressed: () async {
+                          // final result =
+                          //     await FilePicker.platform.pickFiles(allowMultiple: true);
+                          await FirebaseStorage.uploadModel();
+                        },
+                      ),
+                      UploadImage(
+                        imgName: "Plumbing Plan",
+                        onPressed: () async {
+                          // final result =
+                          //     await FilePicker.platform.pickFiles(allowMultiple: true);
+                          await FirebaseStorage.uploadModel();
+                        },
+                      ),
+                      UploadImage(
+                        imgName: "HVAC Plan",
+                        onPressed: () async {
+                          // final result =
+                          //     await FilePicker.platform.pickFiles(allowMultiple: true);
+                          await FirebaseStorage.uploadModel();
+                        },
+                      ),
+                      UploadImage(
+                        imgName: "Other Plan",
+                        onPressed: () async {
+                          // final result =
+                          //     await FilePicker.platform.pickFiles(allowMultiple: true);
+                          await FirebaseStorage.uploadModel();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
