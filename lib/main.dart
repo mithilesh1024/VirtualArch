@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           // scaffoldBackgroundColor: const Color(0x40404040),
           scaffoldBackgroundColor: Colors.black,
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.teal,
           canvasColor: const Color.fromARGB(64, 161, 157, 157),
           secondaryHeaderColor: Colors.white,
           fontFamily: 'Gilroy',
