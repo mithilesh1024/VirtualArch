@@ -123,7 +123,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    // final args = ModalRoute.of(context)!.settings.arguments as Map;
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
     var scaffoldMessengerVar = ScaffoldMessenger.of(context);
     var navigatorVar = Navigator.of(context);
 
@@ -172,8 +172,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                             decoration:
                                                 customDecorationForInput(
                                               context,
-                                              // args['email'],
-                                              "chirag",
+                                              args['email'],
                                               Icons.email_rounded,
                                             ),
                                           ),
@@ -614,8 +613,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                             );
 
                             //Send OTP to the user
-                            // localOTP = await sendOtp(args['email']);
-                            localOTP = await sendOtp("chirag");
+                            localOTP = await sendOtp(args['email']);
 
                             navigatorVar.pop();
 
@@ -636,12 +634,27 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                               navigatorVar.pushNamed(
                                 OTPScreen.routeName,
                                 arguments: {
-                                  'email':
-                                      "chiraggaonkar80@gmail.com", //args['email'],
-                                  'password': "12345678", //args['password'],
-                                  'name': _nameTextController.text,
-                                  // 'phoneNumber': _phoneNumberController.text,
-                                  // 'address': _addressController.text,
+                                  'email': args['email'],
+                                  'password': args['password'],
+                                  'architectName': _nameTextController.text,
+                                  'architectType': _archTypeTextController.text,
+                                  'architectRegisterNum':
+                                      _regNumberTextController.text,
+                                  'architectExperience':
+                                      _experienceTextController.text,
+                                  'architectCompanyName':
+                                      _companyNameTextController.text,
+                                  'architectStreetAddress':
+                                      _streetAddressTextController.text,
+                                  'architectCity': _cityTextController.text,
+                                  'architectState': _stateTextController.text,
+                                  'architectZipCode':
+                                      _zipNumTextController.text,
+                                  'architectCountry':
+                                      _countryTextController.text,
+                                  'architectAboutMe':
+                                      _aboutMeTextController.text,
+                                  'architectSkills': _skills,
                                   'localOTP': localOTP,
                                 },
                               );
