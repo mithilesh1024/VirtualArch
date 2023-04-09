@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import '/firebase/authentication.dart';
 import '/screens/accounts/account_screen.dart';
@@ -90,7 +91,12 @@ class _CustomMenuState extends State<CustomMenu> {
                           ),
                         );
                       } else {
-                        return CustomLoadingSpinner();
+                        return Center(
+                          child: LoadingAnimationWidget.waveDots(
+                            color: Theme.of(context).secondaryHeaderColor,
+                            size: 20,
+                          ),
+                        );
                       }
                     }),
                 const SizedBox(
@@ -105,7 +111,7 @@ class _CustomMenuState extends State<CustomMenu> {
                   splashColor: Theme.of(context).primaryColor,
                   child: _buildListTile(
                     "My Uploads",
-                    Icons.home,
+                    Icons.military_tech_outlined,
                     highLighter.isHome,
                   ),
                 ),
@@ -119,7 +125,7 @@ class _CustomMenuState extends State<CustomMenu> {
                   splashColor: Theme.of(context).primaryColor,
                   child: _buildListTile(
                     "My Clients",
-                    Icons.threed_rotation_sharp,
+                    Icons.groups,
                     highLighter.isModels,
                   ),
                 ),
@@ -133,7 +139,7 @@ class _CustomMenuState extends State<CustomMenu> {
                   splashColor: Theme.of(context).primaryColor,
                   child: _buildListTile(
                     "Upload Work",
-                    Icons.people_alt_outlined,
+                    Icons.cloud_upload_outlined,
                     highLighter.isArchitects,
                   ),
                 ),

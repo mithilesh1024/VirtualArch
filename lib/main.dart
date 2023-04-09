@@ -45,8 +45,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'VirtualArch',
         theme: ThemeData(
-          scaffoldBackgroundColor: const Color(0x40404040),
-          primarySwatch: Colors.blue,
+          // scaffoldBackgroundColor: const Color(0x40404040),
+          scaffoldBackgroundColor: Colors.black,
+          primarySwatch: Colors.teal,
           canvasColor: const Color.fromARGB(64, 161, 157, 157),
           secondaryHeaderColor: Colors.white,
           fontFamily: 'Gilroy',
