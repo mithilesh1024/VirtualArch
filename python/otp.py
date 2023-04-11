@@ -11,7 +11,7 @@ from flask_mail import Mail, Message
 # db = firestore.client()
 
 email = "virtualbuild01@gmail.com"
-password = "srxdgydasyklzhjd"
+password = "xqdcqywjsvmsggga"
 app = Flask(__name__)
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'

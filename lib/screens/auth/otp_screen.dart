@@ -90,7 +90,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         return const CustomLoadingSpinner();
                       },
                     );
-                    
+
                     //Logic for authentication and create user
                     errorIfAny = await Auth().createUserWithEmailAndPassword(
                       email: args['email'],
@@ -100,19 +100,16 @@ class _OTPScreenState extends State<OTPScreen> {
                     if (errorIfAny.isEmpty) {
                       final User? user = Auth().currentUser;
                       await FireDatabase().createUser(
-                        uid: user!.uid.toString(),
-                        name: args['name'],
-                        phoneNumber: args['phoneNumber'],
-                        email: args['email'],
-                        address: args['address'],
+                        architectId: user!.uid.toString(),
+                        architectData: args,
                       );
 
-                      userProvider.setData(
-                        args['name'],
-                        args['email'],
-                        args['address'],
-                        args['phoneNumber'],
-                      );
+                      // userProvider.setData(
+                      //   args['name'],
+                      //   args['email'],
+                      //   args['address'],
+                      //   args['phoneNumber'],
+                      // );
 
                       navigatorVar.pop();
 
