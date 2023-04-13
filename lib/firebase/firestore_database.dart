@@ -36,11 +36,29 @@ class FireDatabase {
 
   static Future<void> addModelUrl(String url) async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
-    FirebaseFirestore.instance.collection('models').doc(userId).update({
-      "house1": {
-        "2d_images": FieldValue.arrayUnion([url])
-      }
-    });
+    print("url ${url}");
+    DocumentSnapshot ds =
+        await FirebaseFirestore.instance.collection('models').doc(userId).get();
+    print("exist or not ${ds.exists}");
+    if (ds.exists) {
+      await FirebaseFirestore.instance.collection('models').doc(userId).update({
+        "house1": {
+          "2d_images": FieldValue.arrayUnion([url])
+        }
+      }).then((value) {
+        print("updated");
+      });
+    } else {
+      var map = {
+        "house1": {
+          "2d_images": FieldValue.arrayUnion([url])
+        }
+      };
+      await FirebaseFirestore.instance
+          .collection('models')
+          .doc(userId)
+          .set(map);
+    }
   }
 
   static Future<void> deleteFromDb(String url) async {
