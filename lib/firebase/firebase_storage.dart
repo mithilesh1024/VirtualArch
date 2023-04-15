@@ -40,26 +40,50 @@ class FirebaseStorage {
     FireDatabase.deleteFromDb(url);
   }
 
+  static String getKey(int index) {
+    switch (index) {
+      case 0:
+        return "Floor Plans";
+      case 1:
+        return "Elevations Plan";
+      case 2:
+        return "Site Plan";
+      case 3:
+        return "Foundational Plan";
+      case 4:
+        return "Electric Plan";
+      case 5:
+        return "Plumbing Plan";
+      case 6:
+        return "HVAC Plan";
+      case 7:
+        return "Other Plan";
+      default:
+        return "";
+    }
+  }
+
   static Future<void> uploadModel() async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
-    String location = "$userId/2d_images/${getRandomString(10)}";
+    String location = "$userId/2d_images/";
     // final result = await selectFile();
-    images.forEach((element) async {
+    images.asMap().forEach((index, element) async {
       if (element != null) {
         String fileName = element.files.single.name;
+        location += fileName;
         print(fileName);
         if (kIsWeb) {
           Uint8List uploadFile = element.files.single.bytes;
           final task = await storage.ref(location).putData(uploadFile);
           final urlString = await task.ref.getDownloadURL();
-          FireDatabase.addModelUrl(urlString);
+          FireDatabase.addModelUrl(urlString, getKey(index));
         } else {
           String filePath = element.files.single.path;
           File file = File(filePath);
           try {
             final task = await storage.ref(location).putFile(file);
             final urlString = await task.ref.getDownloadURL();
-            FireDatabase.addModelUrl(urlString);
+            FireDatabase.addModelUrl(urlString, getKey(index));
           } on firebase_core.FirebaseException catch (e) {
             print(e);
           }
