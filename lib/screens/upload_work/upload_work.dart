@@ -6,9 +6,15 @@ import '../../widgets/custommenu.dart';
 import '../../widgets/customscreen.dart';
 import '../../widgets/headerwithmenu.dart';
 
-class UploadWorkScreen extends StatelessWidget {
+class UploadWorkScreen extends StatefulWidget {
   UploadWorkScreen({super.key});
   static const routeName = "/uploadWork";
+
+  @override
+  State<UploadWorkScreen> createState() => _UploadWorkScreenState();
+}
+
+class _UploadWorkScreenState extends State<UploadWorkScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -50,68 +56,96 @@ class UploadWorkScreen extends StatelessWidget {
                     children: [
                       UploadImage(
                         imgName: "Floor Plans",
+                        index: 0,
                         onPressed: () async {
                           // final result =
                           //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.uploadModel();
+                          await FirebaseStorage.selectFile(0);
+                          setState(() {});
                         },
                       ),
                       UploadImage(
                         imgName: "Elevations Plan",
+                        index: 1,
                         onPressed: () async {
                           // final result =
                           //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.uploadModel();
+                          await FirebaseStorage.selectFile(1);
+                          setState(() {});
                         },
                       ),
                       UploadImage(
                         imgName: "Site Plan",
+                        index: 2,
                         onPressed: () async {
                           // final result =
                           //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.uploadModel();
+                          await FirebaseStorage.selectFile(2);
+                          setState(() {});
                         },
                       ),
                       UploadImage(
                         imgName: "Foundational Plan",
+                        index: 3,
                         onPressed: () async {
                           // final result =
                           //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.uploadModel();
+                          await FirebaseStorage.selectFile(3);
+                          setState(() {});
                         },
                       ),
                       UploadImage(
                         imgName: "Electric Plan",
+                        index: 4,
                         onPressed: () async {
                           // final result =
                           //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.uploadModel();
+                          await FirebaseStorage.selectFile(4);
+                          setState(() {});
                         },
                       ),
                       UploadImage(
                         imgName: "Plumbing Plan",
+                        index: 5,
                         onPressed: () async {
                           // final result =
                           //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.uploadModel();
+                          await FirebaseStorage.selectFile(5);
+                          setState(() {});
                         },
                       ),
                       UploadImage(
                         imgName: "HVAC Plan",
+                        index: 6,
                         onPressed: () async {
                           // final result =
                           //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.uploadModel();
+                          await FirebaseStorage.selectFile(6);
+                          setState(() {});
                         },
                       ),
                       UploadImage(
                         imgName: "Other Plan",
+                        index: 7,
                         onPressed: () async {
                           // final result =
                           //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.uploadModel();
+                          await FirebaseStorage.selectFile(7);
+                          setState(() {});
                         },
                       ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24.0)),
+                            padding: const EdgeInsets.all(12.0),
+                          ),
+                          onPressed: () async {
+                            await FirebaseStorage.uploadModel();
+                            
+                          },
+                          child: const Text('Button',
+                              style: TextStyle(color: Colors.white))),
                     ],
                   ),
                 ),
