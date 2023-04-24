@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 InputDecoration customDecorationForInput(
@@ -25,5 +24,6 @@ InputDecoration customDecorationForInput(
     filled: true,
     labelText: inputLabel,
     labelStyle: Theme.of(context).textTheme.titleSmall,
+    counterStyle: const TextStyle(color: Colors.white),
   );
 }

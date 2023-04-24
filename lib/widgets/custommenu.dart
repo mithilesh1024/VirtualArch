@@ -82,7 +82,8 @@ class _CustomMenuState extends State<CustomMenu> {
                     future: userData.getData(),
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
-                        String name = snapshot.data["name"];
+                        String name = snapshot.data["architectName"];
+                        // String name = "mithilesh0";
                         return Padding(
                           padding: const EdgeInsets.all(5),
                           child: Text(

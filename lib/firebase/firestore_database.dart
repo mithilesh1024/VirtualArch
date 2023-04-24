@@ -26,6 +26,9 @@ class FireDatabase {
         },
         aboutMe: architectData['architectAboutMe'],
         skills: architectData['architectSkills'],
+        architectImageUrl: architectData['architectGender'] == "Male"
+            ? "assets/Male.png"
+            : "assets/Female.png",
       );
       final json = architect.toJson();
       await docArchitect.set(json);

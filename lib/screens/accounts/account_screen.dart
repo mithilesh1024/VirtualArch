@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../providers/user_data_provider.dart';
 import '../../widgets/accounts/customdecorationforaccountinput.dart';
 import '../../widgets/customloadingspinner.dart';
@@ -111,10 +110,15 @@ class _AccountScreenState extends State<AccountScreen>
                 future: user_data.getData(),
                 builder: (context, AsyncSnapshot snapshot) {
                   if (snapshot.hasData) {
-                    name = snapshot.data["name"];
-                    String email = snapshot.data["email"];
-                    _addressController.text = snapshot.data["address"];
-                    _phoneNoController.text = snapshot.data["phoneNumber"];
+                    name = snapshot.data["architectName"];
+                    String email = "email";
+                    var tempAddr = snapshot.data["architectOfficeLocation"];
+                    _addressController.text = tempAddr["companyStreetAddress"] + " " +
+                        tempAddr["city"] + " " +
+                        tempAddr["state"] + " " +
+                        tempAddr["zipCode"];
+                    print(" adress ${_addressController.text}");
+                    //_phoneNoController.text = snapshot.data["phoneNumber"];
                     return Column(
                       children: [
                         Text(
@@ -132,7 +136,7 @@ class _AccountScreenState extends State<AccountScreen>
                         SizedBox(
                           height: size.height * 0.02,
                         ),
-                        _buildTextFormField(_phoneNoController, "Phone Number"),
+                        // _buildTextFormField(_phoneNoController, "Phone Number"),
                         SizedBox(
                           height: size.height * 0.04,
                         ),

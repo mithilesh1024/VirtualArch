@@ -34,7 +34,7 @@ class ArchitectModel {
         'architectOfficeLocation': architectOfficeLocation,
         'aboutMe': aboutMe,
         'skills': skills,
-        'architectImageUrl': "",
+        'architectImageUrl': architectImageUrl,
         'architectClientsId': [],
         'architectProjectsId': [],
       };

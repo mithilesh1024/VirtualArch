@@ -104,13 +104,6 @@ class _OTPScreenState extends State<OTPScreen> {
                         architectData: args,
                       );
 
-                      // userProvider.setData(
-                      //   args['name'],
-                      //   args['email'],
-                      //   args['address'],
-                      //   args['phoneNumber'],
-                      // );
-
                       navigatorVar.pop();
 
                       scaffoldMessengerVar.showSnackBar(

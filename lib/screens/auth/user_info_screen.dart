@@ -32,6 +32,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   final _countryKey = GlobalKey<FormFieldState<String>>();
   final _aboutMeKey = GlobalKey<FormFieldState<String>>();
   final _skillsKey = GlobalKey<FormFieldState<String>>();
+  final _genderKey = GlobalKey<FormFieldState<String>>();
 
   final _nameTextController = TextEditingController();
   final _companyNameTextController = TextEditingController();
@@ -45,6 +46,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   final _zipNumTextController = TextEditingController();
   final _countryTextController = TextEditingController();
   final _aboutMeTextController = TextEditingController();
+  final _genderTextController = TextEditingController();
 
   final List<String> _skills = [];
 
@@ -64,7 +66,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
           _nameKey.currentState!.validate() &&
           _archTypeKey.currentState!.validate() &&
           _regNumKey.currentState!.validate() &&
-          _expKey.currentState!.validate()) {
+          _expKey.currentState!.validate() &&
+          _genderKey.currentState!.validate()) {
         setState(() {
           currentStep = 1;
           print(currentStep);
@@ -282,6 +285,31 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                             },
                                           ),
                                         ),
+                                        Container(
+                                          width: 500,
+                                          margin: const EdgeInsets.all(10),
+                                          child: TextFormField(
+                                            key: _genderKey,
+                                            controller: _genderTextController,
+                                            decoration:
+                                                customDecorationForInput(
+                                                    context,
+                                                    "Enter Gender",
+                                                    Icons.man_4_rounded),
+                                            validator: (gender) {
+                                              print(gender);
+                                              if (gender != null &&
+                                                  gender.isEmpty) {
+                                                return "Enter Gender";
+                                              } else if (gender != "Male" &&
+                                                  gender != "Female") {
+                                                return "Enter a valid gender";
+                                              } else {
+                                                return null;
+                                              }
+                                            },
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -477,6 +505,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           child: TextFormField(
                                             key: _aboutMeKey,
                                             controller: _aboutMeTextController,
+                                            maxLength: 900,
                                             keyboardType: TextInputType.number,
                                             decoration:
                                                 customDecorationForInput(
@@ -516,6 +545,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                                     _skillsTextController,
                                                 keyboardType:
                                                     TextInputType.number,
+                                                maxLength: 15,
                                                 decoration:
                                                     customDecorationForInput(
                                                   context,
@@ -530,6 +560,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                                   }
                                                 },
                                                 onFieldSubmitted: (value) {
+                                                  _skillsKey.currentState!
+                                                      .validate();
                                                   setState(() {
                                                     if (!_skills
                                                         .contains(value)) {
@@ -540,9 +572,24 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                                   });
                                                 },
                                               ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 4),
+                                                child: Text(
+                                                  "Type and hit enter to add & click on skill to delete",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .labelSmall!
+                                                      .copyWith(
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                      ),
+                                                ),
+                                              ),
                                               if (_skills.isNotEmpty)
                                                 ResponsiveGridList(
-                                                  minItemWidth: 100,
+                                                  minItemWidth: 150,
                                                   shrinkWrap: true,
                                                   children: List.generate(
                                                     _skills.length,
@@ -642,6 +689,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                       _regNumberTextController.text,
                                   'architectExperience':
                                       _experienceTextController.text,
+                                  'architectGender': _genderTextController.text,
                                   'architectCompanyName':
                                       _companyNameTextController.text,
                                   'architectStreetAddress':

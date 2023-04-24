@@ -50,15 +50,4 @@ class UserDataProvide with ChangeNotifier {
         .update({"name": name, "address": address, "phoneNumber": phone});
   }
 
-  void setData(
-    String name,
-    String email,
-    String address,
-    String number,
-  ) {
-    this.name = name;
-    this.address = address;
-    this.number = number;
-    this.email = email;
-  }
 }
