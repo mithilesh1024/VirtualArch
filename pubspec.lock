@@ -105,6 +105,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0+3"
+  dropdown_textfield:
+    dependency: "direct main"
+    description:
+      name: dropdown_textfield
+      sha256: "6e306d29d4bf8f88e2f9a4336d5e8dcc551d797fa8f541bb52a72817cc275cc4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.8"
   email_auth:
     dependency: "direct main"
     description:
@@ -121,6 +129,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.17"
+  equatable:
+    dependency: transitive
+    description:
+      name: equatable
+      sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -238,6 +254,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  flutter_multi_select_items:
+    dependency: "direct main"
+    description:
+      name: flutter_multi_select_items
+      sha256: d30af6dbf64c38c296110a9512eef91b196a185cca056cd1eb32614e5fa91d1c
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.2"
   flutter_otp_text_field:
     dependency: "direct main"
     description:
@@ -368,6 +392,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  lite_rolling_switch:
+    dependency: "direct main"
+    description:
+      name: lite_rolling_switch
+      sha256: "1e1866d49c49f67139139853421586b4450dac822f61e4c1d9f4244fe431ab6e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   loading_animation_widget:
     dependency: "direct main"
     description:

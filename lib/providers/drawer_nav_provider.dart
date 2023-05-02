@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:virtualarch/screens/upload_work/upload_info.dart';
 
 import '../screens/accounts/account_screen.dart';
 import '../screens/chats/chats_screen.dart';
@@ -22,7 +23,7 @@ class DrawerNavProvider with ChangeNotifier {
       case ExploreModelsScreen.routeName:
         highlightDrawerMenu(2);
         break;
-      case UploadWorkScreen.routeName:
+      case UploadProjInfo.routeName:
         highlightDrawerMenu(3);
         break;
       case ChatsScreen.routeName:

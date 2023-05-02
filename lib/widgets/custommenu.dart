@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:virtualarch/screens/upload_work/upload_info.dart';
 import '/firebase/authentication.dart';
 import '/screens/accounts/account_screen.dart';
 import '/screens/display_screen.dart';
@@ -135,7 +136,7 @@ class _CustomMenuState extends State<CustomMenu> {
                     //highLighter.highlightDrawerMenu(3);
 
                     Navigator.of(context).pop();
-                    Navigator.of(context).pushNamed(UploadWorkScreen.routeName);
+                    Navigator.of(context).pushNamed(UploadProjInfo.routeName);
                   },
                   splashColor: Theme.of(context).primaryColor,
                   child: _buildListTile(

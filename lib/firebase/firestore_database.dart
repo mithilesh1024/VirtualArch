@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:virtualarch/firebase/architects_model.dart';
+import 'package:virtualarch/models/architects_model.dart';
 
 class FireDatabase {
   Future<void> createUser({

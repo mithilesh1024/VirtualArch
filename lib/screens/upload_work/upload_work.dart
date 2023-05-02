@@ -6,15 +6,14 @@ import '../../widgets/custommenu.dart';
 import '../../widgets/customscreen.dart';
 import '../../widgets/headerwithmenu.dart';
 
-class UploadWorkScreen extends StatefulWidget {
-  UploadWorkScreen({super.key});
-  static const routeName = "/uploadWork";
-
+class UploadDesignScreen extends StatefulWidget {
+  const UploadDesignScreen({super.key});
   @override
-  State<UploadWorkScreen> createState() => _UploadWorkScreenState();
+  State<UploadDesignScreen> createState() => _UploadDesignScreenState();
+  static const routeName = '/uploadDesign';
 }
 
-class _UploadWorkScreenState extends State<UploadWorkScreen> {
+class _UploadDesignScreenState extends State<UploadDesignScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -30,7 +29,7 @@ class _UploadWorkScreenState extends State<UploadWorkScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HeaderWithMenu(
-              header: "Upload Work",
+              header: "Upload Designs",
               scaffoldKey: scaffoldKey,
             ),
             // ElevatedButton(
@@ -142,7 +141,6 @@ class _UploadWorkScreenState extends State<UploadWorkScreen> {
                           ),
                           onPressed: () async {
                             await FirebaseStorage.uploadModel();
-                            
                           },
                           child: const Text('Button',
                               style: TextStyle(color: Colors.white))),

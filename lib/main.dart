@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:virtualarch/screens/upload_work/upload_info.dart';
 import 'providers/chatsprovider.dart';
 import 'providers/drawer_nav_provider.dart';
 import 'providers/user_data_provider.dart';
@@ -94,7 +95,8 @@ class MyApp extends StatelessWidget {
           EditProfileScreen.routeName: (ctx) => const EditProfileScreen(),
           UserInfoScreen.routeName: (ctx) => const UserInfoScreen(),
           ChatDetail.routeName: (ctx) => const ChatDetail(),
-          UploadWorkScreen.routeName: (ctx) => UploadWorkScreen(),
+          UploadProjInfo.routeName: (ctx) => UploadProjInfo(),
+          UploadDesignScreen.routeName: (ctx) => UploadDesignScreen(),
         },
       ),
     );
