@@ -5,7 +5,9 @@ import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:virtualarch/firebase/firebase_uploads.dart';
 import 'package:virtualarch/screens/upload_work/upload_work.dart';
 import 'package:virtualarch/widgets/headerwithmenu.dart';
+import 'package:virtualarch/widgets/upload_work/upload_image.dart';
 import '../../firebase/authentication.dart';
+import '../../firebase/firebase_storage.dart';
 import '../../providers/feature_options_provider.dart';
 import '../../widgets/auth/customdecorationforinput.dart';
 import '../../widgets/customloadingspinner.dart';
@@ -53,17 +55,21 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
   final List _modelBathroomVanityController = [];
 
   //Outdoor Space
-  final bool _modelYardController = false;
-  final bool _modelDeckController = false;
-  final bool _modelPatioController = false;
-  final bool _modelPoolController = false;
-  final bool _modelParkingsController = false;
+  bool _modelYardController = false;
+  bool _modelDeckController = false;
+  bool _modelPatioController = false;
+  bool _modelPoolController = false;
+  bool _modelParkingsController = false;
 
   //Technology and smart features
   final List _modelTechnologyAndSmartFeaturesController = [];
 
+  //Important urls
+  String _model3dURLController = "";
+  String _modelImageURLController = "";
+
   continueStep() async {
-    bool isLastStep = (currentStep == 5);
+    bool isLastStep = (currentStep == 6);
     if (isLastStep) {
       //Hides the keyboard.
       FocusScope.of(context).unfocus();
@@ -78,9 +84,12 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
 
       final User? user = Auth().currentUser;
 
+      _modelImageURLController = await FirebaseStorage.uploadSampleImage();
+      _model3dURLController = await FirebaseStorage.upload3DModel();
+
       Map<String, dynamic> projectInfo = {
-        'modelImageURL': "",
-        'model3dURL': "",
+        'modelImageURL': _modelImageURLController,
+        'model3dURL': _model3dURLController,
         'modelName': _modelNameController.text,
         'modelPrice': _modelPriceController.text,
         'modelEstimatedBuildPrice': _modelEstimatedBuildPriceController.text,
@@ -109,9 +118,9 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
             _modelTechnologyAndSmartFeaturesController,
       };
 
-      bool noErrorsFound =
+      Map<String, dynamic> projectData =
           await FirebaseUploads().createProject(projectInfo: projectInfo);
-      if (noErrorsFound) {
+      if (projectData['noErrors']) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: CustomSnackBar(
@@ -140,9 +149,13 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
       // End CircularProgressIndicator
       Navigator.of(context).pop();
 
-      Navigator.of(context).pushNamed(UploadDesignScreen.routeName);
+      Navigator.of(context).pushNamed(
+        UploadDesignScreen.routeName,
+        arguments: projectData['projectId'],
+      );
     } else {
       setState(() {
+        print(_modelParkingsController);
         currentStep += 1;
       });
     }
@@ -267,7 +280,10 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
     );
   }
 
-  Widget switchButtonBuilder(String inputTitle, bool inputController) {
+  Widget switchButtonBuilder(
+    String inputTitle,
+    Function(bool) onChnaged,
+  ) {
     return Container(
       width: 200,
       margin: const EdgeInsets.all(10),
@@ -276,7 +292,6 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           LiteRollingSwitch(
-            value: false,
             width: 100,
             textOn: 'Yes',
             textOff: 'No',
@@ -287,9 +302,7 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
             animationDuration: const Duration(milliseconds: 300),
             onTap: () => null,
             onDoubleTap: () => null,
-            onChanged: (bool state) {
-              inputController = state;
-            },
+            onChanged: onChnaged,
             onSwipe: () => null,
           ),
           const SizedBox(height: 10),
@@ -558,23 +571,43 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                     children: [
                                       switchButtonBuilder(
                                         "Yard",
-                                        _modelYardController,
+                                        (bool state) {
+                                          setState(() {
+                                            _modelYardController = state;
+                                          });
+                                        },
                                       ),
                                       switchButtonBuilder(
                                         "Patio",
-                                        _modelPatioController,
+                                        (bool state) {
+                                          setState(() {
+                                            _modelPatioController = state;
+                                          });
+                                        },
                                       ),
                                       switchButtonBuilder(
                                         "Swimming Pool",
-                                        _modelPoolController,
+                                        (bool state) {
+                                          setState(() {
+                                            _modelPoolController = state;
+                                          });
+                                        },
                                       ),
                                       switchButtonBuilder(
                                         "Deck",
-                                        _modelDeckController,
+                                        (bool state) {
+                                          setState(() {
+                                            _modelDeckController = state;
+                                          });
+                                        },
                                       ),
                                       switchButtonBuilder(
                                         "Parkings",
-                                        _modelParkingsController,
+                                        (bool state) {
+                                          setState(() {
+                                            _modelParkingsController = state;
+                                          });
+                                        },
                                       )
                                     ],
                                   ),
@@ -601,6 +634,39 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                         technologyList,
                                         _modelTechnologyAndSmartFeaturesController,
                                       ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Step(
+                            isActive: currentStep >= 5,
+                            title: Text(
+                              "Upload 3d Models and Image",
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            content: Column(
+                              children: [
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: Wrap(
+                                    alignment: WrapAlignment.start,
+                                    children: [
+                                      UploadImage(
+                                          imgName: "3D model",
+                                          onPressed: () async {
+                                            await FirebaseStorage
+                                                .select3DModel();
+                                          },
+                                          index: -1),
+                                      UploadImage(
+                                          imgName: "Sample Image",
+                                          onPressed: () async {
+                                            await FirebaseStorage
+                                                .selectSampleFile();
+                                          },
+                                          index: -1),
                                     ],
                                   ),
                                 ),

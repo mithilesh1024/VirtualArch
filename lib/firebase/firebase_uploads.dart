@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:virtualarch/models/upload_model.dart';
 
 class FirebaseUploads {
-  Future<bool> createProject({
+  Future<Map<String, dynamic>> createProject({
     required Map projectInfo,
   }) async {
     try {
@@ -40,13 +40,14 @@ class FirebaseUploads {
         modelPool: projectInfo['modelPool'],
         modelTechnologyAndSmartFeatures:
             projectInfo['modelTechnologyAndSmartFeatures'],
+        // modelOtherDesignLinks: {},
       );
       final json = newProject.toJson();
       await docProject.set(json);
-      return true;
+      return {'noErrors': true, 'projectId': docProject.id};
     } on FirebaseException catch (e) {
-      print(e);
-      return false;
+      print("upload text $e");
+      return {'noErrors': false, 'projectId': ""};
     }
   }
 }

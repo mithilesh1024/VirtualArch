@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:virtualarch/screens/upload_work/upload_info.dart';
-
 import '../screens/accounts/account_screen.dart';
 import '../screens/chats/chats_screen.dart';
-import '../screens/display_screen.dart';
 import '../screens/housemodels/exploremodels_screen.dart';
 import '../screens/upload_work/upload_work.dart';
 
@@ -17,20 +15,17 @@ class DrawerNavProvider with ChangeNotifier {
 
   void changeHighLighter(String? route) {
     switch (route) {
-      case DisplayScreen.routeName:
+      case ExploreModelsScreen.routeName:
         highlightDrawerMenu(1);
         break;
-      case ExploreModelsScreen.routeName:
+      case ChatsScreen.routeName:
         highlightDrawerMenu(2);
         break;
       case UploadProjInfo.routeName:
         highlightDrawerMenu(3);
         break;
-      case ChatsScreen.routeName:
-        highlightDrawerMenu(5);
-        break;
       case AccountScreen.routeName:
-        highlightDrawerMenu(6);
+        highlightDrawerMenu(4);
         break;
       default:
         print("error ${route}");

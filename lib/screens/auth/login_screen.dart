@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:virtualarch/screens/auth/register_screen.dart';
+import 'package:virtualarch/screens/housemodels/exploremodels_screen.dart';
 import '../../firebase/authentication.dart';
 import '../../firebase/firestore_database.dart';
 import '../../providers/user_data_provider.dart';
@@ -14,7 +15,6 @@ import '../../widgets/customloadingspinner.dart';
 import '../../widgets/customscreen.dart';
 import '../../widgets/customsnackbar.dart';
 import '../../widgets/header.dart';
-import '../display_screen.dart';
 import 'forgotpassword_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -196,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.pushAndRemoveUntil(context,
                                   MaterialPageRoute(
                                       builder: (BuildContext context) {
-                                return const DisplayScreen();
+                                return ExploreModelsScreen();
                               }), (r) {
                                 return false;
                               });

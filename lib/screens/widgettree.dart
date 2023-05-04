@@ -2,10 +2,9 @@
 //On that basis it will decide whether it will route on displaypage or LoginPage.
 
 import 'package:flutter/material.dart';
-
+import 'package:virtualarch/screens/housemodels/exploremodels_screen.dart';
 import '../firebase/authentication.dart';
 import 'auth/login_screen.dart';
-import 'display_screen.dart';
 
 class WidgetTree extends StatefulWidget {
   const WidgetTree({super.key});
@@ -21,7 +20,7 @@ class _WidgetTreeState extends State<WidgetTree> {
       stream: Auth().authStateChanges,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return DisplayScreen();
+          return ExploreModelsScreen();
         } else {
           return const LoginScreen();
         }

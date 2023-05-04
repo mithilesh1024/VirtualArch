@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:provider/provider.dart';
+import 'package:virtualarch/screens/housemodels/exploremodels_screen.dart';
 
 import '../../firebase/authentication.dart';
 import '../../firebase/firestore_database.dart';
@@ -11,7 +12,6 @@ import '../../widgets/customloadingspinner.dart';
 import '../../widgets/customscreen.dart';
 import '../../widgets/customsnackbar.dart';
 import '../../widgets/header.dart';
-import '../display_screen.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen({super.key});
@@ -121,7 +121,7 @@ class _OTPScreenState extends State<OTPScreen> {
                       // ignore: use_build_context_synchronously
                       Navigator.pushAndRemoveUntil(context,
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return const DisplayScreen();
+                        return ExploreModelsScreen();
                       }), (r) {
                         return false;
                       });

@@ -19,6 +19,8 @@ class _UploadDesignScreenState extends State<UploadDesignScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    // var projectId = ModalRoute.of(context)!.settings.arguments as String;
+    var projectId = "s7R3052AT888poIzLEJI";
     return Scaffold(
       key: scaffoldKey,
       endDrawer: const CustomMenu(),
@@ -114,7 +116,7 @@ class _UploadDesignScreenState extends State<UploadDesignScreen> {
                         },
                       ),
                       UploadImage(
-                        imgName: "HVAC Plan",
+                        imgName: "Other Plan",
                         index: 6,
                         onPressed: () async {
                           // final result =
@@ -124,12 +126,12 @@ class _UploadDesignScreenState extends State<UploadDesignScreen> {
                         },
                       ),
                       UploadImage(
-                        imgName: "Other Plan",
-                        index: 7,
+                        imgName: "3d model",
+                        index: -1,
                         onPressed: () async {
                           // final result =
                           //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.selectFile(7);
+                          await FirebaseStorage.select3DModel();
                           setState(() {});
                         },
                       ),
@@ -140,7 +142,12 @@ class _UploadDesignScreenState extends State<UploadDesignScreen> {
                             padding: const EdgeInsets.all(12.0),
                           ),
                           onPressed: () async {
-                            await FirebaseStorage.uploadModel();
+                            await FirebaseStorage.uploadModel(projectId);
+                            print(FirebaseStorage.model);
+                            if (FirebaseStorage.model != null) {
+                              //await FirebaseStorage.upload3DModel(projectId);
+                            }
+                            print("uploaded");
                           },
                           child: const Text('Button',
                               style: TextStyle(color: Colors.white))),

@@ -39,6 +39,9 @@ class Models3D {
   //Technology and smart features & EnergyEfficiency
   final List modelTechnologyAndSmartFeatures;
 
+  //Other Designs
+  // final Map<String, dynamic> modelOtherDesignLinks;
+
   Models3D({
     required this.modelId,
     required this.modelImageURL,
@@ -68,6 +71,7 @@ class Models3D {
     required this.modelParkings,
     required this.modelPool,
     required this.modelTechnologyAndSmartFeatures,
+    // required this.modelOtherDesignLinks,
   });
 
   Map<String, dynamic> toJson() => {
@@ -99,6 +103,7 @@ class Models3D {
         'modelParkings': modelParkings,
         'modelPool': modelPool,
         'modelTechnologyAndSmartFeatures': modelTechnologyAndSmartFeatures,
+        // 'modelOtherDesignLinks': {},
       };
 
   static Models3D fromJson(Map<String, dynamic> json) => Models3D(
@@ -131,5 +136,6 @@ class Models3D {
         modelPool: json['modelPool'],
         modelTechnologyAndSmartFeatures:
             json['modelTechnologyAndSmartFeatures'],
+        // modelOtherDesignLinks: json['modelOtherDesignLinks'],
       );
 }

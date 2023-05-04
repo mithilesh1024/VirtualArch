@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:virtualarch/screens/housemodels/exploremodels_screen.dart';
 import '../../firebase/googleSignIn.dart';
-import '../../screens/display_screen.dart';
 
 class CustomGoogleSignIn extends StatelessWidget {
   const CustomGoogleSignIn({Key? key}) : super(key: key);
@@ -26,7 +26,7 @@ class CustomGoogleSignIn extends StatelessWidget {
               String status = await googleSignIn.googleLogin();
               print(status);
               if (status == "Success") {
-                Navigator.of(context).pushNamed(DisplayScreen.routeName);
+                Navigator.of(context).pushNamed(ExploreModelsScreen.routeName);
               } else {}
             },
             child: Image.asset(

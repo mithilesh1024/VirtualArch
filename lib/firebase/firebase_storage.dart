@@ -19,9 +19,92 @@ class FirebaseStorage {
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   static Random _rnd = Random();
 
+  static var model = null;
+  static var sample_image = null;
+
   static String getRandomString(int length) =>
       String.fromCharCodes(Iterable.generate(
           length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+
+  static Future<dynamic> select3DModel() async {
+    final result = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        type: FileType.custom,
+        allowedExtensions: ['glb']);
+    if (result != null) {
+      model = result;
+    }
+    return null;
+  }
+
+  static Future<String> upload3DModel() async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    String location = "/3d_images/";
+    var urlString = "";
+    if (model != null) {
+      String fileName = model.files.single.name;
+      location += fileName;
+      print(fileName);
+      if (kIsWeb) {
+        Uint8List uploadFile = model.files.single.bytes;
+        final task = await storage.ref(location).putData(uploadFile);
+        urlString = await task.ref.getDownloadURL();
+        print("key 3dModel \nurl $urlString");
+       // await FireDatabase.addModelUrl(urlString, "3dModel", id);
+      } else {
+        String filePath = model.files.single.path;
+        File file = File(filePath);
+        try {
+          final task = await storage.ref(location).putFile(file);
+          final urlString = await task.ref.getDownloadURL();
+         // await FireDatabase.addModelUrl(urlString, "3dModel", id);
+        } on firebase_core.FirebaseException catch (e) {
+          print(e);
+        }
+      }
+    }
+    return urlString;
+  }
+
+  static Future<dynamic> selectSampleFile() async {
+    final result = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        type: FileType.custom,
+        allowedExtensions: ['png', 'jpg']);
+    if (result != null) {
+      sample_image = result;
+    }
+    return null;
+  }
+
+  static Future<String> uploadSampleImage() async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    String location = "/2d_images/";
+    var urlString = "";
+    if (sample_image != null) {
+      String fileName = sample_image.files.single.name;
+      location += fileName;
+      print(fileName);
+      if (kIsWeb) {
+        Uint8List uploadFile = sample_image.files.single.bytes;
+        final task = await storage.ref(location).putData(uploadFile);
+        urlString = await task.ref.getDownloadURL();
+        print("key image \nurl $urlString");
+        //await FireDatabase.addModelUrl(urlString, "Sample_image", id);
+      } else {
+        String filePath = sample_image.files.single.path;
+        File file = File(filePath);
+        try {
+          final task = await storage.ref(location).putFile(file);
+          final urlString = await task.ref.getDownloadURL();
+          //await FireDatabase.addModelUrl(urlString, "Sample_image", id);
+        } on firebase_core.FirebaseException catch (e) {
+          print(e);
+        }
+      }
+    }
+    return urlString;
+  }
 
   static Future<dynamic> selectFile(int index) async {
     final result = await FilePicker.platform.pickFiles(
@@ -30,20 +113,14 @@ class FirebaseStorage {
         allowedExtensions: ['png', 'jpg']);
     if (result != null) {
       images[index] = result;
-      //return result;
     }
     return null;
-  }
-
-  static Future<void> deleteModel(String url) async {
-    storage.refFromURL(url).delete();
-    FireDatabase.deleteFromDb(url);
   }
 
   static String getKey(int index) {
     switch (index) {
       case 0:
-        return "Floor Plans";
+        return "Floor Plan";
       case 1:
         return "Elevations Plan";
       case 2:
@@ -55,40 +132,45 @@ class FirebaseStorage {
       case 5:
         return "Plumbing Plan";
       case 6:
-        return "HVAC Plan";
-      case 7:
         return "Other Plan";
       default:
         return "";
     }
   }
 
-  static Future<void> uploadModel() async {
+  static Future<void> uploadModel(String id) async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
-    String location = "$userId/2d_images/";
-    // final result = await selectFile();
-    images.asMap().forEach((index, element) async {
-      if (element != null) {
-        String fileName = element.files.single.name;
-        location += fileName;
-        print(fileName);
-        if (kIsWeb) {
-          Uint8List uploadFile = element.files.single.bytes;
-          final task = await storage.ref(location).putData(uploadFile);
-          final urlString = await task.ref.getDownloadURL();
-          FireDatabase.addModelUrl(urlString, getKey(index));
-        } else {
-          String filePath = element.files.single.path;
-          File file = File(filePath);
-          try {
-            final task = await storage.ref(location).putFile(file);
+    String location = "$id/2d_images/";
+    images.asMap().forEach(
+      (index, element) async {
+        if (element != null) {
+          String fileName = element.files.single.name;
+          location += fileName;
+          print(fileName);
+          if (kIsWeb) {
+            Uint8List uploadFile = element.files.single.bytes;
+            final task = await storage.ref(location).putData(uploadFile);
             final urlString = await task.ref.getDownloadURL();
-            FireDatabase.addModelUrl(urlString, getKey(index));
-          } on firebase_core.FirebaseException catch (e) {
-            print(e);
+            print("key ${getKey(index)} \nurl $urlString");
+            await FireDatabase.addModelUrl(urlString, getKey(index), id);
+          } else {
+            String filePath = element.files.single.path;
+            File file = File(filePath);
+            try {
+              final task = await storage.ref(location).putFile(file);
+              final urlString = await task.ref.getDownloadURL();
+              await FireDatabase.addModelUrl(urlString, getKey(index), id);
+            } on firebase_core.FirebaseException catch (e) {
+              print(e);
+            }
           }
         }
-      }
-    });
+      },
+    );
+  }
+
+  static Future<void> deleteModel(String url) async {
+    storage.refFromURL(url).delete();
+    FireDatabase.deleteFromDb(url);
   }
 }

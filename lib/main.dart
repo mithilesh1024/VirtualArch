@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:virtualarch/providers/models_provider.dart';
+import 'package:virtualarch/screens/housemodels/models_detail_screen.dart';
 import 'package:virtualarch/screens/upload_work/upload_info.dart';
 import 'providers/chatsprovider.dart';
 import 'providers/drawer_nav_provider.dart';
@@ -16,7 +18,6 @@ import 'screens/chats/chats_screen.dart';
 import 'screens/upload_work/upload_work.dart';
 import 'screens/widgettree.dart';
 import 'screens/accounts/account_screen.dart';
-import 'screens/display_screen.dart';
 import 'screens/housemodels/exploremodels_screen.dart';
 import 'screens/auth/forgotpassword_screen.dart';
 import 'screens/accounts/edit_profile_screen.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => UserDataProvide()),
         ChangeNotifierProvider(create: (ctx) => DrawerNavProvider()),
         ChangeNotifierProvider(create: (ctx) => ChatsProvider()),
+        ChangeNotifierProvider(create: (ctx) => ModelsProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -79,7 +81,7 @@ class MyApp extends StatelessWidget {
               )),
         ),
         // initialRoute: HomeScreen.routeName,
-        home: RegisterScreen(),
+        home: WidgetTree(),
         //All routes for navigations.
         routes: {
           HomeScreen.routeName: (ctx) => const HomeScreen(),
@@ -88,7 +90,6 @@ class MyApp extends StatelessWidget {
           ForgotPasswordScreen.routeName: (ctx) => const ForgotPasswordScreen(),
           OTPScreen.routeName: (ctx) => const OTPScreen(),
           ResetPasswordScreen.routeName: (ctx) => const ResetPasswordScreen(),
-          DisplayScreen.routeName: (ctx) => DisplayScreen(),
           AccountScreen.routeName: (ctx) => const AccountScreen(),
           ChatsScreen.routeName: (ctx) => const ChatsScreen(),
           ExploreModelsScreen.routeName: (ctx) => ExploreModelsScreen(),
@@ -97,6 +98,7 @@ class MyApp extends StatelessWidget {
           ChatDetail.routeName: (ctx) => const ChatDetail(),
           UploadProjInfo.routeName: (ctx) => UploadProjInfo(),
           UploadDesignScreen.routeName: (ctx) => UploadDesignScreen(),
+          ModelsDetailScreen.routeName: (ctx) => ModelsDetailScreen(),
         },
       ),
     );

@@ -2,10 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:virtualarch/screens/chats/chats_screen.dart';
 import 'package:virtualarch/screens/upload_work/upload_info.dart';
 import '/firebase/authentication.dart';
 import '/screens/accounts/account_screen.dart';
-import '/screens/display_screen.dart';
 import '/screens/housemodels/exploremodels_screen.dart';
 import '/screens/upload_work/upload_work.dart';
 import '/widgets/customloadingspinner.dart';
@@ -108,7 +108,8 @@ class _CustomMenuState extends State<CustomMenu> {
                   onTap: () {
                     //highLighter.highlightDrawerMenu(1);
                     Navigator.of(context).pop();
-                    Navigator.of(context).pushNamed(DisplayScreen.routeName);
+                    Navigator.of(context)
+                        .pushNamed(ExploreModelsScreen.routeName);
                   },
                   splashColor: Theme.of(context).primaryColor,
                   child: _buildListTile(
@@ -121,8 +122,7 @@ class _CustomMenuState extends State<CustomMenu> {
                   onTap: () {
                     //highLighter.highlightDrawerMenu(2);
                     Navigator.of(context).pop();
-                    Navigator.of(context)
-                        .pushNamed(ExploreModelsScreen.routeName);
+                    Navigator.of(context).pushNamed(ChatsScreen.routeName);
                   },
                   splashColor: Theme.of(context).primaryColor,
                   child: _buildListTile(

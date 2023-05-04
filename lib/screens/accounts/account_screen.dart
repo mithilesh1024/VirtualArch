@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:virtualarch/screens/housemodels/exploremodels_screen.dart';
 import '../../providers/user_data_provider.dart';
 import '../../widgets/accounts/customdecorationforaccountinput.dart';
 import '../../widgets/customloadingspinner.dart';
 import '../../widgets/custommenu.dart';
 import '../../widgets/customscreen.dart';
 import '../../widgets/headerwithmenu.dart';
-import '../display_screen.dart';
 import 'edit_profile_screen.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -155,7 +155,7 @@ class _AccountScreenState extends State<AccountScreen>
                 ),
                 IconButton(
                   onPressed: () =>
-                      Navigator.of(context).pushNamed(DisplayScreen.routeName),
+                      Navigator.of(context).pushNamed(ExploreModelsScreen.routeName),
                   icon: const Icon(
                     Icons.arrow_forward_ios,
                     color: Colors.white,

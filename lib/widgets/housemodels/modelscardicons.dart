@@ -28,7 +28,7 @@ class ModelsCardIcons extends StatelessWidget {
         ),
         Text(
           "$numOfAssets $nameOfAssets",
-          style: Theme.of(context).textTheme.titleSmall,
+          style: Theme.of(context).textTheme.labelMedium,
         )
       ],
     );
@@ -61,7 +61,7 @@ class ModelsCardIcons extends StatelessWidget {
           iconTextCombine(
             Icons.garage_rounded,
             numOfGarage.toString(),
-            "Garage",
+            "Parkings",
             context,
           ),
         ],

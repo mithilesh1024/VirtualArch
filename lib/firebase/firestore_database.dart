@@ -37,12 +37,13 @@ class FireDatabase {
     }
   }
 
-  static Future<void> addModelUrl(String url, String key) async {
-    final userId = FirebaseAuth.instance.currentUser!.uid;
-    print("field ${key} url ${url}");
-    DocumentSnapshot ds =
-        await FirebaseFirestore.instance.collection('models').doc(userId).get();
-    print("exist or not ${ds.exists}");
+  static Future<void> addModelUrl(
+      String url, String key, String projectId) async {
+    // final userId = FirebaseAuth.instance.currentUser!.uid;
+    // print("field ${key} url ${url}");
+    // DocumentSnapshot ds =
+    //     await FirebaseFirestore.instance.collection('models').doc(userId).get();
+    // print("exist or not ${ds.exists}");
     // if (ds.exists) {
     // var map = {
     //   "house1": {
@@ -60,9 +61,11 @@ class FireDatabase {
     // var map = {
     //   "house1": {key: url}
     // };
-    await FirebaseFirestore.instance.collection('models').doc(userId).set({
-      "house1": {key: url}
-    }, SetOptions(merge: true));
+    
+    await FirebaseFirestore.instance
+        .collection('models')
+        .doc(projectId)
+        .set({key: url}, SetOptions(merge: true));
     // }
   }
 
