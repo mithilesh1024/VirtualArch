@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:virtualarch/firebase/firebase_uploads.dart';
+import 'package:virtualarch/screens/housemodels/exploremodels_screen.dart';
 import 'package:virtualarch/screens/upload_work/upload_work.dart';
 import 'package:virtualarch/widgets/headerwithmenu.dart';
 import 'package:virtualarch/widgets/upload_work/upload_image.dart';
@@ -149,10 +150,12 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
       // End CircularProgressIndicator
       Navigator.of(context).pop();
 
-      Navigator.of(context).pushNamed(
-        UploadDesignScreen.routeName,
-        arguments: projectData['projectId'],
-      );
+      // Navigator.of(context).pushNamed(
+      //   UploadDesignScreen.routeName,
+      //   arguments: projectData['projectId'],
+      // );
+
+      Navigator.of(context).pushNamed(ExploreModelsScreen.routeName);
     } else {
       setState(() {
         print(_modelParkingsController);

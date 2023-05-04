@@ -28,6 +28,16 @@ class _CustomMenuState extends State<CustomMenu> {
     await Auth().signOut();
   }
 
+  widthOfMenuBar(width) {
+    if (width < 450) {
+      return width * 0.6;
+    } else if (width < 1000) {
+      return width * 0.4;
+    } else {
+      return width * 0.2;
+    }
+  }
+
   //Code for retrieving data from firestore ends here
 
   Widget _buildListTile(
@@ -61,7 +71,7 @@ class _CustomMenuState extends State<CustomMenu> {
     var navigatorVar = Navigator.of(context);
     highLighter.changeHighLighter(ModalRoute.of(context)!.settings.name);
     return SizedBox(
-      width: size.width * 0.6,
+      width: widthOfMenuBar(size.width),
       child: Scaffold(
         backgroundColor:
             Theme.of(context).scaffoldBackgroundColor.withOpacity(1),
