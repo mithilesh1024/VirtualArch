@@ -67,6 +67,7 @@ class ModelsDetailScreen extends StatelessWidget {
                             autoRotate: true,
                             cameraControls: true,
                             loading: Loading.eager,
+                            poster: modelData.modelImageURL,
                           ),
                         ),
                         SizedBox(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
+import '../../firebase/authentication.dart';
 import '../../widgets/auth/custombuttontonext.dart';
 import '../../widgets/auth/customdecorationforinput.dart';
 import '../../widgets/customloadingspinner.dart';
@@ -660,65 +661,66 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                             );
 
                             //Send OTP to the user
-                            localOTP = await sendOtp(args['email']);
+                            //localOTP = await sendOtp(args['email']);
 
-                            navigatorVar.pop();
+                            //navigatorVar.pop();
 
-                            if (localOTP != "") {
-                              //Navigate to OTP Screen for verification.
-                              scaffoldMessengerVar.showSnackBar(
-                                const SnackBar(
-                                  content: CustomSnackBar(
-                                    messageToBePrinted: "OTP sent successfully",
-                                    bgColor: Color.fromRGBO(44, 199, 142, 1),
-                                  ),
-                                  behavior: SnackBarBehavior.floating,
-                                  backgroundColor: Colors.transparent,
-                                  elevation: 0,
-                                ),
-                              );
+                            //if (localOTP != "") {
+                            //Navigate to OTP Screen for verification.
+                            // scaffoldMessengerVar.showSnackBar(
+                            //   const SnackBar(
+                            //     content: CustomSnackBar(
+                            //       messageToBePrinted: "OTP sent successfully",
+                            //       bgColor: Color.fromRGBO(44, 199, 142, 1),
+                            //     ),
+                            //     behavior: SnackBarBehavior.floating,
+                            //     backgroundColor: Colors.transparent,
+                            //     elevation: 0,
+                            //   ),
+                            // );
+                            await Auth().createUserWithEmailAndPassword(
+                              email: args['email'],
+                              password: args['password'],
+                            );
 
-                              navigatorVar.pushNamed(
-                                OTPScreen.routeName,
-                                arguments: {
-                                  'email': args['email'],
-                                  'password': args['password'],
-                                  'architectName': _nameTextController.text,
-                                  'architectType': _archTypeTextController.text,
-                                  'architectRegisterNum':
-                                      _regNumberTextController.text,
-                                  'architectExperience':
-                                      _experienceTextController.text,
-                                  'architectGender': _genderTextController.text,
-                                  'architectCompanyName':
-                                      _companyNameTextController.text,
-                                  'architectStreetAddress':
-                                      _streetAddressTextController.text,
-                                  'architectCity': _cityTextController.text,
-                                  'architectState': _stateTextController.text,
-                                  'architectZipCode':
-                                      _zipNumTextController.text,
-                                  'architectCountry':
-                                      _countryTextController.text,
-                                  'architectAboutMe':
-                                      _aboutMeTextController.text,
-                                  'architectSkills': _skills,
-                                  'localOTP': localOTP,
-                                },
-                              );
-                            } else {
-                              scaffoldMessengerVar.showSnackBar(
-                                const SnackBar(
-                                  content: CustomSnackBar(
-                                    messageToBePrinted: "Failed to send OTP",
-                                    bgColor: Color.fromRGBO(199, 44, 65, 1),
-                                  ),
-                                  behavior: SnackBarBehavior.floating,
-                                  backgroundColor: Colors.transparent,
-                                  elevation: 0,
-                                ),
-                              );
-                            }
+                            navigatorVar.pushNamed(
+                              OTPScreen.routeName,
+                              arguments: {
+                                'email': args['email'],
+                                'password': args['password'],
+                                'architectName': _nameTextController.text,
+                                'architectType': _archTypeTextController.text,
+                                'architectRegisterNum':
+                                    _regNumberTextController.text,
+                                'architectExperience':
+                                    _experienceTextController.text,
+                                'architectGender': _genderTextController.text,
+                                'architectCompanyName':
+                                    _companyNameTextController.text,
+                                'architectStreetAddress':
+                                    _streetAddressTextController.text,
+                                'architectCity': _cityTextController.text,
+                                'architectState': _stateTextController.text,
+                                'architectZipCode': _zipNumTextController.text,
+                                'architectCountry': _countryTextController.text,
+                                'architectAboutMe': _aboutMeTextController.text,
+                                'architectSkills': _skills,
+                                'localOTP': localOTP,
+                              },
+                            );
+                            // } else {
+                            //   scaffoldMessengerVar.showSnackBar(
+                            //     const SnackBar(
+                            //       content: CustomSnackBar(
+                            //         messageToBePrinted: "Failed to send OTP",
+                            //         bgColor: Color.fromRGBO(199, 44, 65, 1),
+                            //       ),
+                            //       behavior: SnackBarBehavior.floating,
+                            //       backgroundColor: Colors.transparent,
+                            //       elevation: 0,
+                            //     ),
+                            //   );
+                            // }
                           },
                         ),
                         SizedBox(
