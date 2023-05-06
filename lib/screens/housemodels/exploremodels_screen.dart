@@ -61,28 +61,28 @@ class _ExploreModelsScreenState extends State<ExploreModelsScreen> {
                   const SizedBox(
                     width: 10,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: isFilterOn
-                            ? Theme.of(context).primaryColor
-                            : Theme.of(context).canvasColor,
-                        borderRadius: BorderRadius.circular(15.0)),
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        setState(() {
-                          print(isFilterOn);
-                          isFilterOn = !isFilterOn;
-                          init = true;
-                        });
-                      },
-                      icon: Icon(
-                        Icons.filter_alt_outlined,
-                        color: Theme.of(context).secondaryHeaderColor,
-                        size: 30,
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //       color: isFilterOn
+                  //           ? Theme.of(context).primaryColor
+                  //           : Theme.of(context).canvasColor,
+                  //       borderRadius: BorderRadius.circular(15.0)),
+                  //   child: IconButton(
+                  //     padding: EdgeInsets.zero,
+                  //     onPressed: () {
+                  //       setState(() {
+                  //         print(isFilterOn);
+                  //         isFilterOn = !isFilterOn;
+                  //         init = true;
+                  //       });
+                  //     },
+                  //     icon: Icon(
+                  //       Icons.filter_alt_outlined,
+                  //       color: Theme.of(context).secondaryHeaderColor,
+                  //       size: 30,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               if (isFilterOn) const FilterModels(),
