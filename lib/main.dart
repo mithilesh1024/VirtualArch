@@ -11,7 +11,6 @@ import 'screens/auth/home_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/otp_screen.dart';
 import 'screens/auth/register_screen.dart';
-import 'screens/auth/resetpassword_screen.dart';
 import 'screens/auth/user_info_screen.dart';
 import 'screens/chats/chat_detail.dart';
 import 'screens/chats/chats_screen.dart';
@@ -81,7 +80,7 @@ class MyApp extends StatelessWidget {
               )),
         ),
         // initialRoute: HomeScreen.routeName,
-        home: WidgetTree(),
+        home: RegisterScreen(),
         //All routes for navigations.
         routes: {
           HomeScreen.routeName: (ctx) => const HomeScreen(),
@@ -89,7 +88,6 @@ class MyApp extends StatelessWidget {
           LoginScreen.routeName: (ctx) => const LoginScreen(),
           ForgotPasswordScreen.routeName: (ctx) => const ForgotPasswordScreen(),
           OTPScreen.routeName: (ctx) => const OTPScreen(),
-          ResetPasswordScreen.routeName: (ctx) => const ResetPasswordScreen(),
           AccountScreen.routeName: (ctx) => const AccountScreen(),
           ChatsScreen.routeName: (ctx) => const ChatsScreen(),
           ExploreModelsScreen.routeName: (ctx) => ExploreModelsScreen(),

@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:virtualarch/screens/auth/user_info_screen.dart';
@@ -7,7 +8,6 @@ import '../../widgets/auth/customdecorationforinput.dart';
 import '../../widgets/auth/customsigningoogle.dart';
 import '../../widgets/customloadingspinner.dart';
 import '../../widgets/customscreen.dart';
-import '../../widgets/customsnackbar.dart';
 import '../../widgets/header.dart';
 import 'login_screen.dart';
 
@@ -175,11 +175,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               );
                             } else {
                               scaffoldMessengerVar.showSnackBar(
-                                const SnackBar(
-                                  content: CustomSnackBar(
-                                    messageToBePrinted:
-                                        "This Email is already used. Go to login page",
-                                    bgColor: Color.fromRGBO(199, 44, 65, 1),
+                                SnackBar(
+                                  content: AwesomeSnackbarContent(
+                                    title: 'Oh snap!',
+                                    message: "This Email is already used. Go to login page",
+                                    contentType: ContentType.failure,
                                   ),
                                   behavior: SnackBarBehavior.floating,
                                   backgroundColor: Colors.transparent,

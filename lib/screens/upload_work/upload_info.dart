@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
@@ -14,7 +15,6 @@ import '../../widgets/auth/customdecorationforinput.dart';
 import '../../widgets/customloadingspinner.dart';
 import '../../widgets/custommenu.dart';
 import '../../widgets/customscreen.dart';
-import '../../widgets/customsnackbar.dart';
 
 class UploadProjInfo extends StatefulWidget {
   const UploadProjInfo({super.key});
@@ -123,10 +123,11 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
           await FirebaseUploads().createProject(projectInfo: projectInfo);
       if (projectData['noErrors']) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: CustomSnackBar(
-              messageToBePrinted: "Project was successfully created.",
-              bgColor: Color.fromRGBO(44, 199, 90, 1),
+          SnackBar(
+            content: AwesomeSnackbarContent(
+              title: 'Hurray!',
+              message: "Project was successfully created.",
+              contentType: ContentType.success,
             ),
             behavior: SnackBarBehavior.floating,
             backgroundColor: Colors.transparent,
@@ -135,10 +136,11 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: CustomSnackBar(
-              messageToBePrinted: "Unable to create Project.",
-              bgColor: Color.fromRGBO(199, 44, 44, 1),
+          SnackBar(
+            content: AwesomeSnackbarContent(
+              title: 'Oh snap!',
+              message: "Unable to create Project.",
+              contentType: ContentType.failure,
             ),
             behavior: SnackBarBehavior.floating,
             backgroundColor: Colors.transparent,
@@ -158,7 +160,6 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
       Navigator.of(context).pushNamed(ExploreModelsScreen.routeName);
     } else {
       setState(() {
-        print(_modelParkingsController);
         currentStep += 1;
       });
     }

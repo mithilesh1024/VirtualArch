@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,6 @@ import '../../widgets/auth/customdecorationforinput.dart';
 import '../../widgets/auth/customsigningoogle.dart';
 import '../../widgets/customloadingspinner.dart';
 import '../../widgets/customscreen.dart';
-import '../../widgets/customsnackbar.dart';
 import '../../widgets/header.dart';
 import 'forgotpassword_screen.dart';
 
@@ -179,17 +179,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             if (errorIfAny.isEmpty &&
                                 user!.displayName == "Architect") {
                               scaffoldMessengerVar.showSnackBar(
-                                const SnackBar(
-                                  content: CustomSnackBar(
-                                    messageToBePrinted:
-                                        "Logged in successfully.",
-                                    bgColor: Color.fromRGBO(44, 199, 142, 1),
+                                SnackBar(
+                                  content: AwesomeSnackbarContent(
+                                    title: 'Hurray!',
+                                    message: "Logged in successfully.",
+                                    contentType: ContentType.success,
                                   ),
                                   behavior: SnackBarBehavior.floating,
                                   backgroundColor: Colors.transparent,
                                   elevation: 0,
                                 ),
                               );
+                              
                               await userProvider.getData();
                               //Clears full stack of screens.
                               // ignore: use_build_context_synchronously
@@ -203,12 +204,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             } else {
                               scaffoldMessengerVar.showSnackBar(
                                 SnackBar(
-                                  content: CustomSnackBar(
-                                    messageToBePrinted: errorIfAny.isEmpty
+                                  content: AwesomeSnackbarContent(
+                                    title: 'Oh snap!',
+                                    message: errorIfAny.isEmpty
                                         ? "User not found. Register!!"
                                         : errorIfAny['error'],
-                                    bgColor:
-                                        const Color.fromRGBO(199, 44, 65, 1),
+                                    contentType: ContentType.failure,
                                   ),
                                   behavior: SnackBarBehavior.floating,
                                   backgroundColor: Colors.transparent,

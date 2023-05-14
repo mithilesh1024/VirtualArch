@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:http/http.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
+import 'package:virtualarch/providers/userinfo_options_provider.dart';
 import '../../firebase/authentication.dart';
 import '../../widgets/auth/custombuttontonext.dart';
 import '../../widgets/auth/customdecorationforinput.dart';
 import '../../widgets/customloadingspinner.dart';
 import '../../widgets/customscreen.dart';
-import '../../widgets/customsnackbar.dart';
 import 'package:http/http.dart' as http;
 import '../../widgets/header.dart';
 import 'otp_screen.dart';
@@ -37,7 +38,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
 
   final _nameTextController = TextEditingController();
   final _companyNameTextController = TextEditingController();
-  final _archTypeTextController = TextEditingController();
+  final _archTypeTextController = [];
   final _experienceTextController = TextEditingController();
   final _regNumberTextController = TextEditingController();
   final _skillsTextController = TextEditingController();
@@ -47,48 +48,60 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   final _zipNumTextController = TextEditingController();
   final _countryTextController = TextEditingController();
   final _aboutMeTextController = TextEditingController();
-  final _genderTextController = TextEditingController();
-
+  final _genderTextController = [];
   final List<String> _skills = [];
-
-  String localOTP = "";
-
-  Future<String> sendOtp(String userEmail) async {
-    var url = Uri.http("10.0.2.2:5000", "/generate_otp/$userEmail");
-    Response response = await http.get(url);
-    return response.body;
-  }
 
   int currentStep = 0;
   continueStep() {
-    if (currentStep < 2) {
-      //Check for the fields are valid in TextFormField.
-      if (currentStep == 0 &&
-          _nameKey.currentState!.validate() &&
-          _archTypeKey.currentState!.validate() &&
-          _regNumKey.currentState!.validate() &&
-          _expKey.currentState!.validate() &&
-          _genderKey.currentState!.validate()) {
-        setState(() {
-          currentStep = 1;
-          print(currentStep);
-        });
-      } else if (currentStep == 1 &&
-          _companyNameKey.currentState!.validate() &&
-          _streetaddKey.currentState!.validate() &&
-          _cityKey.currentState!.validate() &&
-          _stateKey.currentState!.validate() &&
-          _zipcodeKey.currentState!.validate() &&
-          _countryKey.currentState!.validate()) {
-        setState(() {
-          currentStep = 2;
-          print(currentStep);
-        });
-      }
+    bool isLastStep = (currentStep == 2);
+    if (isLastStep) {
+      //Hides the keyboard.
+      FocusScope.of(context).unfocus();
+
+      //Start CircularProgressIndicator
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const CustomLoadingSpinner();
+        },
+      );
+
+      //Navigate to OTP Page
+
+      // End CircularProgressIndicator
+      Navigator.of(context).pop();
     } else {
-      _aboutMeKey.currentState!.validate();
-      _skillsKey.currentState!.validate();
+      setState(() {
+        currentStep += 1;
+      });
     }
+
+    // if (currentStep < 2) {
+    //   //Check for the fields are valid in TextFormField.
+    //   if (currentStep == 0 &&
+    //       _nameKey.currentState!.validate() &&
+    //       _archTypeKey.currentState!.validate() &&
+    //       _regNumKey.currentState!.validate() &&
+    //       _expKey.currentState!.validate() &&
+    //       _genderKey.currentState!.validate()) {
+    //     setState(() {
+    //       currentStep = 1;
+    //     });
+    //   } else if (currentStep == 1 &&
+    //       _companyNameKey.currentState!.validate() &&
+    //       _streetaddKey.currentState!.validate() &&
+    //       _cityKey.currentState!.validate() &&
+    //       _stateKey.currentState!.validate() &&
+    //       _zipcodeKey.currentState!.validate() &&
+    //       _countryKey.currentState!.validate()) {
+    //     setState(() {
+    //       currentStep = 2;
+    //     });
+    //   }
+    // } else {
+    //   _aboutMeKey.currentState!.validate();
+    //   _skillsKey.currentState!.validate();
+    // }
   }
 
   cancelStep() {
@@ -120,6 +133,91 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget inputTextField(inputKey, inputController, inputLabel, inputIcon) {
+    return Container(
+      width: 500,
+      margin: const EdgeInsets.all(10),
+      child: TextFormField(
+        key: inputKey,
+        controller: inputController,
+        decoration: customDecorationForInput(
+          context,
+          inputLabel,
+          inputIcon,
+        ),
+        // validator: (name) {
+        //   if (name != null && name.isEmpty) {
+        //     return "Enter a valid name";
+        //   } else {
+        //     return null;
+        //   }
+        // },
+      ),
+    );
+  }
+
+  Widget multiSelectBuilder(
+    String inputTitle,
+    IconData inputIcon,
+    Key inputKey,
+    List<MultiSelectCard> inputOptions,
+    List selections,
+  ) {
+    return Container(
+      width: 500,
+      margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Theme.of(context).canvasColor,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                inputIcon,
+                color: Theme.of(context).secondaryHeaderColor,
+              ),
+              const SizedBox(width: 5),
+              Text(
+                inputTitle,
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          MultiSelectContainer(
+            key: inputKey,
+            singleSelectedItem: true,
+            itemsPadding: const EdgeInsets.all(5),
+            itemsDecoration: MultiSelectDecorations(
+              decoration: BoxDecoration(
+                border: Border.all(color: Theme.of(context).canvasColor),
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              selectedDecoration: BoxDecoration(
+                border: Border.all(color: Theme.of(context).canvasColor),
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            textStyles: MultiSelectTextStyles(
+              textStyle: TextStyle(color: Theme.of(context).primaryColor),
+            ),
+            items: inputOptions,
+            onChange: (allSelectedItems, selectedItem) {
+              selections.clear();
+              selections.addAll(allSelectedItems);
+            },
+          ),
+        ],
       ),
     );
   }
@@ -181,27 +279,12 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                             ),
                                           ),
                                         ),
-                                        Container(
-                                          width: 500,
-                                          margin: const EdgeInsets.all(10),
-                                          child: TextFormField(
-                                            key: _nameKey,
-                                            controller: _nameTextController,
-                                            decoration:
-                                                customDecorationForInput(
-                                              context,
-                                              "Enter Name",
-                                              Icons.person_2_rounded,
-                                            ),
-                                            validator: (name) {
-                                              if (name != null &&
-                                                  name.isEmpty) {
-                                                return "Enter a valid name";
-                                              } else {
-                                                return null;
-                                              }
-                                            },
-                                          ),
+                                        //Name
+                                        inputTextField(
+                                          _nameKey,
+                                          _nameTextController,
+                                          "Enter your Name",
+                                          Icons.person,
                                         ),
                                       ],
                                     ),
@@ -211,49 +294,17 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                     child: Wrap(
                                       alignment: WrapAlignment.start,
                                       children: [
-                                        Container(
-                                          width: 500,
-                                          margin: const EdgeInsets.all(10),
-                                          child: TextFormField(
-                                            key: _archTypeKey,
-                                            controller: _archTypeTextController,
-                                            decoration:
-                                                customDecorationForInput(
-                                              context,
-                                              "Enter Architect Type",
-                                              Icons.account_tree_rounded,
-                                            ),
-                                            validator: (type) {
-                                              if (type != null &&
-                                                  type.isEmpty) {
-                                                return "Enter a valid Type";
-                                              } else {
-                                                return null;
-                                              }
-                                            },
-                                          ),
+                                        inputTextField(
+                                          _regNumKey,
+                                          _regNumberTextController,
+                                          "Enter Register Number",
+                                          Icons.verified_outlined,
                                         ),
-                                        Container(
-                                          width: 500,
-                                          margin: const EdgeInsets.all(10),
-                                          child: TextFormField(
-                                            key: _regNumKey,
-                                            controller:
-                                                _regNumberTextController,
-                                            decoration:
-                                                customDecorationForInput(
-                                                    context,
-                                                    "Enter Register Number",
-                                                    Icons.verified_outlined),
-                                            validator: (regNum) {
-                                              if (regNum != null &&
-                                                  regNum.isEmpty) {
-                                                return "Enter a valid Type";
-                                              } else {
-                                                return null;
-                                              }
-                                            },
-                                          ),
+                                        inputTextField(
+                                          _expKey,
+                                          _experienceTextController,
+                                          "Enter Experience in Years",
+                                          Icons.real_estate_agent_rounded,
                                         ),
                                       ],
                                     ),
@@ -263,53 +314,19 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                     child: Wrap(
                                       alignment: WrapAlignment.start,
                                       children: [
-                                        Container(
-                                          width: 500,
-                                          margin: const EdgeInsets.all(10),
-                                          child: TextFormField(
-                                            key: _expKey,
-                                            controller:
-                                                _experienceTextController,
-                                            decoration: customDecorationForInput(
-                                                context,
-                                                "Enter Experience in Years",
-                                                Icons
-                                                    .real_estate_agent_rounded),
-                                            keyboardType: TextInputType.number,
-                                            validator: (years) {
-                                              if (years != null &&
-                                                  years.isEmpty) {
-                                                return "Enter a valid years";
-                                              } else {
-                                                return null;
-                                              }
-                                            },
-                                          ),
+                                        multiSelectBuilder(
+                                          "Enter Gender",
+                                          Icons.man_4_rounded,
+                                          _genderKey,
+                                          architectGenderList,
+                                          _genderTextController,
                                         ),
-                                        Container(
-                                          width: 500,
-                                          margin: const EdgeInsets.all(10),
-                                          child: TextFormField(
-                                            key: _genderKey,
-                                            controller: _genderTextController,
-                                            decoration:
-                                                customDecorationForInput(
-                                                    context,
-                                                    "Enter Gender",
-                                                    Icons.man_4_rounded),
-                                            validator: (gender) {
-                                              print(gender);
-                                              if (gender != null &&
-                                                  gender.isEmpty) {
-                                                return "Enter Gender";
-                                              } else if (gender != "Male" &&
-                                                  gender != "Female") {
-                                                return "Enter a valid gender";
-                                              } else {
-                                                return null;
-                                              }
-                                            },
-                                          ),
+                                        multiSelectBuilder(
+                                          "Enter Architect Type",
+                                          Icons.account_tree_rounded,
+                                          _archTypeKey,
+                                          architectTypeList,
+                                          _archTypeTextController,
                                         ),
                                       ],
                                     ),
@@ -330,51 +347,17 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                     child: Wrap(
                                       alignment: WrapAlignment.start,
                                       children: [
-                                        Container(
-                                          width: 500,
-                                          margin: const EdgeInsets.all(10),
-                                          child: TextFormField(
-                                            key: _companyNameKey,
-                                            controller:
-                                                _companyNameTextController,
-                                            decoration:
-                                                customDecorationForInput(
-                                              context,
-                                              "Enter Company Name",
-                                              Icons.share_location_sharp,
-                                            ),
-                                            validator: (cname) {
-                                              if (cname != null &&
-                                                  cname.isEmpty) {
-                                                return "Enter a valid Company name";
-                                              } else {
-                                                return null;
-                                              }
-                                            },
-                                          ),
+                                        inputTextField(
+                                          _companyNameKey,
+                                          _companyNameTextController,
+                                          "Enter Company Name",
+                                          Icons.share_location_sharp,
                                         ),
-                                        Container(
-                                          width: 500,
-                                          margin: const EdgeInsets.all(10),
-                                          child: TextFormField(
-                                            key: _streetaddKey,
-                                            controller:
-                                                _streetAddressTextController,
-                                            decoration:
-                                                customDecorationForInput(
-                                              context,
-                                              "Enter Office Street Address",
-                                              Icons.share_location_sharp,
-                                            ),
-                                            validator: (address) {
-                                              if (address != null &&
-                                                  address.isEmpty) {
-                                                return "Enter a valid Address";
-                                              } else {
-                                                return null;
-                                              }
-                                            },
-                                          ),
+                                        inputTextField(
+                                          _streetaddKey,
+                                          _streetAddressTextController,
+                                          "Enter Office Street Address",
+                                          Icons.share_location_sharp,
                                         ),
                                       ],
                                     ),
@@ -384,49 +367,17 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                     child: Wrap(
                                       alignment: WrapAlignment.start,
                                       children: [
-                                        Container(
-                                          width: 500,
-                                          margin: const EdgeInsets.all(10),
-                                          child: TextFormField(
-                                            key: _cityKey,
-                                            controller: _cityTextController,
-                                            decoration:
-                                                customDecorationForInput(
-                                              context,
-                                              "Enter City",
-                                              Icons.share_location_sharp,
-                                            ),
-                                            validator: (cname) {
-                                              if (cname != null &&
-                                                  cname.isEmpty) {
-                                                return "Enter a valid city name";
-                                              } else {
-                                                return null;
-                                              }
-                                            },
-                                          ),
+                                        inputTextField(
+                                          _cityKey,
+                                          _cityTextController,
+                                          "Enter City",
+                                          Icons.share_location_sharp,
                                         ),
-                                        Container(
-                                          width: 500,
-                                          margin: const EdgeInsets.all(10),
-                                          child: TextFormField(
-                                            key: _stateKey,
-                                            controller: _stateTextController,
-                                            decoration:
-                                                customDecorationForInput(
-                                              context,
-                                              "Enter State",
-                                              Icons.share_location_sharp,
-                                            ),
-                                            validator: (address) {
-                                              if (address != null &&
-                                                  address.isEmpty) {
-                                                return "Enter a valid State";
-                                              } else {
-                                                return null;
-                                              }
-                                            },
-                                          ),
+                                        inputTextField(
+                                          _stateKey,
+                                          _stateTextController,
+                                          "Enter State",
+                                          Icons.share_location_sharp,
                                         ),
                                       ],
                                     ),
@@ -436,50 +387,17 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                     child: Wrap(
                                       alignment: WrapAlignment.start,
                                       children: [
-                                        Container(
-                                          width: 500,
-                                          margin: const EdgeInsets.all(10),
-                                          child: TextFormField(
-                                            key: _zipcodeKey,
-                                            controller: _zipNumTextController,
-                                            keyboardType: TextInputType.number,
-                                            decoration:
-                                                customDecorationForInput(
-                                              context,
-                                              "Enter Zip/Postal Code",
-                                              Icons.share_location_sharp,
-                                            ),
-                                            validator: (cname) {
-                                              if (cname != null &&
-                                                  cname.isEmpty) {
-                                                return "Enter a valid Zip Number";
-                                              } else {
-                                                return null;
-                                              }
-                                            },
-                                          ),
+                                        inputTextField(
+                                          _zipcodeKey,
+                                          _zipNumTextController,
+                                          "Enter Zip/Postal Code",
+                                          Icons.share_location_sharp,
                                         ),
-                                        Container(
-                                          width: 500,
-                                          margin: const EdgeInsets.all(10),
-                                          child: TextFormField(
-                                            key: _countryKey,
-                                            controller: _countryTextController,
-                                            decoration:
-                                                customDecorationForInput(
-                                              context,
-                                              "Enter Country",
-                                              Icons.share_location_sharp,
-                                            ),
-                                            validator: (address) {
-                                              if (address != null &&
-                                                  address.isEmpty) {
-                                                return "Enter a valid Country";
-                                              } else {
-                                                return null;
-                                              }
-                                            },
-                                          ),
+                                        inputTextField(
+                                          _countryKey,
+                                          _countryTextController,
+                                          "Enter Country",
+                                          Icons.share_location_sharp,
                                         ),
                                       ],
                                     ),
@@ -649,35 +567,6 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                             final isValid = formKey.currentState!.validate();
                             if (!isValid) return;
 
-                            //Hides the keyboard.
-                            FocusScope.of(context).unfocus();
-
-                            //Start CircularProgressIndicator
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return const CustomLoadingSpinner();
-                              },
-                            );
-
-                            //Send OTP to the user
-                            //localOTP = await sendOtp(args['email']);
-
-                            //navigatorVar.pop();
-
-                            //if (localOTP != "") {
-                            //Navigate to OTP Screen for verification.
-                            // scaffoldMessengerVar.showSnackBar(
-                            //   const SnackBar(
-                            //     content: CustomSnackBar(
-                            //       messageToBePrinted: "OTP sent successfully",
-                            //       bgColor: Color.fromRGBO(44, 199, 142, 1),
-                            //     ),
-                            //     behavior: SnackBarBehavior.floating,
-                            //     backgroundColor: Colors.transparent,
-                            //     elevation: 0,
-                            //   ),
-                            // );
                             await Auth().createUserWithEmailAndPassword(
                               email: args['email'],
                               password: args['password'],
@@ -689,12 +578,12 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                 'email': args['email'],
                                 'password': args['password'],
                                 'architectName': _nameTextController.text,
-                                'architectType': _archTypeTextController.text,
+                                'architectType': _archTypeTextController[0],
                                 'architectRegisterNum':
                                     _regNumberTextController.text,
                                 'architectExperience':
                                     _experienceTextController.text,
-                                'architectGender': _genderTextController.text,
+                                'architectGender': _genderTextController[0],
                                 'architectCompanyName':
                                     _companyNameTextController.text,
                                 'architectStreetAddress':
@@ -705,22 +594,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                 'architectCountry': _countryTextController.text,
                                 'architectAboutMe': _aboutMeTextController.text,
                                 'architectSkills': _skills,
-                                'localOTP': localOTP,
                               },
                             );
-                            // } else {
-                            //   scaffoldMessengerVar.showSnackBar(
-                            //     const SnackBar(
-                            //       content: CustomSnackBar(
-                            //         messageToBePrinted: "Failed to send OTP",
-                            //         bgColor: Color.fromRGBO(199, 44, 65, 1),
-                            //       ),
-                            //       behavior: SnackBarBehavior.floating,
-                            //       backgroundColor: Colors.transparent,
-                            //       elevation: 0,
-                            //     ),
-                            //   );
-                            // }
                           },
                         ),
                         SizedBox(
