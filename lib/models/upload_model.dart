@@ -3,6 +3,7 @@ class Models3D {
   final String modelId;
   final String modelImageURL;
   final String model3dURL;
+  final String model3dBirdsView;
   final String modelName;
   final double modelPrice;
   final double modelEstimatedBuildPrice;
@@ -46,6 +47,7 @@ class Models3D {
     required this.modelId,
     required this.modelImageURL,
     required this.model3dURL,
+    required this.model3dBirdsView,
     required this.modelName,
     required this.modelPrice,
     required this.modelEstimatedBuildPrice,
@@ -78,6 +80,7 @@ class Models3D {
         'modelId': modelId,
         'modelImageURL': modelImageURL,
         'model3dURL': model3dURL,
+        'model3dBirdsView': model3dBirdsView,
         'modelName': modelName,
         'modelPrice': modelPrice,
         'modelEstimatedBuildPrice': modelEstimatedBuildPrice,
@@ -110,6 +113,7 @@ class Models3D {
         modelId: json['modelId'],
         modelImageURL: json['modelImageURL'],
         model3dURL: json['model3dURL'],
+        model3dBirdsView: "",
         modelName: json['modelName'],
         modelPrice: json['modelPrice'],
         modelEstimatedBuildPrice: json['modelEstimatedBuildPrice'],

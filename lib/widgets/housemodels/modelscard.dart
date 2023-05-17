@@ -165,9 +165,9 @@ class _ModelsCardState extends State<ModelsCard> {
                                         },
                                       ),
                                       ModelsCardButtons(
-                                        buttontext: "Buy",
+                                        buttontext: "Delete",
                                         whatOnPressed: () {
-                                          //Write a function to navigate Payment Page;
+                                          //Write a function to navigate Delete Model;
                                         },
                                       )
                                     ],

@@ -19,51 +19,55 @@ class FirebaseStorage {
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   static Random _rnd = Random();
 
-  static var model = null;
+  static List model = [null, null];
   static var sample_image = null;
 
   static String getRandomString(int length) =>
       String.fromCharCodes(Iterable.generate(
           length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
-  static Future<dynamic> select3DModel() async {
+  static Future<dynamic> select3DModel(int index) async {
     final result = await FilePicker.platform.pickFiles(
         allowMultiple: false,
         type: FileType.custom,
         allowedExtensions: ['glb']);
     if (result != null) {
-      model = result;
+      model[index] = result;
     }
     return null;
   }
 
-  static Future<String> upload3DModel() async {
+  static Future<List<String>> upload3DModel() async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
+    List<String> combinedUrl = [];
     String location = "/3d_images/";
     var urlString = "";
-    if (model != null) {
-      String fileName = model.files.single.name;
-      location += fileName;
-      print(fileName);
-      if (kIsWeb) {
-        Uint8List uploadFile = model.files.single.bytes;
-        final task = await storage.ref(location).putData(uploadFile);
-        urlString = await task.ref.getDownloadURL();
-        print("key 3dModel \nurl $urlString");
-       // await FireDatabase.addModelUrl(urlString, "3dModel", id);
-      } else {
-        String filePath = model.files.single.path;
-        File file = File(filePath);
-        try {
-          final task = await storage.ref(location).putFile(file);
-          final urlString = await task.ref.getDownloadURL();
-         // await FireDatabase.addModelUrl(urlString, "3dModel", id);
-        } on firebase_core.FirebaseException catch (e) {
-          print(e);
+    for (int i = 0; i < model.length; i++) {
+      if (model != null) {
+        String fileName = model[i].files.single.name;
+        location += fileName;
+        print(fileName);
+        if (kIsWeb) {
+          Uint8List uploadFile = model[i].files.single.bytes;
+          final task = await storage.ref(location).putData(uploadFile);
+          urlString = await task.ref.getDownloadURL();
+          print("key 3dModel \nurl $urlString");
+          // await FireDatabase.addModelUrl(urlString, "3dModel", id);
+        } else {
+          String filePath = model[i].files.single.path;
+          File file = File(filePath);
+          try {
+            final task = await storage.ref(location).putFile(file);
+            final urlString = await task.ref.getDownloadURL();
+            // await FireDatabase.addModelUrl(urlString, "3dModel", id);
+          } on firebase_core.FirebaseException catch (e) {
+            print(e);
+          }
         }
+        combinedUrl.add(urlString);
       }
     }
-    return urlString;
+    return combinedUrl;
   }
 
   static Future<dynamic> selectSampleFile() async {

@@ -125,16 +125,16 @@ class _UploadDesignScreenState extends State<UploadDesignScreen> {
                           setState(() {});
                         },
                       ),
-                      UploadImage(
-                        imgName: "3d model",
-                        index: -1,
-                        onPressed: () async {
-                          // final result =
-                          //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.select3DModel();
-                          setState(() {});
-                        },
-                      ),
+                      // UploadImage(
+                      //   imgName: "3d model",
+                      //   index: -1,
+                      //   onPressed: () async {
+                      //     // final result =
+                      //     //     await FilePicker.platform.pickFiles(allowMultiple: true);
+                      //     await FirebaseStorage.select3DModel();
+                      //     setState(() {});
+                      //   },
+                      // ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(

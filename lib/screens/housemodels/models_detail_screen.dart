@@ -1,22 +1,30 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
-import 'package:provider/provider.dart';
 import 'package:virtualarch/models/upload_model.dart';
-
-import '../../providers/models_provider.dart';
 import '../../widgets/customscreen.dart';
 import '../../widgets/headerwithnavigation.dart';
 import '../../widgets/housemodels/model_features.dart';
 
-class ModelsDetailScreen extends StatelessWidget {
+class ModelsDetailScreen extends StatefulWidget {
   const ModelsDetailScreen({super.key});
   static const routeName = '/ModelsDetail';
+
+  @override
+  State<ModelsDetailScreen> createState() => _ModelsDetailScreenState();
+}
+
+class _ModelsDetailScreenState extends State<ModelsDetailScreen> {
+  bool isFavorite = false;
+  bool isBirdsEyeView = false;
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     bool isDesktop = size.width >= 600;
     bool isMobile = size.width < 600;
+    var scaffoldMessengerVar = ScaffoldMessenger.of(context);
     final modelData = ModalRoute.of(context)!.settings.arguments as Models3D;
     return Scaffold(
       body: MyCustomScreen(
@@ -58,21 +66,142 @@ class ModelsDetailScreen extends StatelessWidget {
                           height:
                               isMobile ? size.height * 0.5 : size.height * 0.8,
                           width: 600,
-                          child: ModelViewer(
-                              // backgroundColor: Theme.of(context).canvasColor,
-                              src: modelData.model3dURL,
-                              alt: "A 3d model of astronaut",
-                              ar: true,
-                              autoPlay: true,
-                              autoRotate: true,
-                              cameraControls: true,
-                              loading: Loading.eager,
-                              poster: "assets/fetchModel.png"),
+                          child: Stack(
+                            children: [
+                              ModelViewer(
+                                backgroundColor: Colors.green,
+                                src: modelData.model3dURL,
+                                alt: "A 3d model of astronaut",
+                                ar: true,
+                                autoPlay: true,
+                                autoRotate: true,
+                                cameraControls: true,
+                                // loading: Loading.eager,
+                                poster: "assets/fetchModel.png",
+                              ),
+                              if (isBirdsEyeView)
+                                ModelViewer(
+                                  backgroundColor: Colors.pink,
+                                  src: "assets/3dModels/Mining.glb",
+                                  alt: "A 3d model of astronaut",
+                                  ar: true,
+                                  autoPlay: true,
+                                  autoRotate: true,
+                                  cameraControls: true,
+                                  // loading: Loading.eager,
+                                  poster: "assets/fetchModel.png",
+                                ),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isFavorite = !isFavorite;
+                                    });
+                                    if (isFavorite) {
+                                      scaffoldMessengerVar.showSnackBar(
+                                        SnackBar(
+                                          content: AwesomeSnackbarContent(
+                                            title: 'Added to favorites!',
+                                            message:
+                                                "Your favorite items are always at your fingertips.",
+                                            contentType: ContentType.success,
+                                          ),
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor: Colors.transparent,
+                                          elevation: 0,
+                                        ),
+                                      );
+                                    } else {
+                                      scaffoldMessengerVar.showSnackBar(
+                                        SnackBar(
+                                          content: AwesomeSnackbarContent(
+                                            title: 'Removed from favorites!',
+                                            message:
+                                                "No worries, you can always add it back later.",
+                                            contentType: ContentType.help,
+                                          ),
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor: Colors.transparent,
+                                          elevation: 0,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  icon: isFavorite
+                                      ? const Icon(
+                                          Icons.favorite,
+                                          color: Colors.red,
+                                        )
+                                      : const Icon(
+                                          Icons.favorite_border,
+                                          color: Colors.red,
+                                        ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(
                           width: 500,
                           // color: Colors.green,
-                          child: ModelFeatures(modelData: modelData),
+                          child: Column(
+                            children: [
+                              // Row(
+                              //   mainAxisAlignment:
+                              //       MainAxisAlignment.spaceAround,
+                              //   children: [
+                              //     Container(
+                              //       padding: const EdgeInsets.all(15),
+                              //       decoration: BoxDecoration(
+                              //           color: Theme.of(context).primaryColor,
+                              //           borderRadius:
+                              //               BorderRadius.circular(20)),
+                              //       child: Center(
+                              //         child: Text(
+                              //           "Normal View",
+                              //           style: Theme.of(context)
+                              //               .textTheme
+                              //               .titleMedium,
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     Container(
+                              //       color: Colors.green,
+                              //       child: Text(
+                              //         "Birds Eye View",
+                              //         style: Theme.of(context)
+                              //             .textTheme
+                              //             .titleMedium,
+                              //       ),
+                              //     )
+                              //   ],
+                              // ),
+                              LiteRollingSwitch(
+                                width: 500,
+                                textOn: 'Birds Eye View',
+                                textOff: 'Normal View',
+                                colorOn: Theme.of(context).primaryColor,
+                                colorOff: Theme.of(context).canvasColor,
+                                iconOn: Icons.remove_red_eye,
+                                iconOff: Icons.auto_fix_normal,
+                                animationDuration:
+                                    const Duration(milliseconds: 500),
+                                onTap: () => null,
+                                onDoubleTap: () => null,
+                                onChanged: (bool state) {
+                                  setState(() {
+                                    isBirdsEyeView = state;
+                                  });
+                                },
+                                onSwipe: () => null,
+                              ),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
+                              ModelFeatures(modelData: modelData),
+                            ],
+                          ),
                         ),
                       ],
                     ),

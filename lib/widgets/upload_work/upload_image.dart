@@ -1,7 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:model_viewer_plus/model_viewer_plus.dart';
-
 import '../../firebase/firebase_storage.dart';
 
 class UploadImage extends StatelessWidget {
@@ -30,31 +28,49 @@ class UploadImage extends StatelessWidget {
         onTap: onPressed,
         child: DottedBorder(
           borderType: BorderType.RRect,
-          color: Theme.of(context).secondaryHeaderColor,
-          radius: const Radius.circular(12),
+          color: Theme.of(context).primaryColor,
+          radius: const Radius.circular(15),
           strokeWidth: 4,
           child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
             child: SizedBox(
-              width: 300,
-              height: 250,
+              width: 200,
+              height: 100,
               child: Center(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (index == -1) ...[
-                      FirebaseStorage.model == null
-                          ? Image.asset("assets/Preview.png")
+                      FirebaseStorage.model[0] == null
+                          ? Text(
+                              "Upload $imgName",
+                              style: Theme.of(context).textTheme.titleMedium,
+                            )
                           : Text(
-                              "Uploaded",
+                              FirebaseStorage.model[0].files.single.name,
                               style: Theme.of(context).textTheme.titleSmall,
                             )
                     ] else if (index == -2) ...[
                       FirebaseStorage.sample_image == null
-                          ? Image.asset("assets/Preview.png")
-                          : Image.memory(
-                              FirebaseStorage.sample_image.files.single.bytes,
-                              width: 300,
-                              height: 220),
+                          ? Text(
+                              "Upload $imgName",
+                              style: Theme.of(context).textTheme.titleMedium,
+                            )
+                          : Text(
+                              FirebaseStorage.sample_image.files.single.name,
+                              style: Theme.of(context).textTheme.titleSmall,
+                            )
+                    ] else if (index == -3) ...[
+                      FirebaseStorage.model[1] == null
+                          ? Text(
+                              "Upload $imgName",
+                              style: Theme.of(context).textTheme.titleMedium,
+                            )
+                          : Text(
+                              FirebaseStorage.model[1].files.single.name,
+                              style: Theme.of(context).textTheme.titleSmall,
+                            )
                     ] else ...[
                       image[index] == null
                           ? Image.asset("assets/Preview.png")

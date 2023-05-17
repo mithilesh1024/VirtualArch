@@ -11,6 +11,7 @@ class FirebaseUploads {
         modelId: docProject.id,
         modelImageURL: projectInfo['modelImageURL'],
         model3dURL: projectInfo['model3dURL'],
+        model3dBirdsView: projectInfo['model3dBirdsView'],
         modelName: projectInfo['modelName'],
         modelPrice: double.parse(projectInfo['modelPrice']),
         modelEstimatedBuildPrice:

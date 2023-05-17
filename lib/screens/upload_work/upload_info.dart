@@ -68,6 +68,7 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
   //Important urls
   String _model3dURLController = "";
   String _modelImageURLController = "";
+  String _model3dBirdsView = "";
 
   continueStep() async {
     bool isLastStep = (currentStep == 6);
@@ -86,11 +87,14 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
       final User? user = Auth().currentUser;
 
       _modelImageURLController = await FirebaseStorage.uploadSampleImage();
-      _model3dURLController = await FirebaseStorage.upload3DModel();
+      dynamic temp = await FirebaseStorage.upload3DModel();
+      _model3dURLController = temp[0];
+      _model3dBirdsView = temp[1];
 
       Map<String, dynamic> projectInfo = {
         'modelImageURL': _modelImageURLController,
         'model3dURL': _model3dURLController,
+        'model3dBirdsView': _model3dBirdsView,
         'modelName': _modelNameController.text,
         'modelPrice': _modelPriceController.text,
         'modelEstimatedBuildPrice': _modelEstimatedBuildPriceController.text,
@@ -645,7 +649,7 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                             ),
                           ),
                           Step(
-                            isActive: currentStep >= 5,
+                            isActive: currentStep >= 6,
                             title: Text(
                               "Upload 3d Models and Image",
                               style: Theme.of(context).textTheme.titleMedium,
@@ -658,19 +662,29 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                     alignment: WrapAlignment.start,
                                     children: [
                                       UploadImage(
-                                          imgName: "3D model",
-                                          onPressed: () async {
-                                            await FirebaseStorage
-                                                .select3DModel();
-                                          },
-                                          index: -1),
-                                      UploadImage(
-                                          imgName: "Sample Image",
+                                          imgName: "2D Image",
                                           onPressed: () async {
                                             await FirebaseStorage
                                                 .selectSampleFile();
+                                            setState(() {});
+                                          },
+                                          index: -2),
+                                      UploadImage(
+                                          imgName: "3D model",
+                                          onPressed: () async {
+                                            await FirebaseStorage.select3DModel(
+                                                0);
+                                            setState(() {});
                                           },
                                           index: -1),
+                                      UploadImage(
+                                          imgName: "Birds Eye View",
+                                          onPressed: () async {
+                                            await FirebaseStorage.select3DModel(
+                                                1);
+                                            setState(() {});
+                                          },
+                                          index: -3),
                                     ],
                                   ),
                                 ),
