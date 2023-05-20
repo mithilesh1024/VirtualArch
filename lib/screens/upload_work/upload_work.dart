@@ -1,10 +1,12 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_grid_list/responsive_grid_list.dart';
 import 'package:virtualarch/widgets/upload_work/upload_image.dart';
 import '../../firebase/firebase_storage.dart';
 import '../../widgets/custommenu.dart';
 import '../../widgets/customscreen.dart';
 import '../../widgets/headerwithmenu.dart';
+import '../../widgets/upload_work/add_design_button.dart';
 
 class UploadDesignScreen extends StatefulWidget {
   const UploadDesignScreen({super.key});
@@ -15,6 +17,7 @@ class UploadDesignScreen extends StatefulWidget {
 
 class _UploadDesignScreenState extends State<UploadDesignScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  List imageLinks = [];
 
   @override
   Widget build(BuildContext context) {
@@ -54,103 +57,62 @@ class _UploadDesignScreenState extends State<UploadDesignScreen> {
                   width: double.infinity,
                   child: Wrap(
                     alignment: WrapAlignment.spaceAround,
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      UploadImage(
-                        imgName: "Floor Plans",
-                        index: 0,
-                        onPressed: () async {
-                          // final result =
-                          //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.selectFile(0);
-                          setState(() {});
-                        },
-                      ),
-                      UploadImage(
-                        imgName: "Elevations Plan",
-                        index: 1,
-                        onPressed: () async {
-                          // final result =
-                          //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.selectFile(1);
-                          setState(() {});
-                        },
-                      ),
-                      UploadImage(
-                        imgName: "Site Plan",
-                        index: 2,
-                        onPressed: () async {
-                          // final result =
-                          //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.selectFile(2);
-                          setState(() {});
-                        },
-                      ),
-                      UploadImage(
-                        imgName: "Foundational Plan",
-                        index: 3,
-                        onPressed: () async {
-                          // final result =
-                          //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.selectFile(3);
-                          setState(() {});
-                        },
-                      ),
-                      UploadImage(
-                        imgName: "Electric Plan",
-                        index: 4,
-                        onPressed: () async {
-                          // final result =
-                          //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.selectFile(4);
-                          setState(() {});
-                        },
-                      ),
-                      UploadImage(
-                        imgName: "Plumbing Plan",
-                        index: 5,
-                        onPressed: () async {
-                          // final result =
-                          //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.selectFile(5);
-                          setState(() {});
-                        },
-                      ),
-                      UploadImage(
-                        imgName: "Other Plan",
-                        index: 6,
-                        onPressed: () async {
-                          // final result =
-                          //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                          await FirebaseStorage.selectFile(6);
-                          setState(() {});
-                        },
-                      ),
                       // UploadImage(
-                      //   imgName: "3d model",
-                      //   index: -1,
+                      //   imgName: "Floor Plans",
+                      //   index: 0,
                       //   onPressed: () async {
                       //     // final result =
                       //     //     await FilePicker.platform.pickFiles(allowMultiple: true);
-                      //     await FirebaseStorage.select3DModel();
+                      //     await FirebaseStorage.selectFile(0);
                       //     setState(() {});
                       //   },
                       // ),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24.0)),
-                            padding: const EdgeInsets.all(12.0),
+                      SizedBox(
+                        height: size.height,
+                        child: ResponsiveGridList(
+                          rowMainAxisAlignment: MainAxisAlignment.end,
+                          minItemsPerRow: 1,
+                          minItemWidth: 300,
+                          listViewBuilderOptions: ListViewBuilderOptions(
+                            padding: EdgeInsets.zero,
                           ),
-                          onPressed: () async {
-                            await FirebaseStorage.uploadModel(projectId);
-                            print(FirebaseStorage.model);
-                            if (FirebaseStorage.model != null) {
-                              //await FirebaseStorage.upload3DModel(projectId);
-                            }
-                            print("uploaded");
-                          },
-                          child: const Text('Button',
-                              style: TextStyle(color: Colors.white))),
+                          children: List.generate(
+                            5,
+                            (index) => UploadImage(
+                              imgName: "Design $index",
+                              index: 0,
+                              onPressed: () async {
+                                // final result =
+                                //     await FilePicker.platform.pickFiles(allowMultiple: true);
+                                await FirebaseStorage.selectFile(0);
+                                setState(() {});
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      const AddButtonDesign(),
+                      // ElevatedButton(
+                      //   style: ElevatedButton.styleFrom(
+                      //     shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(24.0)),
+                      //     padding: const EdgeInsets.all(12.0),
+                      //   ),
+                      //   onPressed: () async {
+                      //     await FirebaseStorage.uploadModel(projectId);
+                      //     print(FirebaseStorage.model);
+                      //     if (FirebaseStorage.model != null) {
+                      //       //await FirebaseStorage.upload3DModel(projectId);
+                      //     }
+                      //     print("uploaded");
+                      //   },
+                      //   child: const Text(
+                      //     'Button',
+                      //     style: TextStyle(color: Colors.white),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

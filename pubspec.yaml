@@ -58,6 +58,7 @@ dependencies:
   lite_rolling_switch: ^1.0.0
   model_viewer_plus:
   awesome_snackbar_content: ^0.1.3
+  timeago: ^3.3.0
 
 dev_dependencies:
   flutter_test:
@@ -93,6 +94,7 @@ flutter:
     - assets/imagesModels/
     - assets/Logo.png
     - assets/fetchModel.png
+    - assets/add.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

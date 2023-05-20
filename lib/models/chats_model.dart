@@ -16,7 +16,7 @@ class ChatsModel {
         'message': message,
         'time': time,
         'read': read,
-        'sender': sender == Sender.user ? "user" : "archiect",
+        'sender': sender == Sender.user ? "user" : "architect",
       };
 
   static ChatsModel fromJson(Map<String, dynamic> json) => ChatsModel(

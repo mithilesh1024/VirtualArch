@@ -6,6 +6,9 @@ import '../../providers/chatsprovider.dart';
 import '../../widgets/customloadingspinner.dart';
 import '../../widgets/customscreen.dart';
 import '../../widgets/headerwithphoto.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
+import 'chats_screen.dart';
 
 class ChatDetail extends StatefulWidget {
   const ChatDetail({super.key});
@@ -25,36 +28,38 @@ class _ChatDetailState extends State<ChatDetail> {
     chatsProvider = context.read<ChatsProvider>();
   }
 
-  validateAndSendMessage(String message, bool read, Sender sender) {
+  validateAndSendMessage(
+      String message, bool read, Sender sender, String clientId) {
     if (message.trim().isNotEmpty) {
       _messageTextController.clear();
       chatsProvider.sendMessage(
         message,
         true,
-        Sender.user,
+        sender,
+        clientId,
       );
-      chatsProvider.getHiredArchitects("EGAy9SR4tvb4FyIwzJuKaZOcKIZ2");
     }
   }
+
+  final _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     final args = ModalRoute.of(context)!.settings.arguments as Map;
-    // final chatsProvider = Provider.of<ChatsProvider>(context, listen: true);
     return Scaffold(
       body: GestureDetector(
         onTap: () {
           FocusManager.instance.primaryFocus?.unfocus();
         },
         child: MyCustomScreen(
-          leftPadding: 0,
-          rightPadding: 0,
+          // leftPadding: 0,
+          // rightPadding: 0,
           screenContent: Stack(
             children: [
               HeaderWithPhoto(
                 heading: args['name'],
-                screenToBeRendered: "None",
+                screenToBeRendered: ChatsScreen.routeName,
                 imageURL: args['imageUrl'],
               ),
               Padding(
@@ -64,7 +69,8 @@ class _ChatDetailState extends State<ChatDetail> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: StreamBuilder(
-                      stream: chatsProvider.getChatStream("UserIdArchitectId"),
+                      stream: chatsProvider
+                          .getChatStream(args['uid'] + args['aid']),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData) {
@@ -72,6 +78,7 @@ class _ChatDetailState extends State<ChatDetail> {
                         } else {
                           var listMessage = snapshot.data?.docs;
                           return ListView.builder(
+                            controller: _scrollController,
                             itemCount: listMessage?.length,
                             //shrinkWrap: true,
                             padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -84,7 +91,7 @@ class _ChatDetailState extends State<ChatDetail> {
                               return Container(
                                 // padding: const EdgeInsets.only(
                                 //left: 14, right: 14, top: 10, bottom: 10),
-                                padding: sender == "architect"
+                                padding: sender == "user"
                                     ? const EdgeInsets.only(
                                         left: 0,
                                         right: 25,
@@ -98,23 +105,63 @@ class _ChatDetailState extends State<ChatDetail> {
                                         bottom: 10,
                                       ),
                                 child: Align(
-                                  alignment: (sender == "architect"
+                                  alignment: (sender == "user"
                                       ? Alignment.topLeft
                                       : Alignment.topRight),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: (sender == "architect"
+                                      color: (sender == "user"
                                           ? Theme.of(context).canvasColor
                                           : Theme.of(context).primaryColor),
                                     ),
-                                    padding: const EdgeInsets.all(16),
-                                    child: Text(
-                                      message,
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.white,
-                                      ),
+                                    // padding: const EdgeInsets.all(16),
+                                    child: Stack(
+                                      //mainAxisSize: MainAxisSize.min,
+                                      //crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 16,
+                                            right: 80,
+                                            top: 16,
+                                            bottom: 25,
+                                          ),
+                                          //Flexible(
+                                          child: Text(
+                                            message,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleSmall,
+                                          ),
+                                        ),
+                                        Positioned(
+                                          bottom: 5,
+                                          right: 10,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                timeago.format(time.toDate(),
+                                                    locale: 'en_short'),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall!
+                                                    .copyWith(
+                                                        color: Theme.of(context)
+                                                            .secondaryHeaderColor),
+                                              ),
+                                              const SizedBox(
+                                                width: 4,
+                                              ),
+                                              const Icon(
+                                                Icons.done_all,
+                                                size: 20,
+                                                color: Colors.white,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -169,8 +216,11 @@ class _ChatDetailState extends State<ChatDetail> {
                             validateAndSendMessage(
                               _messageTextController.text,
                               true,
-                              Sender.user,
+                              Sender.architect,
+                              args['uid'],
                             );
+                            Future.delayed(const Duration(milliseconds: 50))
+                                .then((_) => _scrollDown());
                           },
                           icon: Icon(
                             Icons.send,
@@ -187,6 +237,14 @@ class _ChatDetailState extends State<ChatDetail> {
           ),
         ),
       ),
+    );
+  }
+
+  void _scrollDown() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
     );
   }
 }

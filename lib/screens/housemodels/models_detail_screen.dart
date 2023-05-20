@@ -69,7 +69,7 @@ class _ModelsDetailScreenState extends State<ModelsDetailScreen> {
                           child: Stack(
                             children: [
                               ModelViewer(
-                                backgroundColor: Colors.green,
+                                backgroundColor: Colors.black,
                                 src: modelData.model3dURL,
                                 alt: "A 3d model of astronaut",
                                 ar: true,
@@ -81,7 +81,7 @@ class _ModelsDetailScreenState extends State<ModelsDetailScreen> {
                               ),
                               if (isBirdsEyeView)
                                 ModelViewer(
-                                  backgroundColor: Colors.pink,
+                                  backgroundColor: Colors.black,
                                   src: "assets/3dModels/Mining.glb",
                                   alt: "A 3d model of astronaut",
                                   ar: true,

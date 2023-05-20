@@ -84,6 +84,19 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
         },
       );
 
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: AwesomeSnackbarContent(
+            title: 'Alert!',
+            message: "Uploading may take few minutes.",
+            contentType: ContentType.warning,
+          ),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+      );
+
       final User? user = Auth().currentUser;
 
       _modelImageURLController = await FirebaseStorage.uploadSampleImage();
@@ -161,7 +174,7 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
       //   arguments: projectData['projectId'],
       // );
 
-      Navigator.of(context).pushNamed(ExploreModelsScreen.routeName);
+      // Navigator.of(context).pushNamed(ExploreModelsScreen.routeName);
     } else {
       setState(() {
         currentStep += 1;

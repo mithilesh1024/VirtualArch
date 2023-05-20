@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../screens/chats/chats_screen.dart';
+
 class HeaderWithPhoto extends StatelessWidget {
   final String heading;
   final String screenToBeRendered;

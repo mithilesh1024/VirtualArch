@@ -1,5 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:virtualarch/widgets/upload_work/add_design_button.dart';
 import '../../firebase/firebase_storage.dart';
 
 class UploadImage extends StatelessWidget {
@@ -34,8 +35,8 @@ class UploadImage extends StatelessWidget {
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(15)),
             child: SizedBox(
-              width: 200,
-              height: 100,
+              width: index < 0 ? 200 : 300,
+              height: index < 0 ? 100 : 200,
               child: Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,19 +74,16 @@ class UploadImage extends StatelessWidget {
                             )
                     ] else ...[
                       image[index] == null
-                          ? Image.asset("assets/Preview.png")
-                          : Image.memory(image[index].files.single.bytes,
-                              width: 300, height: 220),
-                      image[index] == null
                           ? Text(
-                              "Click me to Upload $imgName",
+                              "Upload Designs",
                               style: Theme.of(context).textTheme.titleMedium,
                             )
-                          : Text(
-                              image[index].files.single.name,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.titleSmall,
-                            )
+                          : Image.memory(
+                              image[index].files.single.bytes,
+                              width: 300,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            ),
                     ]
                   ],
                 ),
