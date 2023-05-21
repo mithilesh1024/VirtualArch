@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:virtualarch/screens/auth/text_message.dart';
@@ -22,7 +23,6 @@ class OTPScreen extends StatefulWidget {
 }
 
 class _OTPScreenState extends State<OTPScreen> {
-  String otpController = "";
   Map<String, dynamic> errorIfAny = {};
   bool isEmailVerified = false;
   Timer? timer;
@@ -121,11 +121,39 @@ class _OTPScreenState extends State<OTPScreen> {
                         .textTheme
                         .titleMedium!
                         .copyWith(color: Theme.of(context).primaryColor),
-                    onEnter: (event) => print("Hello world"),
-                  ),
-                  TextSpan(
-                    text: " button below",
-                    style: Theme.of(context).textTheme.titleMedium,
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        try {
+                          FirebaseAuth.instance.currentUser
+                              ?.sendEmailVerification();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: AwesomeSnackbarContent(
+                                title: 'Hurray!',
+                                message: "Sent verification link successfully.",
+                                contentType: ContentType.success,
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                            ),
+                          );
+                        } catch (e) {
+                          debugPrint('$e');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: AwesomeSnackbarContent(
+                                title: 'Oh snap!',
+                                message: "Failed to send verification link",
+                                contentType: ContentType.failure,
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                            ),
+                          );
+                        }
+                      },
                   ),
                 ],
               ),

@@ -103,16 +103,16 @@ class ChatsProvider with ChangeNotifier {
       final User? architect = Auth().currentUser;
       var architectId = architect!.uid;
 
-      //Add to the hiredArchitects array
-      FirebaseFirestore.instance
-          .collection("architects")
-          .doc(architectId)
-          .update({
-        "architectClientsId": FieldValue.arrayUnion([clientId])
-      }).then(
-        (value) => print("Connection Established Sucessfully."),
-        onError: (e) => print("Cant Establish Connection"),
-      );
+      // //Add to the hiredArchitects array
+      // FirebaseFirestore.instance
+      //     .collection("architects")
+      //     .doc(architectId)
+      //     .update({
+      //   "architectClientsId": FieldValue.arrayUnion([clientId])
+      // }).then(
+      //   (value) => print("Connection Established Sucessfully."),
+      //   onError: (e) => print("Cant Establish Connection"),
+      // );
 
       DocumentReference documentReference = FirebaseFirestore.instance
           .collection("chats")

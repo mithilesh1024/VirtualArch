@@ -29,6 +29,7 @@ class FireDatabase {
         architectImageUrl: architectData['architectGender'] == "Male"
             ? "assets/Male.png"
             : "assets/Female.png",
+        architectEmail: architectData['email'],
       );
       final json = architect.toJson();
       await docArchitect.set(json);
@@ -61,7 +62,7 @@ class FireDatabase {
     // var map = {
     //   "house1": {key: url}
     // };
-    
+
     await FirebaseFirestore.instance
         .collection('models')
         .doc(projectId)

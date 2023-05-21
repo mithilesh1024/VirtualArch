@@ -10,6 +10,7 @@ class ArchitectModel {
   final String? architectImageUrl;
   final List? architectClientsId;
   final List? architectProjectsId;
+  final String architectEmail;
 
   ArchitectModel({
     required this.architectID,
@@ -20,6 +21,7 @@ class ArchitectModel {
     required this.architectOfficeLocation,
     required this.aboutMe,
     required this.skills,
+    required this.architectEmail,
     this.architectImageUrl,
     this.architectClientsId,
     this.architectProjectsId,
@@ -34,6 +36,7 @@ class ArchitectModel {
         'architectOfficeLocation': architectOfficeLocation,
         'aboutMe': aboutMe,
         'skills': skills,
+        'architectEmail': architectEmail,
         'architectImageUrl': architectImageUrl,
         'architectClientsId': [],
         'architectProjectsId': [],
@@ -48,6 +51,7 @@ class ArchitectModel {
         architectOfficeLocation: json['architectOfficeLocation'],
         aboutMe: 'aboutMe',
         skills: json['skills'],
+        architectEmail: json['architectEmail'],
         architectImageUrl: json['architectImageUrl'],
         architectClientsId: json['architectClientsId'],
         architectProjectsId: json['architectProjectsId'],
