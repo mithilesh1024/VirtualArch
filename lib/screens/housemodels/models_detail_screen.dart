@@ -82,7 +82,7 @@ class _ModelsDetailScreenState extends State<ModelsDetailScreen> {
                               if (isBirdsEyeView)
                                 ModelViewer(
                                   backgroundColor: Colors.black,
-                                  src: "assets/3dModels/Mining.glb",
+                                  src: modelData.model3dBirdsView,
                                   alt: "A 3d model of astronaut",
                                   ar: true,
                                   autoPlay: true,
@@ -147,36 +147,6 @@ class _ModelsDetailScreenState extends State<ModelsDetailScreen> {
                           // color: Colors.green,
                           child: Column(
                             children: [
-                              // Row(
-                              //   mainAxisAlignment:
-                              //       MainAxisAlignment.spaceAround,
-                              //   children: [
-                              //     Container(
-                              //       padding: const EdgeInsets.all(15),
-                              //       decoration: BoxDecoration(
-                              //           color: Theme.of(context).primaryColor,
-                              //           borderRadius:
-                              //               BorderRadius.circular(20)),
-                              //       child: Center(
-                              //         child: Text(
-                              //           "Normal View",
-                              //           style: Theme.of(context)
-                              //               .textTheme
-                              //               .titleMedium,
-                              //         ),
-                              //       ),
-                              //     ),
-                              //     Container(
-                              //       color: Colors.green,
-                              //       child: Text(
-                              //         "Birds Eye View",
-                              //         style: Theme.of(context)
-                              //             .textTheme
-                              //             .titleMedium,
-                              //       ),
-                              //     )
-                              //   ],
-                              // ),
                               LiteRollingSwitch(
                                 width: 500,
                                 textOn: 'Birds Eye View',

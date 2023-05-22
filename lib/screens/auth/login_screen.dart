@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var scaffoldMessengerVar = ScaffoldMessenger.of(context);
     var navigatorVar = Navigator.of(context);
     var userProvider = Provider.of<UserDataProvide>(context, listen: false);
-    final user = FirebaseAuth.instance.currentUser;
+    // final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       body: GestureDetector(
         onTap: () {
@@ -176,8 +176,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             //Stop CircularProgressIndicator
                             navigatorVar.pop();
 
+                            //clear all fields
+                            _emailTextController.clear();
+                            _passwordTextController.clear();
+
                             if (errorIfAny.isEmpty &&
-                                user!.displayName == "Architect") {
+                                FirebaseAuth
+                                        .instance.currentUser!.displayName ==
+                                    "Architect") {
                               scaffoldMessengerVar.showSnackBar(
                                 SnackBar(
                                   content: AwesomeSnackbarContent(
@@ -190,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   elevation: 0,
                                 ),
                               );
-                              
+
                               await userProvider.getData();
                               //Clears full stack of screens.
                               // ignore: use_build_context_synchronously

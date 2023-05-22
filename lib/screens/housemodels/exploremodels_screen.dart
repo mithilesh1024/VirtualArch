@@ -85,7 +85,7 @@ class _ExploreModelsScreenState extends State<ExploreModelsScreen> {
                   // ),
                 ],
               ),
-              if (isFilterOn) const FilterModels(),
+              // if (isFilterOn) const FilterModels(),
               SizedBox(
                 height: size.height * 0.02,
               ),
@@ -93,7 +93,7 @@ class _ExploreModelsScreenState extends State<ExploreModelsScreen> {
               StreamBuilder(
                 stream: modelData.getMyModels,
                 builder: (context, snapshots) {
-                  print(snapshots.connectionState);
+
                   if (!snapshots.hasData) {
                     return const CustomLoadingSpinner();
                   }

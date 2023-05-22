@@ -145,12 +145,15 @@ class _ModelsCardState extends State<ModelsCard> {
                                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                                 children: [
                                   ModelsCardIcons(
-                                      numOfBeds: widget
-                                          .modelData.modelNumberOfBedrooms,
-                                      numOfBaths:
-                                          widget.modelData.modelNumberOfBaths,
-                                      numOfFloors: widget.modelData.modelFloors,
-                                      numOfGarage: 1),
+                                    numOfBeds:
+                                        widget.modelData.modelNumberOfBedrooms,
+                                    numOfBaths:
+                                        widget.modelData.modelNumberOfBaths,
+                                    numOfFloors: widget.modelData.modelFloors,
+                                    parking: widget.modelData.modelParkings
+                                        ? "Yes"
+                                        : "No",
+                                  ),
                                   const SizedBox(
                                     height: 10,
                                   ),
