@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Auth {
@@ -91,6 +92,19 @@ class Auth {
       return {};
     } on FirebaseAuthException catch (e) {
       return tellMeTheError(e.code);
+    }
+  }
+
+  Future<String> getArchitectName() async {
+    try {
+      final aid = currentUser!.uid;
+      CollectionReference architects =
+          FirebaseFirestore.instance.collection("architects");
+      final snapshot = await architects.doc(aid).get();
+      final data = snapshot.data() as Map<String, dynamic>;
+      return data['architectName'];
+    } catch (e) {
+      return "Error fetching data";
     }
   }
 }

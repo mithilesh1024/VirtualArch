@@ -27,6 +27,16 @@ class UploadProjInfo extends StatefulWidget {
 class _UploadProjInfoState extends State<UploadProjInfo> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
+  final _modelNameKey = GlobalKey<FormFieldState<String>>();
+  final _modelPriceKey = GlobalKey<FormFieldState<String>>();
+  final _modelEstimatedBuildPriceKey = GlobalKey<FormFieldState<String>>();
+  final _modelFloorsKey = GlobalKey<FormFieldState<String>>();
+  final _modelTotalSquareFootageKey = GlobalKey<FormFieldState<String>>();
+  final _modelNumberOfCommonRoomsKey = GlobalKey<FormFieldState<String>>();
+  final _modelNumberOfBedroomsKey = GlobalKey<FormFieldState<String>>();
+  final _modelNumberOfBathsKey = GlobalKey<FormFieldState<String>>();
+  final _modelCeilingHeightKey = GlobalKey<FormFieldState<String>>();
+
   int currentStep = 0;
 
   //Controllers
@@ -104,6 +114,8 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
       _model3dURLController = temp[0];
       _model3dBirdsView = temp[1];
 
+      final architectName = await Auth().getArchitectName();
+
       Map<String, dynamic> projectInfo = {
         'modelImageURL': _modelImageURLController,
         'model3dURL': _model3dURLController,
@@ -111,7 +123,7 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
         'modelName': _modelNameController.text,
         'modelPrice': _modelPriceController.text,
         'modelEstimatedBuildPrice': _modelEstimatedBuildPriceController.text,
-        'modelArchitectname': "Temporary Name",
+        'modelArchitectname': architectName,
         'modelArchitectID': user!.uid,
         'modelColorScheme': _modelColorSchemeController,
         'modelFloors': _modelFloorsController.text,
@@ -174,10 +186,44 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
       //   arguments: projectData['projectId'],
       // );
 
-      // Navigator.of(context).pushNamed(ExploreModelsScreen.routeName);
+      Navigator.of(context).pushNamed(ExploreModelsScreen.routeName);
     } else {
       setState(() {
-        currentStep += 1;
+        //Check for the fields are valid in TextFormField.
+        if (currentStep == 0 &&
+            _modelNameKey.currentState!.validate() &&
+            _modelPriceKey.currentState!.validate() &&
+            _modelEstimatedBuildPriceKey.currentState!.validate()) {
+          setState(() {
+            currentStep = 1;
+          });
+        } else if (currentStep == 1 &&
+            _modelFloorsKey.currentState!.validate() &&
+            _modelTotalSquareFootageKey.currentState!.validate()) {
+          setState(() {
+            currentStep = 2;
+          });
+        } else if (currentStep == 2 &&
+            _modelNumberOfCommonRoomsKey.currentState!.validate() &&
+            _modelNumberOfBedroomsKey.currentState!.validate() &&
+            _modelNumberOfBathsKey.currentState!.validate() &&
+            _modelCeilingHeightKey.currentState!.validate()) {
+          setState(() {
+            currentStep = 3;
+          });
+        } else if (currentStep == 3) {
+          setState(() {
+            currentStep = 4;
+          });
+        } else if (currentStep == 4) {
+          setState(() {
+            currentStep = 5;
+          });
+        } else if (currentStep == 5) {
+          setState(() {
+            currentStep = 6;
+          });
+        }
       });
     }
   }
@@ -275,28 +321,24 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
   }
 
   Widget textInputBuilder(
+    Key inputKey,
     String inputTitle,
     IconData inputIcon,
     TextEditingController inputs,
+    String? Function(String?) validator,
   ) {
     return Container(
       width: 500,
       margin: const EdgeInsets.all(10),
       child: TextFormField(
-        // key: _nameKey,
+        key: inputKey,
         controller: inputs,
         decoration: customDecorationForInput(
           context,
           inputTitle,
           inputIcon,
         ),
-        // validator: (name) {
-        //   if (name != null && name.isEmpty) {
-        //     return "Enter a valid ${inputTitle}";
-        //   } else {
-        //     return null;
-        //   }
-        // },
+        validator: validator,
       ),
     );
   }
@@ -363,9 +405,9 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                         onStepContinue: continueStep,
                         onStepCancel: cancelStep,
                         controlsBuilder: controlsBuilder,
-                        onStepTapped: (step) => setState(() {
-                          currentStep = step;
-                        }),
+                        // onStepTapped: (step) => setState(() {
+                        //   currentStep = step;
+                        // }),
                         steps: [
                           Step(
                             isActive: currentStep >= 0,
@@ -381,14 +423,30 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                     alignment: WrapAlignment.start,
                                     children: [
                                       textInputBuilder(
+                                        _modelNameKey,
                                         "Enter Project Name",
                                         Icons.catching_pokemon,
                                         _modelNameController,
+                                        (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please enter a project name';
+                                          }
+                                          // Additional validation logic for project name if needed
+                                          return null; // Return null if the input is valid
+                                        },
                                       ),
                                       textInputBuilder(
+                                        _modelPriceKey,
                                         "Enter Price",
                                         Icons.catching_pokemon,
                                         _modelPriceController,
+                                        (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please enter a project name';
+                                          }
+                                          // Additional validation logic for project name if needed
+                                          return null; // Return null if the input is valid
+                                        },
                                       ),
                                     ],
                                   ),
@@ -399,9 +457,17 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                     alignment: WrapAlignment.start,
                                     children: [
                                       textInputBuilder(
+                                        _modelEstimatedBuildPriceKey,
                                         "Enter Estimated Construction Price",
                                         Icons.catching_pokemon,
                                         _modelEstimatedBuildPriceController,
+                                        (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please enter a project name';
+                                          }
+                                          // Additional validation logic for project name if needed
+                                          return null; // Return null if the input is valid
+                                        },
                                       )
                                     ],
                                   ),
@@ -423,14 +489,30 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                     alignment: WrapAlignment.start,
                                     children: [
                                       textInputBuilder(
+                                        _modelFloorsKey,
                                         "Number of Floors",
                                         Icons.catching_pokemon_rounded,
                                         _modelFloorsController,
+                                        (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please enter a project name';
+                                          }
+                                          // Additional validation logic for project name if needed
+                                          return null; // Return null if the input is valid
+                                        },
                                       ),
                                       textInputBuilder(
+                                        _modelTotalSquareFootageKey,
                                         "Total Area in sqft",
                                         Icons.catching_pokemon,
                                         _modelTotalSquareFootageController,
+                                        (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please enter a project name';
+                                          }
+                                          // Additional validation logic for project name if needed
+                                          return null; // Return null if the input is valid
+                                        },
                                       ),
                                     ],
                                   ),
@@ -473,14 +555,30 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                     alignment: WrapAlignment.start,
                                     children: [
                                       textInputBuilder(
+                                        _modelNumberOfCommonRoomsKey,
                                         "Number of Common Rooms",
                                         Icons.catching_pokemon,
                                         _modelNumberOfCommonRoomsController,
+                                        (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please enter a project name';
+                                          }
+                                          // Additional validation logic for project name if needed
+                                          return null; // Return null if the input is valid
+                                        },
                                       ),
                                       textInputBuilder(
+                                        _modelNumberOfBedroomsKey,
                                         "Number of Bedrooms",
                                         Icons.catching_pokemon,
                                         _modelNumberOfBedroomsController,
+                                        (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please enter a project name';
+                                          }
+                                          // Additional validation logic for project name if needed
+                                          return null; // Return null if the input is valid
+                                        },
                                       ),
                                     ],
                                   ),
@@ -491,14 +589,30 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                     alignment: WrapAlignment.start,
                                     children: [
                                       textInputBuilder(
+                                        _modelNumberOfBathsKey,
                                         "Number of Bathrooms",
                                         Icons.catching_pokemon,
                                         _modelNumberOfBathsController,
+                                        (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please enter a project name';
+                                          }
+                                          // Additional validation logic for project name if needed
+                                          return null; // Return null if the input is valid
+                                        },
                                       ),
                                       textInputBuilder(
+                                        _modelCeilingHeightKey,
                                         "Ceiling Height",
                                         Icons.catching_pokemon,
                                         _modelCeilingHeightController,
+                                        (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please enter a project name';
+                                          }
+                                          // Additional validation logic for project name if needed
+                                          return null; // Return null if the input is valid
+                                        },
                                       ),
                                     ],
                                   ),

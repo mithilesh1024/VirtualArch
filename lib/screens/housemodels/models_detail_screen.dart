@@ -26,6 +26,7 @@ class _ModelsDetailScreenState extends State<ModelsDetailScreen> {
     bool isMobile = size.width < 600;
     var scaffoldMessengerVar = ScaffoldMessenger.of(context);
     final modelData = ModalRoute.of(context)!.settings.arguments as Models3D;
+
     return Scaffold(
       body: MyCustomScreen(
         screenContent: Column(

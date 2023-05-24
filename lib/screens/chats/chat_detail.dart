@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../firebase/authentication.dart';
 import '../../models/chats_model.dart';
 import '../../providers/chatsprovider.dart';
 import '../../widgets/customloadingspinner.dart';

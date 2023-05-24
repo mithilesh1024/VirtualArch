@@ -113,7 +113,7 @@ class Models3D {
         modelId: json['modelId'],
         modelImageURL: json['modelImageURL'],
         model3dURL: json['model3dURL'],
-        model3dBirdsView: "",
+        model3dBirdsView: json['model3dBirdsView'],
         modelName: json['modelName'],
         modelPrice: json['modelPrice'],
         modelEstimatedBuildPrice: json['modelEstimatedBuildPrice'],
