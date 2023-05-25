@@ -130,13 +130,13 @@ class _ModelsDetailScreenState extends State<ModelsDetailScreen> {
                                     }
                                   },
                                   icon: isFavorite
-                                      ? const Icon(
+                                      ? Icon(
                                           Icons.favorite,
-                                          color: Colors.red,
+                                          color: Theme.of(context).primaryColor,
                                         )
-                                      : const Icon(
+                                      : Icon(
                                           Icons.favorite_border,
-                                          color: Colors.red,
+                                          color: Theme.of(context).primaryColor,
                                         ),
                                 ),
                               ),

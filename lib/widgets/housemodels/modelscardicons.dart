@@ -28,7 +28,9 @@ class ModelsCardIcons extends StatelessWidget {
         ),
         Text(
           "$numOfAssets $nameOfAssets",
-          style: Theme.of(context).textTheme.labelMedium,
+          style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                color: Theme.of(context).secondaryHeaderColor,
+              ),
         )
       ],
     );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
-import 'package:http/http.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 import 'package:virtualarch/providers/userinfo_options_provider.dart';
 import '../../firebase/authentication.dart';
@@ -8,7 +7,6 @@ import '../../widgets/auth/custombuttontonext.dart';
 import '../../widgets/auth/customdecorationforinput.dart';
 import '../../widgets/customloadingspinner.dart';
 import '../../widgets/customscreen.dart';
-import 'package:http/http.dart' as http;
 import '../../widgets/header.dart';
 import 'otp_screen.dart';
 
@@ -58,6 +56,10 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       //Hides the keyboard.
       FocusScope.of(context).unfocus();
 
+      //Check if last 2 fields are empty
+      _aboutMeKey.currentState!.validate();
+      _skillsKey.currentState!.validate();
+
       //Start CircularProgressIndicator
       showDialog(
         context: context,
@@ -72,36 +74,26 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       Navigator.of(context).pop();
     } else {
       setState(() {
-        currentStep += 1;
+        if (currentStep == 0 &&
+            _nameKey.currentState!.validate() &&
+            _regNumKey.currentState!.validate() &&
+            _expKey.currentState!.validate()) {
+          setState(() {
+            currentStep = 1;
+          });
+        } else if (currentStep == 1 &&
+            _companyNameKey.currentState!.validate() &&
+            _streetaddKey.currentState!.validate() &&
+            _cityKey.currentState!.validate() &&
+            _stateKey.currentState!.validate() &&
+            _zipcodeKey.currentState!.validate() &&
+            _countryKey.currentState!.validate()) {
+          setState(() {
+            currentStep = 2;
+          });
+        }
       });
     }
-
-    // if (currentStep < 2) {
-    //   //Check for the fields are valid in TextFormField.
-    //   if (currentStep == 0 &&
-    //       _nameKey.currentState!.validate() &&
-    //       _archTypeKey.currentState!.validate() &&
-    //       _regNumKey.currentState!.validate() &&
-    //       _expKey.currentState!.validate() &&
-    //       _genderKey.currentState!.validate()) {
-    //     setState(() {
-    //       currentStep = 1;
-    //     });
-    //   } else if (currentStep == 1 &&
-    //       _companyNameKey.currentState!.validate() &&
-    //       _streetaddKey.currentState!.validate() &&
-    //       _cityKey.currentState!.validate() &&
-    //       _stateKey.currentState!.validate() &&
-    //       _zipcodeKey.currentState!.validate() &&
-    //       _countryKey.currentState!.validate()) {
-    //     setState(() {
-    //       currentStep = 2;
-    //     });
-    //   }
-    // } else {
-    //   _aboutMeKey.currentState!.validate();
-    //   _skillsKey.currentState!.validate();
-    // }
   }
 
   cancelStep() {
@@ -137,7 +129,13 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     );
   }
 
-  Widget inputTextField(inputKey, inputController, inputLabel, inputIcon) {
+  Widget inputTextField(
+    inputKey,
+    inputController,
+    inputLabel,
+    inputIcon,
+    validator,
+  ) {
     return Container(
       width: 500,
       margin: const EdgeInsets.all(10),
@@ -149,13 +147,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
           inputLabel,
           inputIcon,
         ),
-        // validator: (name) {
-        //   if (name != null && name.isEmpty) {
-        //     return "Enter a valid name";
-        //   } else {
-        //     return null;
-        //   }
-        // },
+        validator: validator,
       ),
     );
   }
@@ -285,6 +277,13 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           _nameTextController,
                                           "Enter your Name",
                                           Icons.person,
+                                          (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter your name';
+                                            }
+                                            // Additional validation logic for project name if needed
+                                            return null; // Return null if the input is valid
+                                          },
                                         ),
                                       ],
                                     ),
@@ -299,12 +298,26 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           _regNumberTextController,
                                           "Enter Register Number",
                                           Icons.verified_outlined,
+                                          (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter your name';
+                                            }
+                                            // Additional validation logic for project name if needed
+                                            return null; // Return null if the input is valid
+                                          },
                                         ),
                                         inputTextField(
                                           _expKey,
                                           _experienceTextController,
                                           "Enter Experience in Years",
                                           Icons.real_estate_agent_rounded,
+                                          (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter your name';
+                                            }
+                                            // Additional validation logic for project name if needed
+                                            return null; // Return null if the input is valid
+                                          },
                                         ),
                                       ],
                                     ),
@@ -352,12 +365,26 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           _companyNameTextController,
                                           "Enter Company Name",
                                           Icons.share_location_sharp,
+                                          (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter your name';
+                                            }
+                                            // Additional validation logic for project name if needed
+                                            return null; // Return null if the input is valid
+                                          },
                                         ),
                                         inputTextField(
                                           _streetaddKey,
                                           _streetAddressTextController,
                                           "Enter Office Street Address",
                                           Icons.share_location_sharp,
+                                          (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter your name';
+                                            }
+                                            // Additional validation logic for project name if needed
+                                            return null; // Return null if the input is valid
+                                          },
                                         ),
                                       ],
                                     ),
@@ -372,12 +399,26 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           _cityTextController,
                                           "Enter City",
                                           Icons.share_location_sharp,
+                                          (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter your name';
+                                            }
+                                            // Additional validation logic for project name if needed
+                                            return null; // Return null if the input is valid
+                                          },
                                         ),
                                         inputTextField(
                                           _stateKey,
                                           _stateTextController,
                                           "Enter State",
                                           Icons.share_location_sharp,
+                                          (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter your name';
+                                            }
+                                            // Additional validation logic for project name if needed
+                                            return null; // Return null if the input is valid
+                                          },
                                         ),
                                       ],
                                     ),
@@ -392,12 +433,26 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           _zipNumTextController,
                                           "Enter Zip/Postal Code",
                                           Icons.share_location_sharp,
+                                          (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter your name';
+                                            }
+                                            // Additional validation logic for project name if needed
+                                            return null; // Return null if the input is valid
+                                          },
                                         ),
                                         inputTextField(
                                           _countryKey,
                                           _countryTextController,
                                           "Enter Country",
                                           Icons.share_location_sharp,
+                                          (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter your name';
+                                            }
+                                            // Additional validation logic for project name if needed
+                                            return null; // Return null if the input is valid
+                                          },
                                         ),
                                       ],
                                     ),
@@ -564,8 +619,12 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                           text: "Proceed to Verify",
                           onPressed: () async {
                             //Check for the fields are valid in TextFormField.
-                            final isValid = formKey.currentState!.validate();
-                            if (!isValid) return;
+                            // final isValid = formKey.currentState!.validate();
+                            // if (!isValid) return;
+
+                            //Check if last 2 fields are empty
+                            _aboutMeKey.currentState!.validate();
+                            _skillsKey.currentState!.validate();
 
                             await Auth().createUserWithEmailAndPassword(
                               email: args['email'],
