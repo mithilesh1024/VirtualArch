@@ -17,8 +17,7 @@ class UploadDesignScreen extends StatefulWidget {
 
 class _UploadDesignScreenState extends State<UploadDesignScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  List imageLinks = [];
-
+  List<String> imageLinks = [];
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -74,12 +73,12 @@ class _UploadDesignScreenState extends State<UploadDesignScreen> {
                         child: ResponsiveGridList(
                           rowMainAxisAlignment: MainAxisAlignment.end,
                           minItemsPerRow: 1,
-                          minItemWidth: 300,
+                          minItemWidth: 250,
                           listViewBuilderOptions: ListViewBuilderOptions(
                             padding: EdgeInsets.zero,
                           ),
                           children: List.generate(
-                            5,
+                            imageLinks.length,
                             (index) => UploadImage(
                               imgName: "Design $index",
                               index: 0,
@@ -93,7 +92,7 @@ class _UploadDesignScreenState extends State<UploadDesignScreen> {
                           ),
                         ),
                       ),
-                      const AddButtonDesign(),
+
                       // ElevatedButton(
                       //   style: ElevatedButton.styleFrom(
                       //     shape: RoundedRectangleBorder(
@@ -120,6 +119,16 @@ class _UploadDesignScreenState extends State<UploadDesignScreen> {
             )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          //add
+          setState(() {
+            imageLinks.add("Chirag");
+          });
+        },
+        backgroundColor: Theme.of(context).canvasColor,
+        child: const AddButtonDesign(),
       ),
     );
   }

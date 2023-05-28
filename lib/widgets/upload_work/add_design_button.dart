@@ -6,12 +6,12 @@ class AddButtonDesign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300,
-      height: 200,
+      width: 50,
+      height: 50,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Theme.of(context).canvasColor,
-      ),
+          // borderRadius: BorderRadius.circular(15),
+          color: Theme.of(context).canvasColor,
+          shape: BoxShape.circle),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
         child: Image.asset("assets/add.png"),
