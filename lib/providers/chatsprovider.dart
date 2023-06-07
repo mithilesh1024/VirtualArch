@@ -33,6 +33,7 @@ class ChatsProvider with ChangeNotifier {
     final User? architect = Auth().currentUser;
     var architectId = architect!.uid;
     List<dynamic> clientsIdArray = await getMessagedClientsID();
+    _chatClientList.clear();
     List<Future<void>> futures = clientsIdArray.map((userId) async {
       //Write Code to retrieve and update List
       String chatId = userId + architectId;

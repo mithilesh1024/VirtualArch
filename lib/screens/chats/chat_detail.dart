@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../firebase/authentication.dart';
 import '../../models/chats_model.dart';
 import '../../providers/chatsprovider.dart';
+import '../../widgets/auth/customdecorationforinput.dart';
 import '../../widgets/customloadingspinner.dart';
 import '../../widgets/customscreen.dart';
+import '../../widgets/glassmorphism.dart';
 import '../../widgets/headerwithphoto.dart';
 import 'package:timeago/timeago.dart' as timeago;
-
 import 'chats_screen.dart';
 
 class ChatDetail extends StatefulWidget {
@@ -40,6 +40,29 @@ class _ChatDetailState extends State<ChatDetail> {
         clientId,
       );
     }
+  }
+
+  Widget textInputBuilder(
+    Key inputKey,
+    String inputTitle,
+    IconData inputIcon,
+    TextEditingController inputs,
+    String? Function(String?) validator,
+  ) {
+    return Container(
+      width: 500,
+      margin: const EdgeInsets.all(10),
+      child: TextFormField(
+        key: inputKey,
+        controller: inputs,
+        decoration: customDecorationForInput(
+          context,
+          inputTitle,
+          inputIcon,
+        ),
+        validator: validator,
+      ),
+    );
   }
 
   final _scrollController = ScrollController();
@@ -154,10 +177,11 @@ class _ChatDetailState extends State<ChatDetail> {
                                               const SizedBox(
                                                 width: 4,
                                               ),
-                                              const Icon(
+                                              Icon(
                                                 Icons.done_all,
                                                 size: 20,
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .secondaryHeaderColor,
                                               ),
                                             ],
                                           ),
@@ -194,9 +218,11 @@ class _ChatDetailState extends State<ChatDetail> {
                         Expanded(
                           child: TextField(
                             controller: _messageTextController,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               hintText: "Type a message.",
-                              hintStyle: TextStyle(color: Colors.white),
+                              hintStyle: TextStyle(
+                                color: Theme.of(context).secondaryHeaderColor,
+                              ),
                               border: InputBorder.none,
                             ),
                           ),
@@ -205,9 +231,28 @@ class _ChatDetailState extends State<ChatDetail> {
                           width: 15,
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            showModalBottomSheet(
+                                context: context,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
+                                ),
+                                builder: (BuildContext context) {
+                                  return Glassmorphism(
+                                    blur: 15,
+                                    opacity: 0.05,
+                                    radius: 20,
+                                    child: Column(
+                                      children: [TextFormField()],
+                                    ),
+                                  );
+                                });
+                          },
                           icon: Icon(
-                            Icons.camera_alt_rounded,
+                            Icons.add,
                             color: Theme.of(context).secondaryHeaderColor,
                             size: 30,
                           ),

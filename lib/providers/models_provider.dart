@@ -4,39 +4,7 @@ import '../models/upload_model.dart';
 
 class ModelsProvider with ChangeNotifier {
   bool init = false;
-  List<Models3D> models = [
-    //   Models3D(
-    //     modelId: '5',
-    //     modelImageURL: "assets/imagesModels/Villa4.png",
-    //     model3dURL: "assets/3dModels/Villa1.glb",
-    //     modelName: "Tranquility Manor",
-    //     modelPrice: 67,
-    //     modelEstimatedBuildPrice: 10000000,
-    //     modelArchitectname: "Tara Shetkar",
-    //     modelArchitectID: "1",
-    //     modelColorScheme: ["Laminate"],
-    //     modelFloors: 1,
-    //     modelTotalSquareFootage: 400,
-    //     modelRoofStyle: ["Laminate"],
-    //     modelNumberOfCommonRooms: 2,
-    //     modelNumberOfBedrooms: 2,
-    //     modelNumberOfBaths: 3,
-    //     modelFlooringOfRooms: ["Laminate"],
-    //     modelLightingOfRooms: ["Track lighting"],
-    //     modelCeilingHeight: 9.0,
-    //     modelKitchenCountertops: [],
-    //     modelKitchenCabinetry: [],
-    //     modelFlooringOfKitchen: [],
-    //     modelBathroomVanity: [],
-    //     modelYard: true,
-    //     modelDeck: false,
-    //     modelPatio: false,
-    //     modelParkings: true,
-    //     modelPool: false,
-    //     modelTechnologyAndSmartFeatures: ["Smart thermostat"],
-    //     modelOtherDesignLinks: {},
-    //   ),
-  ];
+  List<Models3D> models = [];
 
   Stream<List<Models3D>> get getMyModels {
     var result =
@@ -45,6 +13,19 @@ class ModelsProvider with ChangeNotifier {
                   .map((docs) => Models3D.fromJson(docs.data()))
                   .toList(),
             );
+    return result;
+  }
+
+  Stream<List<Models3D>> getArchitectSpecificModels(String architectID) {
+    var result = FirebaseFirestore.instance
+        .collection("models")
+        .where("modelArchitectID", isEqualTo: architectID)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((docs) => Models3D.fromJson(docs.data()))
+              .toList(),
+        );
     return result;
   }
 
