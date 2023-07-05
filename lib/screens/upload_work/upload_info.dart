@@ -194,35 +194,23 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
             _modelNameKey.currentState!.validate() &&
             _modelPriceKey.currentState!.validate() &&
             _modelEstimatedBuildPriceKey.currentState!.validate()) {
-          setState(() {
-            currentStep = 1;
-          });
+          currentStep = 1;
         } else if (currentStep == 1 &&
             _modelFloorsKey.currentState!.validate() &&
             _modelTotalSquareFootageKey.currentState!.validate()) {
-          setState(() {
-            currentStep = 2;
-          });
+          currentStep = 2;
         } else if (currentStep == 2 &&
             _modelNumberOfCommonRoomsKey.currentState!.validate() &&
             _modelNumberOfBedroomsKey.currentState!.validate() &&
             _modelNumberOfBathsKey.currentState!.validate() &&
             _modelCeilingHeightKey.currentState!.validate()) {
-          setState(() {
-            currentStep = 3;
-          });
+          currentStep = 3;
         } else if (currentStep == 3) {
-          setState(() {
-            currentStep = 4;
-          });
+          currentStep = 4;
         } else if (currentStep == 4) {
-          setState(() {
-            currentStep = 5;
-          });
+          currentStep = 5;
         } else if (currentStep == 5) {
-          setState(() {
-            currentStep = 6;
-          });
+          currentStep = 6;
         }
       });
     }
@@ -427,13 +415,16 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                         "Enter Project Name",
                                         Icons.catching_pokemon,
                                         _modelNameController,
-                                        (value) {
-                                          if (value!.isEmpty) {
-                                            return 'Please enter a project name';
-                                          }
-                                          // Additional validation logic for project name if needed
-                                          return null; // Return null if the input is valid
-                                        },
+                                         (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter your project name';
+                                            }
+                                            if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                                              return 'Please enter alphabets only(spaces allowed)';
+                                            } 
+                                            return null; // Return null if the input is valid
+                                            // Additional validation logic for project name if needed
+                                          },
                                       ),
                                       textInputBuilder(
                                         _modelPriceKey,
@@ -442,7 +433,10 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                         _modelPriceController,
                                         (value) {
                                           if (value!.isEmpty) {
-                                            return 'Please enter a project name';
+                                            return 'Please enter Price';
+                                          }
+                                          if (!RegExp(r'^\d+(\.\d+)?$').hasMatch(value)) {
+                                            return 'Please enter a valid price (e.g.- 4500/4500.00)';
                                           }
                                           // Additional validation logic for project name if needed
                                           return null; // Return null if the input is valid
@@ -463,7 +457,10 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                         _modelEstimatedBuildPriceController,
                                         (value) {
                                           if (value!.isEmpty) {
-                                            return 'Please enter a project name';
+                                            return 'Please enter estimated construction price';
+                                          }
+                                          if (!RegExp(r'^\d+(\.\d+)?$').hasMatch(value)) {
+                                            return 'Please enter a valid price (e.g.- 4500/4500.00)';
                                           }
                                           // Additional validation logic for project name if needed
                                           return null; // Return null if the input is valid
@@ -495,7 +492,14 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                         _modelFloorsController,
                                         (value) {
                                           if (value!.isEmpty) {
-                                            return 'Please enter a project name';
+                                            return 'Please enter number of floors(1-7)';
+                                          }
+                                          if (!RegExp(r'^\d+$').hasMatch(value)) {
+                                            return 'Please enter a digit';
+                                          }
+                                          int floors = int.parse(value);
+                                          if (floors < 1 || floors > 7) {
+                                            return 'Please enter a number from 1 to 7';
                                           }
                                           // Additional validation logic for project name if needed
                                           return null; // Return null if the input is valid
@@ -508,7 +512,10 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                         _modelTotalSquareFootageController,
                                         (value) {
                                           if (value!.isEmpty) {
-                                            return 'Please enter a project name';
+                                            return 'Please enter Total area in sqft';
+                                          }
+                                          if (!RegExp(r'^\d+(\.\d+)?$').hasMatch(value)) {
+                                            return 'Please enter a valid area (e.g.- 800/800.56)';
                                           }
                                           // Additional validation logic for project name if needed
                                           return null; // Return null if the input is valid
@@ -561,7 +568,14 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                         _modelNumberOfCommonRoomsController,
                                         (value) {
                                           if (value!.isEmpty) {
-                                            return 'Please enter a project name';
+                                            return 'Please enter number of common rooms(1-7)';
+                                          }
+                                          if (!RegExp(r'^\d+$').hasMatch(value)) {
+                                            return 'Please enter a digit';
+                                          }
+                                          int floors = int.parse(value);
+                                          if (floors < 1 || floors > 7) {
+                                            return 'Please enter a number from 1 to 7';
                                           }
                                           // Additional validation logic for project name if needed
                                           return null; // Return null if the input is valid
@@ -574,7 +588,14 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                         _modelNumberOfBedroomsController,
                                         (value) {
                                           if (value!.isEmpty) {
-                                            return 'Please enter a project name';
+                                            return 'Please enter number of bedrooms(1-7)';
+                                          }
+                                          if (!RegExp(r'^\d+$').hasMatch(value)) {
+                                            return 'Please enter a digit';
+                                          }
+                                          int floors = int.parse(value);
+                                          if (floors < 1 || floors > 7) {
+                                            return 'Please enter a number from 1 to 7';
                                           }
                                           // Additional validation logic for project name if needed
                                           return null; // Return null if the input is valid
@@ -595,7 +616,14 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                         _modelNumberOfBathsController,
                                         (value) {
                                           if (value!.isEmpty) {
-                                            return 'Please enter a project name';
+                                            return 'Please enter number of bathrooms(1-7)';
+                                          }
+                                          if (!RegExp(r'^\d+$').hasMatch(value)) {
+                                            return 'Please enter a digit';
+                                          }
+                                          int floors = int.parse(value);
+                                          if (floors < 1 || floors > 7) {
+                                            return 'Please enter a number from 1 to 7';
                                           }
                                           // Additional validation logic for project name if needed
                                           return null; // Return null if the input is valid
@@ -608,7 +636,10 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                         _modelCeilingHeightController,
                                         (value) {
                                           if (value!.isEmpty) {
-                                            return 'Please enter a project name';
+                                            return 'Please enter ceiling height';
+                                          }
+                                          if (!RegExp(r'^\d+(\.\d+)?$').hasMatch(value)) {
+                                            return 'Please enter a valid height (e.g.- 8/8.56)';
                                           }
                                           // Additional validation logic for project name if needed
                                           return null; // Return null if the input is valid

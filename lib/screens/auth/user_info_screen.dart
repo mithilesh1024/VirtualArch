@@ -271,7 +271,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                             ),
                                           ),
                                         ),
-                                        //Name
+                                        // Name
                                         inputTextField(
                                           _nameKey,
                                           _nameTextController,
@@ -281,10 +281,16 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                             if (value!.isEmpty) {
                                               return 'Please enter your name';
                                             }
-                                            // Additional validation logic for project name if needed
+                                            if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                                              return 'Please enter alphabets only(spaces allowed)';
+                                            } 
                                             return null; // Return null if the input is valid
+                                            // Additional validation logic for project name if needed
                                           },
                                         ),
+                                        // for(int i=0;i<value.length;i++){
+                                        //  if(!(value[i]>='a'&&value[i]<='z')||!(value[i]>='A'&&value[i]<='Z')||!(value[i]==" "))     
+                                        // }
                                       ],
                                     ),
                                   ),
@@ -300,7 +306,15 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           Icons.verified_outlined,
                                           (value) {
                                             if (value!.isEmpty) {
-                                              return 'Please enter your name';
+                                              return 'Please enter Register Number(e.g.- GA/2001 )';
+                                            }
+                                            final regex = RegExp(r'^[A-Z]{2}/\d{4}$');
+                                            if (!regex.hasMatch(value)) {
+                                              return 'Register Number must be in the format AB/YYYY (e.g.- GA/2001, GA is capital )';
+                                            }
+                                            final year = int.tryParse(value.split('/')[1]);
+                                            if (year == null || year < 1900 || year > 9999) {
+                                              return 'Please enter a valid year.';
                                             }
                                             // Additional validation logic for project name if needed
                                             return null; // Return null if the input is valid
@@ -313,10 +327,13 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           Icons.real_estate_agent_rounded,
                                           (value) {
                                             if (value!.isEmpty) {
-                                              return 'Please enter your name';
+                                              return 'Please enter Experience in years (e.g.- 10)';
                                             }
-                                            // Additional validation logic for project name if needed
+                                            if (!RegExp(r'^\d+$').hasMatch(value)) {
+                                              return 'Experience must be a positive number (e.g.- 10)';
+                                            } 
                                             return null; // Return null if the input is valid
+                                            // Additional validation logic for project name if needed
                                           },
                                         ),
                                       ],
@@ -367,10 +384,13 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           Icons.share_location_sharp,
                                           (value) {
                                             if (value!.isEmpty) {
-                                              return 'Please enter your name';
-                                            }
+                                              return 'Please enter your company name';
+                                            } 
+                                            if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                                              return 'Please enter alphabets only(spaces allowed)';
+                                            } 
+                                              return null; // Return null if the input is valid
                                             // Additional validation logic for project name if needed
-                                            return null; // Return null if the input is valid
                                           },
                                         ),
                                         inputTextField(
@@ -380,7 +400,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           Icons.share_location_sharp,
                                           (value) {
                                             if (value!.isEmpty) {
-                                              return 'Please enter your name';
+                                              return 'Please enter your office address';
                                             }
                                             // Additional validation logic for project name if needed
                                             return null; // Return null if the input is valid
@@ -401,10 +421,13 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           Icons.share_location_sharp,
                                           (value) {
                                             if (value!.isEmpty) {
-                                              return 'Please enter your name';
-                                            }
+                                              return 'Please enter your city';
+                                            } 
+                                            if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                                              return 'Please enter alphabets only(spaces allowed)';
+                                            } 
+                                              return null; // Return null if the input is valid
                                             // Additional validation logic for project name if needed
-                                            return null; // Return null if the input is valid
                                           },
                                         ),
                                         inputTextField(
@@ -414,10 +437,13 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           Icons.share_location_sharp,
                                           (value) {
                                             if (value!.isEmpty) {
-                                              return 'Please enter your name';
+                                              return 'Please enter your state';
                                             }
+                                            if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                                              return 'Please enter alphabets only(spaces allowed)';
+                                            } 
+                                              return null; // Return null if the input is valid
                                             // Additional validation logic for project name if needed
-                                            return null; // Return null if the input is valid
                                           },
                                         ),
                                       ],
@@ -435,7 +461,13 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           Icons.share_location_sharp,
                                           (value) {
                                             if (value!.isEmpty) {
-                                              return 'Please enter your name';
+                                              return 'Please enter your zip/postal code';
+                                            }
+                                            if (value.length != 6) {
+                                              return 'Zip/Postal code must be a 6-digit number';
+                                            }
+                                            if (!value.contains(RegExp(r'^[0-9]+$'))) {
+                                              return 'Zip/Postal code must contain only 6 digits';
                                             }
                                             // Additional validation logic for project name if needed
                                             return null; // Return null if the input is valid
@@ -448,10 +480,13 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           Icons.share_location_sharp,
                                           (value) {
                                             if (value!.isEmpty) {
-                                              return 'Please enter your name';
+                                              return 'Please enter your country';
                                             }
+                                            if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                                              return 'Please enter alphabets only(spaces allowed)';
+                                            } 
+                                              return null; // Return null if the input is valid
                                             // Additional validation logic for project name if needed
-                                            return null; // Return null if the input is valid
                                           },
                                         ),
                                       ],
