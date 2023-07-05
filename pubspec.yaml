@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^2.7.0
+  firebase_core: ^2.14.0
   # cupertino_icons: ^1.0.2
   otp_text_field: ^1.1.3
   firebase_auth: ^4.2.9
@@ -60,8 +60,10 @@ dependencies:
   awesome_snackbar_content: ^0.1.3
   timeago: ^3.3.0
   intl: ^0.17.0
-  jitsi_meet_fix: ^4.0.5
-  date_time_picker: ^2.1.0
+  googleapis: ^11.2.0
+  googleapis_auth: ^1.4.1
+  url_launcher: ^6.1.11
+  firebase_messaging: ^14.6.2
 
 dev_dependencies:
   flutter_test:
@@ -98,8 +100,6 @@ flutter:
     - assets/Logo.png
     - assets/fetchModel.png
     - assets/add.png
-    - assets/VideoCall.gif
-    - assets/NoData.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

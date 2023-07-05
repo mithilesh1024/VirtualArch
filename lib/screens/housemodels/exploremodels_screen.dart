@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
-import 'package:virtualarch/firebase/authentication.dart';
 import 'package:virtualarch/widgets/customloadingspinner.dart';
+import '../../firebase/firestore_database.dart';
 import '../../providers/models_provider.dart';
 import '../../widgets/auth/customdecorationforinput.dart';
 import '../../widgets/custommenu.dart';
@@ -25,11 +25,17 @@ class _ExploreModelsScreenState extends State<ExploreModelsScreen> {
   bool isFilterOn = false;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FireDatabase.addToken();
+    print("home ");
+  }
+
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var modelData = Provider.of<ModelsProvider>(context, listen: false);
-    final architectID = Auth().currentUser!.uid;
-
     return Scaffold(
       key: scaffoldKey,
       endDrawer: const CustomMenu(),
@@ -94,7 +100,7 @@ class _ExploreModelsScreenState extends State<ExploreModelsScreen> {
               ),
               // if (!init) ...[
               StreamBuilder(
-                stream: modelData.getArchitectSpecificModels(architectID),
+                stream: modelData.getMyModels,
                 builder: (context, snapshots) {
                   if (!snapshots.hasData) {
                     return const CustomLoadingSpinner();
