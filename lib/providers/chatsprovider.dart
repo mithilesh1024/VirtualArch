@@ -67,14 +67,16 @@ class ChatsProvider with ChangeNotifier {
           if (isPresentInList == false) {
             _chatClientList.add(
               ChatArchitectsListModel(
-                name: docClientSnapshot.get('name'),
+                clientsName: docClientSnapshot.get('name'),
                 message: docChatsSnapshot.get('message'),
+                clientsEmail: docClientSnapshot.get('email'),
                 // imageURL: docClientSnapshot.get('architectImageUrl'),
                 imageURL: "assets/Male.png",
                 time: convertTimeStampToDate(docChatsSnapshot.get('time')),
                 isRead: docChatsSnapshot.get('read'),
                 unreadCount: 1,
                 chatId: chatId,
+                architectsName: await getArchitectsName(),
               ),
             );
           }
@@ -84,6 +86,21 @@ class ChatsProvider with ChangeNotifier {
     }).toList();
     await Future.wait(futures);
     return [..._chatClientList];
+  }
+
+  Future<String> getArchitectsName() async {
+    final User? user = Auth().currentUser;
+    var architectId = user!.uid;
+    final CollectionReference architectsCollection =
+        FirebaseFirestore.instance.collection("architects");
+    DocumentSnapshot documentSnapshot =
+        await architectsCollection.doc(architectId).get();
+    if (documentSnapshot.exists) {
+      return documentSnapshot.get("architectName");
+    } else {
+      print('Document does not exists on the Database');
+      return "Unknown";
+    }
   }
 
   String convertTimeStampToDate(timestamp) {
