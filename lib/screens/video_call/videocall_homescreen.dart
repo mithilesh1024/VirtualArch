@@ -4,6 +4,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jitsi_meet_fix/jitsi_meet.dart';
+import 'package:lottie/lottie.dart';
 import 'package:virtualarch/screens/chats/chats_screen.dart';
 import 'package:virtualarch/screens/error_screen.dart';
 import 'package:virtualarch/widgets/customscreen.dart';
@@ -34,6 +35,7 @@ class _VideoCallHomeScreenState extends State<VideoCallHomeScreen> {
   bool? isAudioMuted = true;
   bool? isVideoMuted = true;
   bool isInvited = false;
+  bool isJoinMeetingClicked = false;
 
   @override
   void initState() {
@@ -111,13 +113,17 @@ class _VideoCallHomeScreenState extends State<VideoCallHomeScreen> {
                               SizedBox(
                                 width: 700,
                                 child: Card(
-                                  color: Theme.of(context).canvasColor,
+                                  color: Theme.of(context).secondaryHeaderColor,
                                   child: Container(
                                     width: size.width * 0.60,
-                                    height: size.height * 0.80,
-                                    decoration: const BoxDecoration(
+                                    height: size.height * 0.75,
+                                    decoration: BoxDecoration(
                                       image: DecorationImage(
-                                        image: AssetImage("assets/Logo.png"),
+                                        image: isJoinMeetingClicked
+                                            ? const AssetImage(
+                                                "assets/launchRocket.gif")
+                                            : const AssetImage(
+                                                "assets/videoIcon.gif"),
                                       ),
                                     ),
                                     child: JitsiMeetConferencing(
@@ -145,12 +151,12 @@ class _VideoCallHomeScreenState extends State<VideoCallHomeScreen> {
   Widget meetConfig(args, Size size, scaffoldMessengerVar) {
     return Column(
       children: [
-        Image.asset(
-          "assets/VideoCall.gif",
+        SizedBox(
           height: size.height * 0.5,
+          child: Lottie.asset("assets/PhoneInHand.json"),
         ),
         const SizedBox(
-          height: 14.0,
+          height: 10.0,
         ),
         Container(
           padding: const EdgeInsets.all(10),
@@ -161,7 +167,7 @@ class _VideoCallHomeScreenState extends State<VideoCallHomeScreen> {
           child: Column(
             children: [
               Text(
-                "Schedule and Invite Meet",
+                "Schedule and Invite",
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               DateTimePicker(
@@ -266,6 +272,9 @@ class _VideoCallHomeScreenState extends State<VideoCallHomeScreen> {
           width: double.maxFinite,
           child: ElevatedButton(
             onPressed: () {
+              setState(() {
+                isJoinMeetingClicked = true;
+              });
               _joinMeeting();
             },
             style: ButtonStyle(
@@ -274,7 +283,7 @@ class _VideoCallHomeScreenState extends State<VideoCallHomeScreen> {
               ),
             ),
             child: Text(
-              "Join Meeting",
+              "Launch Meet",
               style: Theme.of(context)
                   .textTheme
                   .titleMedium!
@@ -354,6 +363,9 @@ class _VideoCallHomeScreenState extends State<VideoCallHomeScreen> {
             debugPrint("${options.room} joined with message: $message");
           },
           onConferenceTerminated: (message) {
+            setState(() {
+              isJoinMeetingClicked = false;
+            });
             debugPrint("${options.room} terminated with message: $message");
           },
           genericListeners: [

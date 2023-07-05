@@ -62,6 +62,7 @@ dependencies:
   intl: ^0.17.0
   jitsi_meet_fix: ^4.0.5
   date_time_picker: ^2.1.0
+  lottie: ^2.3.2
 
 dev_dependencies:
   flutter_test:
@@ -100,6 +101,10 @@ flutter:
     - assets/add.png
     - assets/VideoCall.gif
     - assets/NoData.png
+    - assets/PhoneInHand.json
+    - assets/walkingPencil.json
+    - assets/videoIcon.gif
+    - assets/launchRocket.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

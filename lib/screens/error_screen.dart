@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class ErrorScreen extends StatelessWidget {
   final String screenToBeRendered;
@@ -21,7 +22,7 @@ class ErrorScreen extends StatelessWidget {
           children: [
             SizedBox(
               height: size.height * 0.4,
-              child: Image.asset("assets/NoData.png"),
+              child: Lottie.asset("assets/walkingPencil.json")
             ),
             RichText(
               text: TextSpan(
