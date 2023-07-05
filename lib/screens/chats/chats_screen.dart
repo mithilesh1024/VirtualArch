@@ -66,13 +66,15 @@ class _ChatsScreenState extends State<ChatsScreen> {
                       padding: const EdgeInsets.only(top: 25, bottom: 20),
                       itemBuilder: (context, index) {
                         return ChatList(
-                          name: snapshot.data![index].name,
+                          clientsName: snapshot.data![index].clientsName,
+                          architectsName: snapshot.data![index].architectsName,
                           message: snapshot.data![index].message,
                           imageUrl: snapshot.data![index].imageURL,
                           time: snapshot.data![index].time,
                           unreadCount: snapshot.data![index].unreadCount,
                           chatsId: snapshot.data![index].chatId,
                           isRead: (index == 0 || index == 3) ? true : false,
+                          clientsEmail: snapshot.data![index].clientsEmail,
                         );
                       },
                     ));

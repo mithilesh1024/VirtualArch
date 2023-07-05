@@ -4,22 +4,26 @@ import '../../firebase/authentication.dart';
 import '../../screens/chats/chat_detail.dart';
 
 class ChatList extends StatefulWidget {
-  final String name;
+  final String clientsName;
+  final String architectsName;
   final String message;
   final String imageUrl;
   final String time;
   final int unreadCount;
   final bool isRead;
   final String chatsId;
+  final String clientsEmail;
   const ChatList({
     super.key,
-    required this.name,
+    required this.clientsName,
+    required this.architectsName,
     required this.message,
     required this.imageUrl,
     required this.time,
     required this.unreadCount,
     required this.chatsId,
     required this.isRead,
+    required this.clientsEmail,
   });
   @override
   State<ChatList> createState() => _ChatListState();
@@ -36,8 +40,11 @@ class _ChatListState extends State<ChatList> {
         Navigator.of(context).pushNamed(ChatDetail.routeName, arguments: {
           'aid': architect!.uid,
           'uid': widget.chatsId.replaceAll(architect.uid, ""),
-          'name': widget.name,
+          'clientsName': widget.clientsName,
           'imageUrl': widget.imageUrl,
+          'clientsEmail': widget.clientsEmail,
+          'chatsId': widget.chatsId,
+          'architectsName': widget.architectsName,
         });
       },
       splashColor: Theme.of(context).primaryColor,
@@ -104,7 +111,7 @@ class _ChatListState extends State<ChatList> {
                       Flexible(
                         child: Container(
                           child: Text(
-                            widget.name,
+                            widget.clientsName,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)

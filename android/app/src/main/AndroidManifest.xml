@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.virtualarch">
+    package="com.example.virtualarch"
+    xmlns:tools="http://schemas.android.com/tools">
    <application
+        tools:replace="android:label"
         android:label="virtualarch"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"

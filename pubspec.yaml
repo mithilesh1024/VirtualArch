@@ -60,6 +60,8 @@ dependencies:
   awesome_snackbar_content: ^0.1.3
   timeago: ^3.3.0
   intl: ^0.17.0
+  jitsi_meet_fix: ^4.0.5
+  date_time_picker: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -96,6 +98,8 @@ flutter:
     - assets/Logo.png
     - assets/fetchModel.png
     - assets/add.png
+    - assets/VideoCall.gif
+    - assets/NoData.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -60,5 +60,19 @@
         });
       });
     </script>
+    <!-- This is for jitsi web -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("/flutter_service_worker.js");
+        });
+      }
+    </script>
+    <script
+      src="https://meet.jit.si/external_api.js"
+      type="application/javascript"
+    ></script>
+    <script src="main.dart.js" type="application/javascript"></script>
+    <!-- Jitsi till here -->
   </body>
 </html>

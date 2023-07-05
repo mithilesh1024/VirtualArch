@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:virtualarch/providers/models_provider.dart';
 import 'package:virtualarch/screens/housemodels/models_detail_screen.dart';
 import 'package:virtualarch/screens/upload_work/upload_info.dart';
+import 'package:virtualarch/screens/video_call/videocall_homescreen.dart';
 import 'providers/chatsprovider.dart';
 import 'providers/drawer_nav_provider.dart';
 import 'providers/user_data_provider.dart';
@@ -80,7 +81,7 @@ class MyApp extends StatelessWidget {
               )),
         ),
         // initialRoute: HomeScreen.routeName,
-        home: ChatsScreen(),
+        home: WidgetTree(),
         //All routes for navigations.
         routes: {
           HomeScreen.routeName: (ctx) => const HomeScreen(),
@@ -97,6 +98,7 @@ class MyApp extends StatelessWidget {
           UploadProjInfo.routeName: (ctx) => UploadProjInfo(),
           UploadDesignScreen.routeName: (ctx) => UploadDesignScreen(),
           ModelsDetailScreen.routeName: (ctx) => ModelsDetailScreen(),
+          VideoCallHomeScreen.routeName: (ctx) => VideoCallHomeScreen(),
         },
       ),
     );
