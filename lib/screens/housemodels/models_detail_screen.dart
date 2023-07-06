@@ -92,7 +92,7 @@ class _ModelsDetailScreenState extends State<ModelsDetailScreen> {
                         child: SizedBox(
                           width: double.infinity,
                           child: Wrap(
-                            alignment: WrapAlignment.start,
+                            alignment: WrapAlignment.spaceBetween,
                             // crossAxisAlignment: WrapCrossAlignment.center,
                             spacing: 20,
                             runSpacing: 10,

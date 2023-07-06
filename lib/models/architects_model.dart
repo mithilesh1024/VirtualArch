@@ -11,21 +11,22 @@ class ArchitectModel {
   final List? architectClientsId;
   final List? architectProjectsId;
   final String architectEmail;
+  final List? token;
 
-  ArchitectModel({
-    required this.architectID,
-    required this.architectName,
-    required this.architectType,
-    required this.architectRegisterNum,
-    required this.architectExperience,
-    required this.architectOfficeLocation,
-    required this.aboutMe,
-    required this.skills,
-    required this.architectEmail,
-    this.architectImageUrl,
-    this.architectClientsId,
-    this.architectProjectsId,
-  });
+  ArchitectModel(
+      {required this.architectID,
+      required this.architectName,
+      required this.architectType,
+      required this.architectRegisterNum,
+      required this.architectExperience,
+      required this.architectOfficeLocation,
+      required this.aboutMe,
+      required this.skills,
+      required this.architectEmail,
+      this.architectImageUrl,
+      this.architectClientsId,
+      this.architectProjectsId,
+      this.token});
 
   Map<String, dynamic> toJson() => {
         'architectID': architectID,
@@ -40,6 +41,7 @@ class ArchitectModel {
         'architectImageUrl': architectImageUrl,
         'architectClientsId': [],
         'architectProjectsId': [],
+        'token': []
       };
 
   static ArchitectModel fromJson(Map<String, dynamic> json) => ArchitectModel(
@@ -55,5 +57,6 @@ class ArchitectModel {
         architectImageUrl: json['architectImageUrl'],
         architectClientsId: json['architectClientsId'],
         architectProjectsId: json['architectProjectsId'],
+        token: json['token'],
       );
 }

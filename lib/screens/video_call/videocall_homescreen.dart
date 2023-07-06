@@ -97,7 +97,7 @@ class _VideoCallHomeScreenState extends State<VideoCallHomeScreen> {
                         child: SizedBox(
                           width: double.infinity,
                           child: Wrap(
-                            alignment: WrapAlignment.start,
+                            alignment: WrapAlignment.center,
                             // crossAxisAlignment: WrapCrossAlignment.center,
                             spacing: 20,
                             runSpacing: 10,
