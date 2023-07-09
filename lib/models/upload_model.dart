@@ -9,6 +9,7 @@ class Models3D {
   final int modelEstimatedBuildPrice;
   final String modelArchitectname;
   final String modelArchitectID;
+  final String modelPassword;
 
   //Exterior
   final List modelColorScheme;
@@ -41,7 +42,7 @@ class Models3D {
   final List modelTechnologyAndSmartFeatures;
 
   //Other Designs
-  // final Map<String, dynamic> modelOtherDesignLinks;
+  final Map<dynamic, dynamic>? modelOtherDesignLinks;
 
   Models3D({
     required this.modelId,
@@ -53,6 +54,7 @@ class Models3D {
     required this.modelEstimatedBuildPrice,
     required this.modelArchitectname,
     required this.modelArchitectID,
+    required this.modelPassword,
     required this.modelColorScheme,
     required this.modelFloors,
     required this.modelTotalSquareFootage,
@@ -73,7 +75,7 @@ class Models3D {
     required this.modelParkings,
     required this.modelPool,
     required this.modelTechnologyAndSmartFeatures,
-    // required this.modelOtherDesignLinks,
+    this.modelOtherDesignLinks,
   });
 
   Map<String, dynamic> toJson() => {
@@ -86,6 +88,7 @@ class Models3D {
         'modelEstimatedBuildPrice': modelEstimatedBuildPrice,
         'modelArchitectname': modelArchitectname,
         'modelArchitectID': modelArchitectID,
+        'modelPassword': modelPassword,
         'modelColorScheme': modelColorScheme,
         'modelFloors': modelFloors,
         'modelTotalSquareFootage': modelTotalSquareFootage,
@@ -106,40 +109,42 @@ class Models3D {
         'modelParkings': modelParkings,
         'modelPool': modelPool,
         'modelTechnologyAndSmartFeatures': modelTechnologyAndSmartFeatures,
-        // 'modelOtherDesignLinks': {},
+        'modelOtherDesignLinks': {},
       };
 
-  static Models3D fromJson(Map<String, dynamic> json) => Models3D(
-        modelId: json['modelId'],
-        modelImageURL: json['modelImageURL'],
-        model3dURL: json['model3dURL'],
-        model3dBirdsView: json['model3dBirdsView'],
-        modelName: json['modelName'],
-        modelPrice: json['modelPrice'],
-        modelEstimatedBuildPrice: json['modelEstimatedBuildPrice'],
-        modelArchitectname: json['modelArchitectname'],
-        modelArchitectID: json['modelArchitectID'],
-        modelColorScheme: json['modelColorScheme'],
-        modelFloors: json['modelFloors'],
-        modelTotalSquareFootage: json['modelTotalSquareFootage'],
-        modelRoofStyle: json['modelRoofStyle'],
-        modelNumberOfCommonRooms: json['modelNumberOfCommonRooms'],
-        modelNumberOfBedrooms: json['modelNumberOfBedrooms'],
-        modelNumberOfBaths: json['modelNumberOfBaths'],
-        modelFlooringOfRooms: json['modelFlooringOfRooms'],
-        modelLightingOfRooms: json['modelLightingOfRooms'],
-        modelCeilingHeight: json['modelCeilingHeight'],
-        modelKitchenCountertops: json['modelKitchenCountertops'],
-        modelKitchenCabinetry: json['modelKitchenCabinetry'],
-        modelFlooringOfKitchen: json['modelFlooringOfKitchen'],
-        modelBathroomVanity: json['modelBathroomVanity'],
-        modelYard: json['modelYard'],
-        modelDeck: json['modelDeck'],
-        modelPatio: json['modelPatio'],
-        modelParkings: json['modelParkings'],
-        modelPool: json['modelPool'],
-        modelTechnologyAndSmartFeatures:
-            json['modelTechnologyAndSmartFeatures'],
-        // modelOtherDesignLinks: json['modelOtherDesignLinks'],
-      );
+  static Models3D fromJson(Map<String, dynamic> json) {
+    return Models3D(
+      modelId: json['modelId'],
+      modelImageURL: json['modelImageURL'],
+      model3dURL: json['model3dURL'],
+      model3dBirdsView: json['model3dBirdsView'],
+      modelName: json['modelName'],
+      modelPrice: json['modelPrice'],
+      modelEstimatedBuildPrice: json['modelEstimatedBuildPrice'],
+      modelArchitectname: json['modelArchitectname'],
+      modelArchitectID: json['modelArchitectID'],
+      modelColorScheme: json['modelColorScheme'],
+      modelFloors: json['modelFloors'],
+      modelTotalSquareFootage: json['modelTotalSquareFootage'],
+      modelRoofStyle: json['modelRoofStyle'],
+      modelNumberOfCommonRooms: json['modelNumberOfCommonRooms'],
+      modelNumberOfBedrooms: json['modelNumberOfBedrooms'],
+      modelNumberOfBaths: json['modelNumberOfBaths'],
+      modelFlooringOfRooms: json['modelFlooringOfRooms'],
+      modelLightingOfRooms: json['modelLightingOfRooms'],
+      modelCeilingHeight: json['modelCeilingHeight'],
+      modelKitchenCountertops: json['modelKitchenCountertops'],
+      modelKitchenCabinetry: json['modelKitchenCabinetry'],
+      modelFlooringOfKitchen: json['modelFlooringOfKitchen'],
+      modelBathroomVanity: json['modelBathroomVanity'],
+      modelYard: json['modelYard'],
+      modelDeck: json['modelDeck'],
+      modelPatio: json['modelPatio'],
+      modelParkings: json['modelParkings'],
+      modelPool: json['modelPool'],
+      modelTechnologyAndSmartFeatures: json['modelTechnologyAndSmartFeatures'],
+      modelOtherDesignLinks: json['modelOtherDesignLinks'],
+      modelPassword: json['modelPassword'],
+    );
+  }
 }

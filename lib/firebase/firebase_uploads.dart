@@ -18,6 +18,7 @@ class FirebaseUploads {
             int.parse(projectInfo['modelEstimatedBuildPrice']),
         modelArchitectname: projectInfo['modelArchitectname'],
         modelArchitectID: projectInfo['modelArchitectID'],
+        modelPassword: projectInfo['modelPassword'],
         modelColorScheme: projectInfo['modelColorScheme'],
         modelFloors: int.parse(projectInfo['modelFloors']),
         modelTotalSquareFootage:
@@ -41,7 +42,6 @@ class FirebaseUploads {
         modelPool: projectInfo['modelPool'],
         modelTechnologyAndSmartFeatures:
             projectInfo['modelTechnologyAndSmartFeatures'],
-        // modelOtherDesignLinks: {},
       );
       final json = newProject.toJson();
       await docProject.set(json);
@@ -49,6 +49,20 @@ class FirebaseUploads {
     } on FirebaseException catch (e) {
       print("upload text $e");
       return {'noErrors': false, 'projectId': ""};
+    }
+  }
+
+  Future<bool> addOtherDesignLinks(
+      {required projectId,
+      required Map<String, String> modelOtherDesignLinks}) async {
+    try {
+      var doc = FirebaseFirestore.instance;
+      await doc.collection("models").doc(projectId).update(
+        {"modelOtherDesignLinks": modelOtherDesignLinks},
+      );
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }
