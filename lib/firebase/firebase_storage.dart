@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
 
 import 'firestore_database.dart';
 
@@ -13,7 +14,7 @@ class FirebaseStorage {
   static final firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
 
-  static List images = [null, null, null, null, null, null, null, null];
+  static List images = [null];
 
   static const _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
@@ -142,36 +143,76 @@ class FirebaseStorage {
     }
   }
 
-  static Future<void> uploadModel(String id) async {
+  static void updateImageList() {
+    images.add(null);
+  }
+
+  //UPLOAD WORK
+  static Future<Map<String, String>> uploadModel(
+      List<TextEditingController> controllers) async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
-    String location = "$id/2d_images/";
-    images.asMap().forEach(
-      (index, element) async {
-        if (element != null) {
-          String fileName = element.files.single.name;
-          location += fileName;
-          print(fileName);
-          if (kIsWeb) {
-            Uint8List uploadFile = element.files.single.bytes;
-            final task = await storage.ref(location).putData(uploadFile);
+    // String userId = "222ww";
+    String location = "$userId/2d_images/";
+    Map<String, String> uploadedData = {};
+    for (int i = 0; i < images.length; i++) {
+      if (images[i] != null) {
+        String fileName = images[i].files.single.name;
+        location += fileName;
+        print(fileName);
+        if (kIsWeb) {
+          Uint8List uploadFile = images[i].files.single.bytes;
+          final task = await storage.ref(location).putData(uploadFile);
+          final urlString = await task.ref.getDownloadURL();
+          print("key ${controllers[i].text} \nurl $urlString");
+          uploadedData[controllers[i].text] = urlString;
+          //await FireDatabase.addModelUrl(urlString, getKey(index), id);
+        } else {
+          String filePath = images[i].files.single.path;
+          File file = File(filePath);
+          try {
+            final task = await storage.ref(location).putFile(file);
             final urlString = await task.ref.getDownloadURL();
-            print("key ${getKey(index)} \nurl $urlString");
-            await FireDatabase.addModelUrl(urlString, getKey(index), id);
-          } else {
-            String filePath = element.files.single.path;
-            File file = File(filePath);
-            try {
-              final task = await storage.ref(location).putFile(file);
-              final urlString = await task.ref.getDownloadURL();
-              await FireDatabase.addModelUrl(urlString, getKey(index), id);
-            } on firebase_core.FirebaseException catch (e) {
-              print(e);
-            }
+            uploadedData[controllers[i].text] = urlString;
+            //await FireDatabase.addModelUrl(urlString, getKey(index), id);
+          } on firebase_core.FirebaseException catch (e) {
+            print(e);
           }
         }
-      },
-    );
+      }
+    }
+    return uploadedData;
   }
+
+  // static Future<void> uploadModel(String id) async {
+  //   final userId = FirebaseAuth.instance.currentUser!.uid;
+  //   String location = "$id/2d_images/";
+  //   images.asMap().forEach(
+  //     (index, element) async {
+  //       if (element != null) {
+  //         String fileName = element.files.single.name;
+  //         location += fileName;
+  //         print(fileName);
+  //         if (kIsWeb) {
+  //           Uint8List uploadFile = element.files.single.bytes;
+  //           final task = await storage.ref(location).putData(uploadFile);
+  //           final urlString = await task.ref.getDownloadURL();
+  //           print("key ${getKey(index)} \nurl $urlString");
+  //           await FireDatabase.addModelUrl(urlString, getKey(index), id);
+  //         } else {
+  //           String filePath = element.files.single.path;
+  //           File file = File(filePath);
+  //           try {
+  //             final task = await storage.ref(location).putFile(file);
+  //             final urlString = await task.ref.getDownloadURL();
+  //             await FireDatabase.addModelUrl(urlString, getKey(index), id);
+  //           } on firebase_core.FirebaseException catch (e) {
+  //             print(e);
+  //           }
+  //         }
+  //       }
+  //     },
+  //   );
+  // }
 
   static Future<void> deleteModel(String url) async {
     storage.refFromURL(url).delete();

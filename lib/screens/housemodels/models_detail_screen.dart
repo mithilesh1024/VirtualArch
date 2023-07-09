@@ -58,6 +58,7 @@ class _ModelsDetailScreenState extends State<ModelsDetailScreen> {
       modelParkings: false,
       modelPool: false,
       modelTechnologyAndSmartFeatures: [],
+      modelPassword: '',
     );
     try {
       isErrorOccured = false;

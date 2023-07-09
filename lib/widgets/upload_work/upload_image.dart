@@ -75,7 +75,7 @@ class UploadImage extends StatelessWidget {
                     ] else ...[
                       image[index] == null
                           ? Text(
-                              "Upload Designs",
+                              "Upload Design",
                               style: Theme.of(context).textTheme.titleMedium,
                             )
                           : Image.memory(
