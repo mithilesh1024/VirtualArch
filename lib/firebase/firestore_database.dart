@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:virtualarch/firebase/firebase_storage.dart';
 import 'package:virtualarch/models/architects_model.dart';
 
 class FireDatabase {
@@ -71,13 +72,21 @@ class FireDatabase {
     // }
   }
 
-  static Future<void> deleteFromDb(String url) async {
+  static Future<void> deleteModel(String id) async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
-    FirebaseFirestore.instance.collection('models').doc(userId).update({
-      "house1": {
-        "2d_images": FieldValue.arrayRemove([url])
-      }
-    });
+    var modelData =
+        await FirebaseFirestore.instance.collection('models').doc(id).get();
+    List<dynamic> models = [];
+    models.add(modelData["model3dBirdsView"]);
+    models.add(modelData["model3dURL"]);
+    models.add(modelData["modelImageURL"]);
+    var mapImage = modelData["modelOtherDesignLinks"];
+    mapImage.forEach((tag, e) => models.add(e.toString()));
+    await FirebaseStorage.deleteModel(models);
+    await FirebaseFirestore.instance.collection('models').doc(id).delete();
+    await FirebaseFirestore.instance.collection('architects').doc(userId).set({
+      "architectProjectsId": FieldValue.arrayRemove([id])
+    }, SetOptions(merge: true));
   }
 
   static Future<void> addToken() async {
