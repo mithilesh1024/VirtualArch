@@ -42,7 +42,7 @@ class UserDataProvide with ChangeNotifier {
     await prefeb.setString('email', email);
   }
 
-  Future<void> updateData(Map<String, String> data) async {
+  Future<void> updateData(Map<String, dynamic> data) async {
     /*
       "name": _nameController.text,
       "exp": _experienceController.text,
@@ -70,6 +70,7 @@ class UserDataProvide with ChangeNotifier {
       "architectExperience": data["exp"],
       "architectImageUrl": data["image"],
       "architectOfficeLocation": address,
+      "skills": data["skills"]
     });
   }
 }

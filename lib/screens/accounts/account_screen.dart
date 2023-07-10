@@ -180,23 +180,23 @@ class _AccountScreenState extends State<AccountScreen>
                           return CustomLoadingSpinner();
                         }
                       }),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "My Orders",
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      IconButton(
-                        onPressed: () => Navigator.of(context)
-                            .pushNamed(ExploreModelsScreen.routeName),
-                        icon: const Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Text(
+                  //       "My Orders",
+                  //       style: Theme.of(context).textTheme.titleLarge,
+                  //     ),
+                  //     IconButton(
+                  //       onPressed: () => Navigator.of(context)
+                  //           .pushNamed(ExploreModelsScreen.routeName),
+                  //       icon: const Icon(
+                  //         Icons.arrow_forward_ios,
+                  //         color: Colors.white,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

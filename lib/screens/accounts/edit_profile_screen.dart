@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_grid_list/responsive_grid_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:virtualarch/screens/error_screen.dart';
 
@@ -230,32 +231,94 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             SizedBox(
                               height: size.height * 0.02,
                             ),
-                            TextFormField(
-                              key: _skillsKey,
-                              controller: _skillsController,
-                              keyboardType: TextInputType.number,
-                              maxLength: 15,
-                              decoration: customDecorationForInput(
-                                context,
-                                "Add Skills",
-                                Icons.add_moderator_outlined,
+                            Container(
+                              width: 500,
+                              margin: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: _skills.isNotEmpty
+                                    ? Theme.of(context).canvasColor
+                                    : Colors.transparent,
                               ),
-                              validator: (about) {
-                                if (_skills.isEmpty) {
-                                  return "Please add atleast 1 skill";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              onFieldSubmitted: (value) {
-                                _skillsKey.currentState!.validate();
-                                setState(() {
-                                  if (!_skills.contains(value)) {
-                                    _skills.add(value);
-                                  }
-                                  _skillsController.text = "";
-                                });
-                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextFormField(
+                                    key: _skillsKey,
+                                    controller: _skillsController,
+                                    keyboardType: TextInputType.number,
+                                    maxLength: 15,
+                                    decoration: customDecorationForInput(
+                                      context,
+                                      "Add Skills",
+                                      Icons.add_moderator_outlined,
+                                    ),
+                                    validator: (about) {
+                                      if (_skills.isEmpty) {
+                                        return "Please add atleast 1 skill";
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                    onFieldSubmitted: (value) {
+                                      _skillsKey.currentState!.validate();
+                                      setState(() {
+                                        if (!_skills.contains(value)) {
+                                          _skills.add(value);
+                                        }
+                                        _skillsController.text = "";
+                                      });
+                                    },
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4),
+                                    child: Text(
+                                      "Type and hit enter to add & click on skill to delete",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelSmall!
+                                          .copyWith(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                          ),
+                                    ),
+                                  ),
+                                  if (_skills.isNotEmpty)
+                                    ResponsiveGridList(
+                                      minItemWidth: 150,
+                                      shrinkWrap: true,
+                                      children: List.generate(
+                                        _skills.length,
+                                        (index) => Container(
+                                          margin: const EdgeInsets.all(4),
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                          ),
+                                          child: InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                _skills.remove(_skills[index]);
+                                              });
+                                            },
+                                            child: Center(
+                                              child: Text(
+                                                _skills[index],
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleSmall,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
                             ),
                             SizedBox(
                               height: size.height * 0.04,
@@ -265,7 +328,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   0, 0, 0, size.height * 0.07),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  Map<String, String> data = {
+                                  Map<String, dynamic> data = {
                                     "name": _nameController.text,
                                     "exp": _experienceController.text,
                                     "city": _cityController.text,
@@ -276,6 +339,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     "zip": _zipcodeController.text,
                                     "aboutMe": _aboutmeController.text,
                                     "image": _imageController.text,
+                                    "skills": _skills
                                   };
                                   // print(_nameController.text);
                                   // print(_emailTextController.text);
