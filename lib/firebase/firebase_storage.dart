@@ -214,8 +214,12 @@ class FirebaseStorage {
   //   );
   // }
 
-  static Future<void> deleteModel(String url) async {
-    storage.refFromURL(url).delete();
-    FireDatabase.deleteFromDb(url);
+  static Future<void> deleteModel(
+    List<dynamic> url,
+  ) async {
+    for (int i = 0; i < url.length; i++) {
+      await storage.refFromURL(url[i]).delete();
+    }
+    // FireDatabase.deleteFromDb(url);
   }
 }

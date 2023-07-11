@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:virtualarch/widgets/housemodels/waveclipper.dart';
+import '../../firebase/firebase_storage.dart';
+import '../../firebase/firestore_database.dart';
 import '../../models/upload_model.dart';
 import '../../screens/housemodels/models_detail_screen.dart';
 import 'modelscardbuttons.dart';
@@ -170,7 +172,7 @@ class _ModelsCardState extends State<ModelsCard> {
                                       ModelsCardButtons(
                                         buttontext: "Delete",
                                         whatOnPressed: () {
-                                          //Write a function to navigate Delete Model;
+                                          FireDatabase.deleteModel(widget.modelData.modelId);
                                         },
                                       )
                                     ],

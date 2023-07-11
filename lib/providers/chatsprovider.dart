@@ -5,6 +5,8 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../firebase/authentication.dart';
 import '../models/chat_users.dart';
 import '../models/chats_model.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class ChatsProvider with ChangeNotifier {
   final List<ChatArchitectsListModel> _chatClientList = [];
@@ -29,26 +31,10 @@ class ChatsProvider with ChangeNotifier {
     }
   }
 
-  Future<String> getArchitectsName() async {
-    final User? user = Auth().currentUser;
-    var architectId = user!.uid;
-    final CollectionReference architectsCollection =
-        FirebaseFirestore.instance.collection("architects");
-    DocumentSnapshot documentSnapshot =
-        await architectsCollection.doc(architectId).get();
-    if (documentSnapshot.exists) {
-      return documentSnapshot.get("architectName");
-    } else {
-      print('Document does not exists on the Database');
-      return "Unknown";
-    }
-  }
-
   Future<List<ChatArchitectsListModel>> getMessagedClientssDetails() async {
     final User? architect = Auth().currentUser;
     var architectId = architect!.uid;
     List<dynamic> clientsIdArray = await getMessagedClientsID();
-    _chatClientList.clear();
     List<Future<void>> futures = clientsIdArray.map((userId) async {
       //Write Code to retrieve and update List
       String chatId = userId + architectId;
@@ -102,6 +88,21 @@ class ChatsProvider with ChangeNotifier {
     return [..._chatClientList];
   }
 
+  Future<String> getArchitectsName() async {
+    final User? user = Auth().currentUser;
+    var architectId = user!.uid;
+    final CollectionReference architectsCollection =
+        FirebaseFirestore.instance.collection("architects");
+    DocumentSnapshot documentSnapshot =
+        await architectsCollection.doc(architectId).get();
+    if (documentSnapshot.exists) {
+      return documentSnapshot.get("architectName");
+    } else {
+      print('Document does not exists on the Database');
+      return "Unknown";
+    }
+  }
+
   String convertTimeStampToDate(timestamp) {
     return timeago.format(timestamp.toDate(), locale: 'en_short');
   }
@@ -152,6 +153,52 @@ class ChatsProvider with ChangeNotifier {
       );
     } on FirebaseException catch (e) {
       print("Error ${e}");
+    }
+  }
+
+  Future<void> sendNotification(String archId, String message) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(archId)
+        .get()
+        .then((value) async {
+      var tokens = value["token"] as List<dynamic>;
+      var name = value["name"];
+      print("tokens  $tokens");
+      for (var token in tokens) {
+        await sendPushMessage(message, name, token);
+      }
+    });
+  }
+
+  Future<void> sendPushMessage(String body, String title, String token) async {
+    try {
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization':
+              'key=AAAA9sLsQ3Y:APA91bGYm4n0q1JJKyqqi3S8ZmUy2_3MocabrZlSbmDCq3LM18ax3cFuF-TlI3aKcYgi_sYOyS7qQZZsp6XWNkS7js_McRRVDNAk_iDudFiYGTOUEr_VIMRQSItKQ6JQ-GHJeGJ6f_4k',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'notification': <String, dynamic>{
+              'body': body,
+              'title': title,
+            },
+            'priority': 'high',
+            'data': <String, dynamic>{
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'id': '1',
+              'status': 'done'
+            },
+            "to": token,
+          },
+        ),
+      );
+      print('done');
+    } catch (e) {
+      print("error push notification");
     }
   }
 }

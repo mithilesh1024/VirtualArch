@@ -42,12 +42,35 @@ class UserDataProvide with ChangeNotifier {
     await prefeb.setString('email', email);
   }
 
-  Future<void> updateData(String name, String address, String phone) async {
+  Future<void> updateData(Map<String, dynamic> data) async {
+    /*
+      "name": _nameController.text,
+      "exp": _experienceController.text,
+      "city": _cityController.text,
+      "company": _companyNameController.text,
+      "street": _streetController.text,
+      "country": _countryController.text,
+      "state": _stateController.text,
+      "zip": _zipcodeController.text,
+      "aboutMe": _aboutmeController.text,
+      "image": _imageController.text,                 
+     */
     final userId = FirebaseAuth.instance.currentUser!.uid;
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .update({"name": name, "address": address, "phoneNumber": phone});
+    Map<String, String> address = {
+      "city": data["city"].toString(),
+      "companyName": data["company"].toString(),
+      "companyStreetAddress": data["street"].toString(),
+      "country": data["country"].toString(),
+      "state": data["state"].toString(),
+      "zipCode": data["zip"].toString()
+    };
+    FirebaseFirestore.instance.collection('architects').doc(userId).update({
+      "architectName": data["name"],
+      "aboutMe": data["aboutMe"],
+      "architectExperience": data["exp"],
+      "architectImageUrl": data["image"],
+      "architectOfficeLocation": address,
+      "skills": data["skills"]
+    });
   }
-
 }

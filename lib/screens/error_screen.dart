@@ -21,9 +21,8 @@ class ErrorScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: size.height * 0.4,
-              child: Lottie.asset("assets/walkingPencil.json")
-            ),
+                height: size.height * 0.4,
+                child: Lottie.asset("walkingPencil.json")),
             RichText(
               text: TextSpan(
                 children: [
