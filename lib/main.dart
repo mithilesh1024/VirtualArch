@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:virtualarch/providers/models_provider.dart';
+import 'package:virtualarch/screens/housemodels/explore_plans.screen.dart';
 import 'package:virtualarch/screens/housemodels/models_detail_screen.dart';
+import 'package:virtualarch/screens/housemodels/plans_detail.dart';
 import 'package:virtualarch/screens/upload_work/upload_info.dart';
 import 'package:virtualarch/screens/video_call/videocall_homescreen.dart';
 import 'providers/chatsprovider.dart';
@@ -99,6 +101,8 @@ class MyApp extends StatelessWidget {
           UploadDesignScreen.routeName: (ctx) => UploadDesignScreen(),
           ModelsDetailScreen.routeName: (ctx) => ModelsDetailScreen(),
           VideoCallHomeScreen.routeName: (ctx) => VideoCallHomeScreen(),
+          ExplorePlansScreen.routeName: (ctx) => ExplorePlansScreen(),
+          PlanInDetailScreen.routeName: (ctx) => PlanInDetailScreen(),
         },
       ),
     );

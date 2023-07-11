@@ -42,7 +42,7 @@ class Models3D {
   final List modelTechnologyAndSmartFeatures;
 
   //Other Designs
-  final Map<dynamic, dynamic>? modelOtherDesignLinks;
+  final Map<String, dynamic>? modelOtherDesignLinks;
 
   Models3D({
     required this.modelId,

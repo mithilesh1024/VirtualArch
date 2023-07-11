@@ -4,6 +4,7 @@ import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:virtualarch/models/upload_model.dart';
 import 'package:virtualarch/screens/error_screen.dart';
+import 'package:virtualarch/screens/housemodels/explore_plans.screen.dart';
 import 'package:virtualarch/screens/housemodels/exploremodels_screen.dart';
 import '../../widgets/customscreen.dart';
 import '../../widgets/headerwithnavigation.dart';
@@ -140,58 +141,84 @@ class _ModelsDetailScreenState extends State<ModelsDetailScreen> {
                                       ),
                                     Align(
                                       alignment: Alignment.topRight,
-                                      child: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            isFavorite = !isFavorite;
-                                          });
-                                          if (isFavorite) {
-                                            scaffoldMessengerVar.showSnackBar(
-                                              SnackBar(
-                                                content: AwesomeSnackbarContent(
-                                                  title: 'Added to favorites!',
-                                                  message:
-                                                      "Your favorite items are always at your fingertips.",
-                                                  contentType:
-                                                      ContentType.success,
-                                                ),
-                                                behavior:
-                                                    SnackBarBehavior.floating,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                elevation: 0,
-                                              ),
-                                            );
-                                          } else {
-                                            scaffoldMessengerVar.showSnackBar(
-                                              SnackBar(
-                                                content: AwesomeSnackbarContent(
-                                                  title:
-                                                      'Removed from favorites!',
-                                                  message:
-                                                      "No worries, you can always add it back later.",
-                                                  contentType: ContentType.help,
-                                                ),
-                                                behavior:
-                                                    SnackBarBehavior.floating,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                elevation: 0,
-                                              ),
-                                            );
-                                          }
-                                        },
-                                        icon: isFavorite
-                                            ? Icon(
-                                                Icons.favorite,
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                              )
-                                            : Icon(
-                                                Icons.favorite_border,
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                              ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.info_outline,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).pushNamed(
+                                                ExplorePlansScreen.routeName,
+                                                arguments: modelData
+                                                    .modelOtherDesignLinks,
+                                              );
+                                            },
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                isFavorite = !isFavorite;
+                                              });
+                                              if (isFavorite) {
+                                                scaffoldMessengerVar
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content:
+                                                        AwesomeSnackbarContent(
+                                                      title:
+                                                          'Added to favorites!',
+                                                      message:
+                                                          "Your favorite items are always at your fingertips.",
+                                                      contentType:
+                                                          ContentType.success,
+                                                    ),
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    elevation: 0,
+                                                  ),
+                                                );
+                                              } else {
+                                                scaffoldMessengerVar
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content:
+                                                        AwesomeSnackbarContent(
+                                                      title:
+                                                          'Removed from favorites!',
+                                                      message:
+                                                          "No worries, you can always add it back later.",
+                                                      contentType:
+                                                          ContentType.help,
+                                                    ),
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    elevation: 0,
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                            icon: isFavorite
+                                                ? Icon(
+                                                    Icons.favorite,
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                  )
+                                                : Icon(
+                                                    Icons.favorite_border,
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                  ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
