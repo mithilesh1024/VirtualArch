@@ -105,15 +105,12 @@ flutter:
     - assets/Logo.png
     - assets/fetchModel.png
     - assets/add.png
-<<<<<<< HEAD
-=======
     - assets/VideoCall.gif
     - assets/NoData.png
     - assets/PhoneInHand.json
     - assets/walkingPencil.json
     - assets/videoIcon.gif
     - assets/launchRocket.gif
->>>>>>> 544d31a9aff4dbf9a66339e49f6cf47475d542d6
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
