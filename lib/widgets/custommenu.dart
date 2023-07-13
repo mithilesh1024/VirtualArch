@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:virtualarch/screens/auth/login_screen.dart';
 import 'package:virtualarch/screens/chats/chats_screen.dart';
 import 'package:virtualarch/screens/upload_work/upload_info.dart';
 import '/firebase/authentication.dart';
@@ -174,7 +175,7 @@ class _CustomMenuState extends State<CustomMenu> {
                 InkWell(
                   onTap: () async {
                     await Auth().signOut();
-                    navigatorVar.pushNamed(HomeScreen.routeName);
+                    navigatorVar.pushNamed(LoginScreen.routeName);
                   },
                   splashColor: Theme.of(context).primaryColor,
                   child: Container(

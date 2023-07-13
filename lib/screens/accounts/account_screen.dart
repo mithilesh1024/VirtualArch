@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:googleapis/compute/v1.dart';
 import 'package:provider/provider.dart';
+import 'package:virtualarch/screens/auth/home_screen.dart';
 import 'package:virtualarch/screens/housemodels/exploremodels_screen.dart';
 import '../../providers/user_data_provider.dart';
 import '../../widgets/accounts/customdecorationforaccountinput.dart';
@@ -22,8 +23,7 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen>
     with WidgetsBindingObserver {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _phoneNoController = TextEditingController();
+  String _addressController = "";
   var prefeb;
   String name = "";
   Map<String, dynamic> next_page_data = {};
@@ -60,19 +60,40 @@ class _AccountScreenState extends State<AccountScreen>
   }
 
   Widget _buildTextFormField(
-    TextEditingController inputText,
+    String inputText,
     String infoText,
   ) {
-    return TextFormField(
-      minLines: 1,
-      maxLines: 4,
-      controller: inputText,
-      readOnly: true,
-      decoration: customDecorationForAccountInput(
-        context,
-        infoText,
-        Theme.of(context).textTheme.headlineSmall,
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            Icon(
+              Icons.catching_pokemon,
+              color: Theme.of(context).primaryColor,
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            Text(
+              infoText,
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ],
+        ),
+        Container(
+          // width: 200,
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            // color: Theme.of(context).canvasColor.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Text(inputText, style: Theme.of(context).textTheme.titleSmall),
+        )
+      ],
     );
   }
 
@@ -115,114 +136,276 @@ class _AccountScreenState extends State<AccountScreen>
             body: MyCustomScreen(
               customColor: Theme.of(context).primaryColor,
               screenContent: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   HeaderWithMenu(
                     header: "My Account",
                     scaffoldKey: scaffoldKey,
                   ),
-                  SizedBox(
-                    height: size.height * 0.04,
-                  ),
-                  const CircleAvatar(
-                    backgroundImage: AssetImage("assets/Female.png"),
-                    radius: 80,
-                  ),
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
-                  FutureBuilder(
-                      future: user_data.getData(),
-                      builder: (context, AsyncSnapshot snapshot) {
-                        if (snapshot.hasData) {
-                          name = snapshot.data["architectName"];
-                          String email = "email";
-                          var tempAddr =
-                              snapshot.data["architectOfficeLocation"];
-                          _addressController.text =
-                              tempAddr["companyStreetAddress"] +
-                                  " " +
-                                  tempAddr["city"] +
-                                  " " +
-                                  tempAddr["state"] +
-                                  " " +
-                                  tempAddr["zipCode"];
-                          add_data(snapshot);
-                          //print(" adress ${_addressController.text}");
-                          //_phoneNoController.text = snapshot.data["phoneNumber"];
-                          return Column(
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: size.height * 0.04,
+                          ),
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            // crossAxisAlignment: WrapCrossAlignment.center,
+                            spacing: 20,
+                            runSpacing: 20,
                             children: [
-                              Text(
-                                name,
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
+                              Column(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).canvasColor,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    padding: const EdgeInsets.all(15),
+                                    width: 500,
+                                    child: Column(
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            "My Profile",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge!
+                                                .copyWith(
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                ),
+                                          ),
+                                        ),
+                                        const CircleAvatar(
+                                          backgroundImage:
+                                              AssetImage("assets/Female.png"),
+                                          radius: 80,
+                                        ),
+                                        SizedBox(
+                                          height: size.height * 0.02,
+                                        ),
+                                        FutureBuilder(
+                                          future: user_data.getData(),
+                                          builder: (context,
+                                              AsyncSnapshot snapshot) {
+                                            if (snapshot.hasData) {
+                                              String name = snapshot
+                                                  .data["architectName"];
+                                              String email = snapshot
+                                                  .data["architectEmail"];
+                                              var tempAddr = snapshot.data[
+                                                  "architectOfficeLocation"];
+                                              _addressController = tempAddr[
+                                                      "companyStreetAddress"] +
+                                                  " " +
+                                                  tempAddr["city"] +
+                                                  " " +
+                                                  tempAddr["state"] +
+                                                  " " +
+                                                  tempAddr["zipCode"];
+                                              add_data(snapshot);
+                                              //print(" adress ${_addressController.text}");
+                                              //_phoneNoController.text = snapshot.data["phoneNumber"];
+                                              return Column(
+                                                children: [
+                                                  Text(
+                                                    name,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headlineSmall,
+                                                  ),
+                                                  Text(
+                                                    email,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleMedium,
+                                                  ),
+                                                  SizedBox(
+                                                    height: size.height * 0.02,
+                                                  ),
+                                                  // _buildTextFormField(
+                                                  //   _addressController,
+                                                  //   "Address",
+                                                  // ),
+                                                  SizedBox(
+                                                    height: size.height * 0.02,
+                                                  ),
+                                                  // _buildTextFormField(_phoneNoController, "Phone Number"),
+                                                ],
+                                              );
+                                            } else {
+                                              return const CustomLoadingSpinner();
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).canvasColor,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    padding: const EdgeInsets.all(15),
+                                    width: 500,
+                                    child: Column(
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            "About Me",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge!
+                                                .copyWith(
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                ),
+                                          ),
+                                        ),
+                                        Text(
+                                          "With a deep-rooted passion for architecture, Ganesh Gaonkar is an experienced architect who thrives on crafting extraordinary spaces that inspire and uplift. With an acute attention to detail and a penchant for innovation, he transforms ordinary structures into works of art. Ganesh understands the importance of collaboration and actively involves clients in the design process, ensuring that their dreams and aspirations are brought to life. Committed to sustainable practices, he integrates eco-friendly materials and energy-efficient systems into his designs, creating spaces that harmonize with the environment while enhancing the quality of life for occupants.",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                email,
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              SizedBox(
-                                height: size.height * 0.02,
-                              ),
-                              _buildTextFormField(
-                                  _addressController, "Address"),
-                              SizedBox(
-                                height: size.height * 0.02,
-                              ),
-                              // _buildTextFormField(_phoneNoController, "Phone Number"),
-                              SizedBox(
-                                height: size.height * 0.04,
+                              Column(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).canvasColor,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    padding: const EdgeInsets.all(15),
+                                    width: 500,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            "Personal Info",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge!
+                                                .copyWith(
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                ),
+                                          ),
+                                        ),
+                                        _buildTextFormField(
+                                            "CA/2019", "Registration Number"),
+                                        _buildTextFormField(
+                                            "Interior Architect",
+                                            "Architect Type"),
+                                        _buildTextFormField(
+                                            "7 Years", "Experience"),
+                                        _buildTextFormField(
+                                            ["Maths", "3d Modeling"]
+                                                .toString()
+                                                .substring(1),
+                                            "Skills"),
+                                        _buildTextFormField("Ganesh Architects",
+                                            "Company Name"),
+                                        _buildTextFormField(
+                                            "Patto Plazza, Panaji, Goa",
+                                            "Address"),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).canvasColor,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    padding: const EdgeInsets.all(15),
+                                    width: 500,
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "My Orders",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge!
+                                                  .copyWith(
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                  ),
+                                            ),
+                                            IconButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context)
+                                                      .pushNamed(
+                                                          ExploreModelsScreen
+                                                              .routeName),
+                                              icon: const Icon(
+                                                Icons.arrow_forward_ios,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Edit Profile",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge!
+                                                  .copyWith(
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                  ),
+                                            ),
+                                            IconButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context)
+                                                      .pushNamed(
+                                                          EditProfileScreen
+                                                              .routeName,
+                                                          arguments:
+                                                              next_page_data),
+                                              icon: const Icon(
+                                                Icons.arrow_forward_ios,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
-                          );
-                        } else {
-                          return CustomLoadingSpinner();
-                        }
-                      }),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Text(
-                  //       "My Orders",
-                  //       style: Theme.of(context).textTheme.titleLarge,
-                  //     ),
-                  //     IconButton(
-                  //       onPressed: () => Navigator.of(context)
-                  //           .pushNamed(ExploreModelsScreen.routeName),
-                  //       icon: const Icon(
-                  //         Icons.arrow_forward_ios,
-                  //         color: Colors.white,
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Edit Profile",
-                        style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ],
                       ),
-                      IconButton(
-                        onPressed: () => Navigator.of(context).pushNamed(
-                            EditProfileScreen.routeName,
-                            arguments: next_page_data),
-                        icon: const Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                  // _buildTheNavigation(
-                  //     "Edit Profile",
-                  //     Navigator.of(context)
-                  //         .pushNamed(EditProfileScreen.routeName, arguments: {
-                  //       "name": name,
-                  //       "phoneNumber": _phoneNoController.text,
-                  //       "address": _addressController.text
-                  //     })),
                 ],
               ),
             ),
