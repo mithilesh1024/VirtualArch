@@ -337,63 +337,29 @@ class _AccountScreenState extends State<AccountScreen>
                                     ),
                                     padding: const EdgeInsets.all(15),
                                     width: 500,
-                                    child: Column(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "My Orders",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleLarge!
-                                                  .copyWith(
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                  ),
-                                            ),
-                                            IconButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context)
-                                                      .pushNamed(
-                                                          ExploreModelsScreen
-                                                              .routeName),
-                                              icon: const Icon(
-                                                Icons.arrow_forward_ios,
-                                                color: Colors.white,
+                                        Text(
+                                          "Edit Profile",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge!
+                                              .copyWith(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
                                               ),
-                                            ),
-                                          ],
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Edit Profile",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleLarge!
-                                                  .copyWith(
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                  ),
-                                            ),
-                                            IconButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context)
-                                                      .pushNamed(
-                                                          EditProfileScreen
-                                                              .routeName,
-                                                          arguments:
-                                                              next_page_data),
-                                              icon: const Icon(
-                                                Icons.arrow_forward_ios,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
+                                        IconButton(
+                                          onPressed: () => Navigator.of(context)
+                                              .pushNamed(
+                                                  EditProfileScreen.routeName,
+                                                  arguments: next_page_data),
+                                          icon: const Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ],
                                     ),
