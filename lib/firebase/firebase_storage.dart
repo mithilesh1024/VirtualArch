@@ -183,6 +183,40 @@ class FirebaseStorage {
     return uploadedData;
   }
 
+  static Future<void> uploadDP() async {
+    final result = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        type: FileType.custom,
+        allowedExtensions: ['png', 'jpg']);
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    if (result != null) {
+      String location = "$userId/2d_images/";
+      String fileName = result.files.single.name;
+      location += fileName;
+      deleteModel([await FireDatabase.getDPLink()]);
+      print(fileName);
+      if (kIsWeb) {
+        Uint8List? uploadFile = result.files.single.bytes;
+        final task = await storage.ref(location).putData(uploadFile!);
+        var url = await task.ref.getDownloadURL();
+        FireDatabase.updateDP(url);
+        //await FireDatabase.addModelUrl(urlString, "Sample_image", id);
+      } else {
+        String filePath = result.files.single.path.toString();
+        File file = File(filePath);
+        try {
+          final task = await storage.ref(location).putFile(file);
+          final url = await task.ref.getDownloadURL();
+          FireDatabase.updateDP(url);
+          //await FireDatabase.addModelUrl(urlString, "Sample_image", id);
+        } on firebase_core.FirebaseException catch (e) {
+          print(e);
+        }
+      }
+    }
+    return null;
+  }
+
   // static Future<void> uploadModel(String id) async {
   //   final userId = FirebaseAuth.instance.currentUser!.uid;
   //   String location = "$id/2d_images/";
@@ -218,7 +252,11 @@ class FirebaseStorage {
     List<dynamic> url,
   ) async {
     for (int i = 0; i < url.length; i++) {
-      await storage.refFromURL(url[i]).delete();
+      try {
+        await storage.refFromURL(url[i]).delete();
+      } catch (e) {
+        print("error");
+      }
     }
     // FireDatabase.deleteFromDb(url);
   }

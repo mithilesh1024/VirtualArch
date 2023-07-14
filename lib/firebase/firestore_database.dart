@@ -72,6 +72,27 @@ class FireDatabase {
     // }
   }
 
+  static Future<String> getDPLink() async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    var modelData = await FirebaseFirestore.instance
+        .collection('architects')
+        .doc(userId)
+        .get();
+    try {
+      return modelData["architectImageUrl"];
+    } catch (e) {
+      return "";
+    }
+  }
+
+  static Future<void> updateDP(String url) async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    await FirebaseFirestore.instance
+        .collection('architects')
+        .doc(userId)
+        .set({"architectImageUrl": url}, SetOptions(merge: true));
+  }
+
   static Future<void> deleteModel(String id) async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
     var modelData =
