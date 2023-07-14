@@ -3,6 +3,7 @@ import 'package:googleapis/compute/v1.dart';
 import 'package:provider/provider.dart';
 import 'package:virtualarch/screens/auth/home_screen.dart';
 import 'package:virtualarch/screens/housemodels/exploremodels_screen.dart';
+import '../../firebase/firebase_storage.dart';
 import '../../providers/user_data_provider.dart';
 import '../../widgets/accounts/customdecorationforaccountinput.dart';
 import '../../widgets/customloadingspinner.dart';
@@ -211,11 +212,13 @@ class _AccountScreenState extends State<AccountScreen>
                                                             ),
                                                       ),
                                                     ),
-                                                    const CircleAvatar(
-                                                      backgroundImage: AssetImage(
-                                                          "assets/Female.png"),
+                                                    CircleAvatar(
+                                                      backgroundImage:
+                                                          NetworkImage(snapshot
+                                                                  .data[
+                                                              "architectImageUrl"]),
                                                       radius: 80,
-                                                    ),
+                                                      ),
                                                     SizedBox(
                                                       height:
                                                           size.height * 0.02,

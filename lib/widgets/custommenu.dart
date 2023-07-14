@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:virtualarch/screens/auth/login_screen.dart';
 import 'package:virtualarch/screens/chats/chats_screen.dart';
 import 'package:virtualarch/screens/upload_work/upload_info.dart';
+import '../firebase/firestore_database.dart';
 import '/firebase/authentication.dart';
 import '/screens/accounts/account_screen.dart';
 import '/screens/housemodels/exploremodels_screen.dart';
@@ -81,12 +82,23 @@ class _CustomMenuState extends State<CustomMenu> {
             height: size.height,
             child: Column(
               children: [
-                const Center(
-                  child: CircleAvatar(
-                    radius: 65,
-                    backgroundImage: AssetImage("assets/Male.png"),
-                  ),
-                ),
+                Center(
+                    child: FutureBuilder(
+                  future: FireDatabase.getDPLink(),
+                  builder: (context, snapshot) {
+                    // print(snapshot.data);
+                    if (snapshot.hasData) {
+                      if (snapshot.data.toString() == "") {
+                        return Container();
+                      }
+                      return CircleAvatar(
+                        radius: 65,
+                        backgroundImage: NetworkImage(snapshot.data.toString()),
+                      );
+                    }
+                    return CustomLoadingSpinner();
+                  },
+                )),
                 const SizedBox(
                   height: 10,
                 ),
