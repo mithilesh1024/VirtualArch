@@ -330,14 +330,20 @@ class _AccountScreenState extends State<AccountScreen>
                                                               "architectType"],
                                                           "Architect Type"),
                                                       _buildTextFormField(
-                                                          snapshot.data[
-                                                              "architectExperience"],
+                                                          "${snapshot.data["architectExperience"]} years",
                                                           "Experience"),
                                                       _buildTextFormField(
                                                           snapshot
                                                               .data["skills"]
                                                               .toString()
-                                                              .substring(1),
+                                                              .substring(
+                                                                1,
+                                                                snapshot.data[
+                                                                            "skills"]
+                                                                        .toString()
+                                                                        .length -
+                                                                    1,
+                                                              ),
                                                           "Skills"),
                                                       _buildTextFormField(
                                                           tempAddr[
