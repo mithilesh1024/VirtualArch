@@ -212,20 +212,13 @@ class _AccountScreenState extends State<AccountScreen>
                                                             ),
                                                       ),
                                                     ),
-                                                    GestureDetector(
-                                                      onTap: () async {
-                                                        await FirebaseStorage
-                                                            .uploadDP();
-                                                        setState(() {});
-                                                      },
-                                                      child: CircleAvatar(
-                                                        backgroundImage:
-                                                            NetworkImage(snapshot
-                                                                    .data[
-                                                                "architectImageUrl"]),
-                                                        radius: 80,
+                                                    CircleAvatar(
+                                                      backgroundImage:
+                                                          NetworkImage(snapshot
+                                                                  .data[
+                                                              "architectImageUrl"]),
+                                                      radius: 80,
                                                       ),
-                                                    ),
                                                     SizedBox(
                                                       height:
                                                           size.height * 0.02,

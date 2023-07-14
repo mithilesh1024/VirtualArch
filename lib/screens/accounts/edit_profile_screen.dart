@@ -4,6 +4,7 @@ import 'package:responsive_grid_list/responsive_grid_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:virtualarch/screens/error_screen.dart';
 
+import '../../firebase/firebase_storage.dart';
 import '../../providers/user_data_provider.dart';
 import '../../widgets/accounts/customdecorationforaccountinput.dart';
 import '../../widgets/auth/customdecorationforinput.dart';
@@ -131,9 +132,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             SizedBox(
                               height: size.height * 0.04,
                             ),
-                            const CircleAvatar(
-                              backgroundImage: AssetImage("assets/Female.png"),
-                              radius: 80,
+                            GestureDetector(
+                              onTap: () async {
+                                await FirebaseStorage.uploadDP();
+                                // setState(() {});
+                              },
+                              child: CircleAvatar(
+                                backgroundImage:
+                                    NetworkImage(_imageController.text),
+                                radius: 80,
+                              ),
                             ),
                             SizedBox(
                               height: size.height * 0.02,
