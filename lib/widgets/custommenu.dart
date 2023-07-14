@@ -84,7 +84,7 @@ class _CustomMenuState extends State<CustomMenu> {
                 const Center(
                   child: CircleAvatar(
                     radius: 65,
-                    backgroundImage: AssetImage("assets/Female.png"),
+                    backgroundImage: AssetImage("assets/Male.png"),
                   ),
                 ),
                 const SizedBox(
