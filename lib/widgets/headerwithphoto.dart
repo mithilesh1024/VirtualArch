@@ -33,8 +33,8 @@ class HeaderWithPhoto extends StatelessWidget {
           ),
         ),
         CircleAvatar(
-          backgroundImage: AssetImage(imageURL),
-          // backgroundImage: NetworkImage(imageURL),
+          // backgroundImage: AssetImage(imageURL),
+          backgroundImage: NetworkImage(imageURL),
           backgroundColor: Theme.of(context).canvasColor,
         ),
         const SizedBox(

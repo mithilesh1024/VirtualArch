@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
+import 'package:virtualarch/firebase/authentication.dart';
 import 'package:virtualarch/widgets/customloadingspinner.dart';
 import '../../firebase/firestore_database.dart';
 import '../../providers/models_provider.dart';
@@ -36,6 +37,7 @@ class _ExploreModelsScreenState extends State<ExploreModelsScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var modelData = Provider.of<ModelsProvider>(context, listen: false);
+    final  aid = Auth().currentUser!.uid;
     return Scaffold(
       key: scaffoldKey,
       endDrawer: const CustomMenu(),
@@ -100,7 +102,7 @@ class _ExploreModelsScreenState extends State<ExploreModelsScreen> {
               ),
               // if (!init) ...[
               StreamBuilder(
-                stream: modelData.getMyModels,
+                stream: modelData.getArchitectSpecificModels(aid),
                 builder: (context, snapshots) {
                   if (!snapshots.hasData) {
                     return const CustomLoadingSpinner();

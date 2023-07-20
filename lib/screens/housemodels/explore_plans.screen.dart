@@ -31,7 +31,7 @@ class _ExplorePlansScreenState extends State<ExplorePlansScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const HeaderWithNavigation(
-              heading: "Housing Plans",
+              heading: "Building Layouts",
               screenToBeRendered: "None",
             ),
             SizedBox(
