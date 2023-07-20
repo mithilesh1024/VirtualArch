@@ -91,6 +91,7 @@ class FireDatabase {
         .collection('architects')
         .doc(userId)
         .set({"architectImageUrl": url}, SetOptions(merge: true));
+    print("updating");
   }
 
   static Future<void> deleteModel(String id) async {
@@ -108,6 +109,21 @@ class FireDatabase {
     await FirebaseFirestore.instance.collection('architects').doc(userId).set({
       "architectProjectsId": FieldValue.arrayRemove([id])
     }, SetOptions(merge: true));
+  }
+
+  static Future<bool> checkReg(String reg) async {
+    String id = reg.replaceAll('/', '-');
+    var modelData = await FirebaseFirestore.instance
+        .collection('verifiedArch')
+        .doc(id)
+        .get();
+    // try {
+    //   print(modelData["name"]);
+    // } catch (e) {
+    //   print("Doest exist");
+    // }
+    print("$id  ${modelData.exists}");
+    return modelData.exists;
   }
 
   static Future<void> addToken() async {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
+import 'package:virtualarch/firebase/firestore_database.dart';
 import 'package:virtualarch/providers/userinfo_options_provider.dart';
 import '../../firebase/authentication.dart';
 import '../../widgets/auth/custombuttontonext.dart';
@@ -49,8 +50,10 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   final _genderTextController = [];
   final List<String> _skills = [];
 
+  bool wrongReg = false;
+
   int currentStep = 0;
-  continueStep() {
+  void continueStep() async {
     bool isLastStep = (currentStep == 2);
     if (isLastStep) {
       //Hides the keyboard.
@@ -73,11 +76,19 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       // End CircularProgressIndicator
       Navigator.of(context).pop();
     } else {
+      var reg = await FireDatabase.checkReg(_regNumberTextController.text);
       setState(() {
+        if (reg == true) {
+          wrongReg = false;
+        } else {
+          wrongReg = true;
+        }
         if (currentStep == 0 &&
             _nameKey.currentState!.validate() &&
             _regNumKey.currentState!.validate() &&
-            _expKey.currentState!.validate()) {
+            _expKey.currentState!.validate() &&
+            reg) {
+          print("1");
           setState(() {
             currentStep = 1;
           });
@@ -281,15 +292,16 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                             if (value!.isEmpty) {
                                               return 'Please enter your name';
                                             }
-                                            if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                                            if (!RegExp(r'^[a-zA-Z\s]+$')
+                                                .hasMatch(value)) {
                                               return 'Please enter alphabets only(spaces allowed)';
-                                            } 
+                                            }
                                             return null; // Return null if the input is valid
                                             // Additional validation logic for project name if needed
                                           },
                                         ),
                                         // for(int i=0;i<value.length;i++){
-                                        //  if(!(value[i]>='a'&&value[i]<='z')||!(value[i]>='A'&&value[i]<='Z')||!(value[i]==" "))     
+                                        //  if(!(value[i]>='a'&&value[i]<='z')||!(value[i]>='A'&&value[i]<='Z')||!(value[i]==" "))
                                         // }
                                       ],
                                     ),
@@ -308,13 +320,20 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                             if (value!.isEmpty) {
                                               return 'Please enter Register Number(e.g.- GA/2001 )';
                                             }
-                                            final regex = RegExp(r'^[A-Z]{2}/\d{4}$');
+                                            final regex = RegExp(
+                                                r'^[A-Z]{2}/\d{4}/\d{5}$');
                                             if (!regex.hasMatch(value)) {
-                                              return 'Register Number must be in the format AB/YYYY (e.g.- GA/2001, GA is capital )';
+                                              return 'Register Number must be in the format AB/YYYY/XXXX (e.g.- CA/2001/3241, CA is capital )';
                                             }
-                                            final year = int.tryParse(value.split('/')[1]);
-                                            if (year == null || year < 1900 || year > 9999) {
+                                            final year = int.tryParse(
+                                                value.split('/')[1]);
+                                            if (year == null ||
+                                                year < 1900 ||
+                                                year > 9999) {
                                               return 'Please enter a valid year.';
+                                            }
+                                            if (wrongReg) {
+                                              return 'Registeration number doesnt exist';
                                             }
                                             // Additional validation logic for project name if needed
                                             return null; // Return null if the input is valid
@@ -329,9 +348,10 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                             if (value!.isEmpty) {
                                               return 'Please enter Experience in years (e.g.- 10)';
                                             }
-                                            if (!RegExp(r'^\d+$').hasMatch(value)) {
+                                            if (!RegExp(r'^\d+$')
+                                                .hasMatch(value)) {
                                               return 'Experience must be a positive number (e.g.- 10)';
-                                            } 
+                                            }
                                             return null; // Return null if the input is valid
                                             // Additional validation logic for project name if needed
                                           },
@@ -385,11 +405,12 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           (value) {
                                             if (value!.isEmpty) {
                                               return 'Please enter your company name';
-                                            } 
-                                            if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                                            }
+                                            if (!RegExp(r'^[a-zA-Z\s]+$')
+                                                .hasMatch(value)) {
                                               return 'Please enter alphabets only(spaces allowed)';
-                                            } 
-                                              return null; // Return null if the input is valid
+                                            }
+                                            return null; // Return null if the input is valid
                                             // Additional validation logic for project name if needed
                                           },
                                         ),
@@ -422,11 +443,12 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                           (value) {
                                             if (value!.isEmpty) {
                                               return 'Please enter your city';
-                                            } 
-                                            if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                                            }
+                                            if (!RegExp(r'^[a-zA-Z\s]+$')
+                                                .hasMatch(value)) {
                                               return 'Please enter alphabets only(spaces allowed)';
-                                            } 
-                                              return null; // Return null if the input is valid
+                                            }
+                                            return null; // Return null if the input is valid
                                             // Additional validation logic for project name if needed
                                           },
                                         ),
@@ -439,10 +461,11 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                             if (value!.isEmpty) {
                                               return 'Please enter your state';
                                             }
-                                            if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                                            if (!RegExp(r'^[a-zA-Z\s]+$')
+                                                .hasMatch(value)) {
                                               return 'Please enter alphabets only(spaces allowed)';
-                                            } 
-                                              return null; // Return null if the input is valid
+                                            }
+                                            return null; // Return null if the input is valid
                                             // Additional validation logic for project name if needed
                                           },
                                         ),
@@ -466,7 +489,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                             if (value.length != 6) {
                                               return 'Zip/Postal code must be a 6-digit number';
                                             }
-                                            if (!value.contains(RegExp(r'^[0-9]+$'))) {
+                                            if (!value.contains(
+                                                RegExp(r'^[0-9]+$'))) {
                                               return 'Zip/Postal code must contain only 6 digits';
                                             }
                                             // Additional validation logic for project name if needed
@@ -482,10 +506,11 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                             if (value!.isEmpty) {
                                               return 'Please enter your country';
                                             }
-                                            if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                                            if (!RegExp(r'^[a-zA-Z\s]+$')
+                                                .hasMatch(value)) {
                                               return 'Please enter alphabets only(spaces allowed)';
-                                            } 
-                                              return null; // Return null if the input is valid
+                                            }
+                                            return null; // Return null if the input is valid
                                             // Additional validation logic for project name if needed
                                           },
                                         ),
