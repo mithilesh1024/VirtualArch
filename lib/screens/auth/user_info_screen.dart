@@ -51,6 +51,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   final List<String> _skills = [];
 
   bool wrongReg = false;
+  bool wrongName = false;
 
   int currentStep = 0;
   void continueStep() async {
@@ -77,17 +78,25 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       Navigator.of(context).pop();
     } else {
       var reg = await FireDatabase.checkReg(_regNumberTextController.text);
+      var validName = await FireDatabase.checkName(
+          _regNumberTextController.text, _nameTextController.text);
       setState(() {
         if (reg == true) {
           wrongReg = false;
         } else {
           wrongReg = true;
         }
+        validName == true ? wrongName = false : wrongName = true;
+        _nameKey.currentState!.validate();
+        _regNumKey.currentState!.validate();
+        print(
+            "continue ${_nameKey.currentState!.validate()} \n${_regNumKey.currentState!.validate()} \n${_expKey.currentState!.validate()} \n${reg} \n${validName}");
         if (currentStep == 0 &&
             _nameKey.currentState!.validate() &&
             _regNumKey.currentState!.validate() &&
             _expKey.currentState!.validate() &&
-            reg) {
+            reg &&
+            validName) {
           print("1");
           setState(() {
             currentStep = 1;
@@ -295,6 +304,9 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                             if (!RegExp(r'^[a-zA-Z\s]+$')
                                                 .hasMatch(value)) {
                                               return 'Please enter alphabets only(spaces allowed)';
+                                            }
+                                            if (wrongName) {
+                                              return "Entered name doesn't match with database name";
                                             }
                                             return null; // Return null if the input is valid
                                             // Additional validation logic for project name if needed

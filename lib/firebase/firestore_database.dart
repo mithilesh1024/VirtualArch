@@ -96,15 +96,15 @@ class FireDatabase {
 
   static Future<void> deleteModel(String id) async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
-    var modelData =
-        await FirebaseFirestore.instance.collection('models').doc(id).get();
-    List<dynamic> models = [];
-    models.add(modelData["model3dBirdsView"]);
-    models.add(modelData["model3dURL"]);
-    models.add(modelData["modelImageURL"]);
-    var mapImage = modelData["modelOtherDesignLinks"];
-    mapImage.forEach((tag, e) => models.add(e.toString()));
-    await FirebaseStorage.deleteModel(models);
+    // var modelData =
+    //     await FirebaseFirestore.instance.collection('models').doc(id).get();
+    // List<dynamic> models = [];
+    // models.add(modelData["model3dBirdsView"]);
+    // models.add(modelData["model3dURL"]);
+    // models.add(modelData["modelImageURL"]);
+    // var mapImage = modelData["modelOtherDesignLinks"];
+    // mapImage.forEach((tag, e) => models.add(e.toString()));
+    // await FirebaseStorage.deleteModel(models);
     await FirebaseFirestore.instance.collection('models').doc(id).delete();
     await FirebaseFirestore.instance.collection('architects').doc(userId).set({
       "architectProjectsId": FieldValue.arrayRemove([id])
@@ -124,6 +124,20 @@ class FireDatabase {
     // }
     print("$id  ${modelData.exists}");
     return modelData.exists;
+  }
+
+  static Future<bool> checkName(String reg, String name) async {
+    try {
+      String id = reg.replaceAll('/', '-');
+      var modelData = await FirebaseFirestore.instance
+          .collection('verifiedArch')
+          .doc(id)
+          .get();
+      var temp = modelData["name"];
+      return temp == name ? true : false;
+    } catch (e) {
+      return false;
+    }
   }
 
   static Future<void> addToken() async {

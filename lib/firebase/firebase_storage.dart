@@ -193,12 +193,13 @@ class FirebaseStorage {
       String location = "$userId/2d_images/";
       String fileName = result.files.single.name;
       location += fileName;
-      deleteModel([await FireDatabase.getDPLink()]);
+      //deleteModel([await FireDatabase.getDPLink()]);
       print(fileName);
       if (kIsWeb) {
         Uint8List? uploadFile = result.files.single.bytes;
         final task = await storage.ref(location).putData(uploadFile!);
         var url = await task.ref.getDownloadURL();
+        print(url);
         FireDatabase.updateDP(url);
         //await FireDatabase.addModelUrl(urlString, "Sample_image", id);
       } else {
