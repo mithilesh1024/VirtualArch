@@ -122,8 +122,8 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
         'model3dURL': _model3dURLController,
         'model3dBirdsView': _model3dBirdsView,
         'modelName': _modelNameController.text,
-        'modelPrice': _modelPriceController.text,
-        'modelEstimatedBuildPrice': _modelEstimatedBuildPriceController.text,
+        'modelPrice': formatPriceInRupees(_modelPriceController.text),
+        'modelEstimatedBuildPrice': formatPriceInRupees(_modelEstimatedBuildPriceController.text),
         'modelArchitectname': architectName,
         'modelArchitectID': user!.uid,
         'modelPassword': _modelPasswordController.text,
@@ -146,12 +146,10 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
         'modelPatio': _modelPatioController,
         'modelParkings': _modelParkingsController,
         'modelPool': _modelPoolController,
-        'modelTechnologyAndSmartFeatures':
-            _modelTechnologyAndSmartFeaturesController,
+        'modelTechnologyAndSmartFeatures': _modelTechnologyAndSmartFeaturesController,
       };
 
-      Map<String, dynamic> projectData =
-          await FirebaseUploads().createProject(projectInfo: projectInfo);
+      Map<String, dynamic> projectData = await FirebaseUploads().createProject(projectInfo: projectInfo);
       // End CircularProgressIndicator
       // ignore: use_build_context_synchronously
       Navigator.of(context).pop();
@@ -201,9 +199,7 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
             _modelPasswordKey.currentState!.validate() &&
             _modelEstimatedBuildPriceKey.currentState!.validate()) {
           currentStep = 1;
-        } else if (currentStep == 1 &&
-            _modelFloorsKey.currentState!.validate() &&
-            _modelTotalSquareFootageKey.currentState!.validate()) {
+        } else if (currentStep == 1 && _modelFloorsKey.currentState!.validate() && _modelTotalSquareFootageKey.currentState!.validate()) {
           currentStep = 2;
         } else if (currentStep == 2 &&
             _modelNumberOfCommonRoomsKey.currentState!.validate() &&
@@ -227,6 +223,22 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
       setState(() {
         currentStep = currentStep - 1;
       });
+    }
+  }
+
+  String formatPriceInRupees(String tempPrice) {
+    int price = int.parse(tempPrice);
+    if (price >= 10000000) {
+      double crores = price / 10000000;
+      return '${crores.toStringAsFixed(2)}Cr';
+    } else if (price >= 100000) {
+      double lakhs = price / 100000;
+      return '${lakhs.toStringAsFixed(2)}L';
+    } else if (price >= 1000) {
+      double thousands = price / 1000;
+      return '${thousands.toStringAsFixed(2)}K';
+    } else {
+      return '$price';
     }
   }
 
@@ -426,8 +438,7 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                             if (value!.isEmpty) {
                                               return 'Please enter your project name';
                                             }
-                                            if (!RegExp(r'^[a-zA-Z\s]+$')
-                                                .hasMatch(value)) {
+                                            if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
                                               return 'Please enter alphabets only(spaces allowed)';
                                             }
                                             return null; // Return null if the input is valid
@@ -463,8 +474,7 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                             if (value!.isEmpty) {
                                               return 'Please enter Price';
                                             }
-                                            if (!RegExp(r'^\d+(\.\d+)?$')
-                                                .hasMatch(value)) {
+                                            if (!RegExp(r'^\d+(\.\d+)?$').hasMatch(value)) {
                                               return 'Please enter a valid price (e.g.- 4500/4500.00)';
                                             }
                                             // Additional validation logic for project name if needed
@@ -480,8 +490,7 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                             if (value!.isEmpty) {
                                               return 'Please enter estimated construction price';
                                             }
-                                            if (!RegExp(r'^\d+(\.\d+)?$')
-                                                .hasMatch(value)) {
+                                            if (!RegExp(r'^\d+(\.\d+)?$').hasMatch(value)) {
                                               return 'Please enter a valid price (e.g.- 4500/4500.00)';
                                             }
                                             // Additional validation logic for project name if needed
@@ -516,8 +525,7 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                             if (value!.isEmpty) {
                                               return 'Please enter number of floors(1-7)';
                                             }
-                                            if (!RegExp(r'^\d+$')
-                                                .hasMatch(value)) {
+                                            if (!RegExp(r'^\d+$').hasMatch(value)) {
                                               return 'Please enter a digit';
                                             }
                                             int floors = int.parse(value);
@@ -537,8 +545,7 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                             if (value!.isEmpty) {
                                               return 'Please enter Total area in sqft';
                                             }
-                                            if (!RegExp(r'^\d+(\.\d+)?$')
-                                                .hasMatch(value)) {
+                                            if (!RegExp(r'^\d+(\.\d+)?$').hasMatch(value)) {
                                               return 'Please enter a valid area (e.g.- 800/800.56)';
                                             }
                                             // Additional validation logic for project name if needed
@@ -594,8 +601,7 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                             if (value!.isEmpty) {
                                               return 'Please enter number of common rooms(1-7)';
                                             }
-                                            if (!RegExp(r'^\d+$')
-                                                .hasMatch(value)) {
+                                            if (!RegExp(r'^\d+$').hasMatch(value)) {
                                               return 'Please enter a digit';
                                             }
                                             int floors = int.parse(value);
@@ -615,8 +621,7 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                             if (value!.isEmpty) {
                                               return 'Please enter number of bedrooms(1-7)';
                                             }
-                                            if (!RegExp(r'^\d+$')
-                                                .hasMatch(value)) {
+                                            if (!RegExp(r'^\d+$').hasMatch(value)) {
                                               return 'Please enter a digit';
                                             }
                                             int floors = int.parse(value);
@@ -644,8 +649,7 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                             if (value!.isEmpty) {
                                               return 'Please enter number of bathrooms(1-7)';
                                             }
-                                            if (!RegExp(r'^\d+$')
-                                                .hasMatch(value)) {
+                                            if (!RegExp(r'^\d+$').hasMatch(value)) {
                                               return 'Please enter a digit';
                                             }
                                             int floors = int.parse(value);
@@ -665,8 +669,7 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                             if (value!.isEmpty) {
                                               return 'Please enter ceiling height';
                                             }
-                                            if (!RegExp(r'^\d+(\.\d+)?$')
-                                                .hasMatch(value)) {
+                                            if (!RegExp(r'^\d+(\.\d+)?$').hasMatch(value)) {
                                               return 'Please enter a valid height (e.g.- 8/8.56)';
                                             }
                                             // Additional validation logic for project name if needed
@@ -850,24 +853,21 @@ class _UploadProjInfoState extends State<UploadProjInfo> {
                                         UploadImage(
                                             imgName: "2D Image",
                                             onPressed: () async {
-                                              await FirebaseStorage
-                                                  .selectSampleFile();
+                                              await FirebaseStorage.selectSampleFile();
                                               setState(() {});
                                             },
                                             index: -2),
                                         UploadImage(
                                             imgName: "3D model",
                                             onPressed: () async {
-                                              await FirebaseStorage
-                                                  .select3DModel(0);
+                                              await FirebaseStorage.select3DModel(0);
                                               setState(() {});
                                             },
                                             index: -1),
                                         UploadImage(
                                             imgName: "Birds Eye View",
                                             onPressed: () async {
-                                              await FirebaseStorage
-                                                  .select3DModel(1);
+                                              await FirebaseStorage.select3DModel(1);
                                               setState(() {});
                                             },
                                             index: -3),

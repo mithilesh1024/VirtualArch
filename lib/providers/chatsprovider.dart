@@ -88,6 +88,68 @@ class ChatsProvider with ChangeNotifier {
     return [..._chatClientList];
   }
 
+  Future<List<ChatArchitectsListModel>> searchMessagedClients(
+      String value) async {
+    final User? architect = Auth().currentUser;
+    var architectId = architect!.uid;
+    List<dynamic> clientsIdArray = await getMessagedClientsID();
+    _chatClientList.clear(); //clearing list before searching
+    List<Future<void>> futures = clientsIdArray.map((userId) async {
+      //Write Code to retrieve and update List
+      String chatId = userId + architectId;
+      final CollectionReference clientsCollection =
+          FirebaseFirestore.instance.collection("users");
+      DocumentSnapshot docClientSnapshot =
+          await clientsCollection.doc(userId).get();
+      if (docClientSnapshot.exists) {
+        String clientName = docClientSnapshot.get('name');
+        if (clientName.startsWith(value)) {
+          final CollectionReference chatsCollection =
+              FirebaseFirestore.instance.collection("chats");
+          DocumentSnapshot docChatsSnapshot = await chatsCollection
+              .doc(chatId)
+              .collection('messages')
+              .orderBy('time', descending: true)
+              .limit(1)
+              .get()
+              .then((querySnapshot) => querySnapshot.docs.first);
+          if (docChatsSnapshot.exists) {
+            bool isPresentInList = false;
+            for (int i = 0; i < _chatClientList.length; i++) {
+              if (_chatClientList[i].chatId == chatId) {
+                isPresentInList = true;
+                _chatClientList[i].message = docChatsSnapshot.get('message');
+                _chatClientList[i].time =
+                    convertTimeStampToDate(docChatsSnapshot.get('time'));
+                _chatClientList[i].isRead = docChatsSnapshot.get('read');
+                break;
+              }
+            }
+            if (isPresentInList == false) {
+              _chatClientList.add(
+                ChatArchitectsListModel(
+                  clientsName: docClientSnapshot.get('name'),
+                  message: docChatsSnapshot.get('message'),
+                  clientsEmail: docClientSnapshot.get('email'),
+                  imageURL: docClientSnapshot.get('imageUrl'),
+                  // imageURL: "assets/Male.png",
+                  time: convertTimeStampToDate(docChatsSnapshot.get('time')),
+                  isRead: docChatsSnapshot.get('read'),
+                  unreadCount: 1,
+                  chatId: chatId,
+                  architectsName: await getArchitectsName(),
+                ),
+              );
+            }
+          }
+        }
+      }
+      // print("Hello ${docArchitectSnapshot.get('architectName')}");
+    }).toList();
+    await Future.wait(futures);
+    return [..._chatClientList];
+  }
+
   Future<String> getArchitectsName() async {
     final User? user = Auth().currentUser;
     var architectId = user!.uid;
