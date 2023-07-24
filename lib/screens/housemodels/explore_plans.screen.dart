@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:full_screen_image/full_screen_image.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 import 'package:virtualarch/screens/housemodels/plans_detail.dart';
 import 'package:virtualarch/widgets/customscreen.dart';

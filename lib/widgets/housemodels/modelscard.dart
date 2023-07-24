@@ -132,7 +132,7 @@ class _ModelsCardState extends State<ModelsCard> {
                                   ],
                                 ),
                                 Text(
-                                  "₹${widget.modelData.modelPrice.toString()}k",
+                                  "₹${widget.modelData.modelPrice}",
                                   style:
                                       Theme.of(context).textTheme.titleMedium,
                                 ),
@@ -172,7 +172,8 @@ class _ModelsCardState extends State<ModelsCard> {
                                       ModelsCardButtons(
                                         buttontext: "Delete",
                                         whatOnPressed: () {
-                                          FireDatabase.deleteModel(widget.modelData.modelId);
+                                          FireDatabase.deleteModel(
+                                              widget.modelData.modelId);
                                         },
                                       )
                                     ],

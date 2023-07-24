@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
               headlineLarge: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
-              ),
+              ), 
               headlineMedium: TextStyle(
                 fontWeight: FontWeight.w900,
                 color: Colors.white,

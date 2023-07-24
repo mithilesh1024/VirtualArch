@@ -13,9 +13,8 @@ class FirebaseUploads {
         model3dURL: projectInfo['model3dURL'],
         model3dBirdsView: projectInfo['model3dBirdsView'],
         modelName: projectInfo['modelName'],
-        modelPrice: int.parse(projectInfo['modelPrice']),
-        modelEstimatedBuildPrice:
-            int.parse(projectInfo['modelEstimatedBuildPrice']),
+        modelPrice: projectInfo['modelPrice'],
+        modelEstimatedBuildPrice: projectInfo['modelEstimatedBuildPrice'],
         modelArchitectname: projectInfo['modelArchitectname'],
         modelArchitectID: projectInfo['modelArchitectID'],
         modelPassword: projectInfo['modelPassword'],
